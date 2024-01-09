@@ -1,0 +1,47 @@
+{
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+        120
+    ],
+    "colorize.languages": [
+        "typescript",
+        "javascript",
+        "css",
+        "scss"
+    ],
+    "[xml]": {
+        "editor.defaultFormatter": "redhat.vscode-xml"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "material-icon-theme.folders.associations": {
+        "ui": "Helper",
+        "origin": "Core",
+        "setup": "Global",
+        "business": "Rules",
+        "sso": "Secure",
+        "http": "Serverless",
+        "manager": "App",
+        "profile": "Admin",
+        "window": "Vm",
+        "instagram": "Animation",
+        "messenger": "Container",
+        "telegram": "Expo",
+        "whatsapp": "Environment",
+        "proxy": "Server"
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    }
+}
