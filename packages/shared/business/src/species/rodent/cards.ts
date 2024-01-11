@@ -1,73 +1,70 @@
-import { Card } from "./interface";
-import { getAttack, getShield } from "./indicators";
+import Card from '@/cards';
 
-const HORN_CARDS: Card<'rodent'>[] = [
-    {
+export const HORN_CARDS: Card<'rodent'>[] = [
+    new Card({
         cost: 1,
+        attack: 1,
+        shield: 3,
         part: 'horn',
         species: 'rodent',
         name: 'rodent-horn',
         passive: 'damage',
         description: 'rodent-horn',
-        shield: getShield(3),
-        attack: getAttack(1),
-    },
-    {
+    }),
+    new Card({
         cost: 2,
+        attack: 3,
+        shield: 1,
         part: 'horn',
         species: 'rodent',
         name: 'rodent-horn',
         passive: 'damage',
         description: 'rodent-horn',
-        shield: getShield(1),
-        attack: getAttack(3),
-    },
+    }),
 ];
 
-const TAIL_CARDS: Card<'rodent'>[] = [
-    {
+export const TAIL_CARDS: Card<'rodent'>[] = [
+    new Card({
         cost: 1,
+        attack: 1,
+        shield: 3,
         part: 'tail',
         species: 'rodent',
         name: 'rodent-tail',
         passive: 'damage',
         description: 'rodent-tail',
-        shield: getShield(3),
-        attack: getAttack(1),
-    },
-    {
+    }),
+    new Card({
         cost: 2,
+        attack: 3,
+        shield: 1,
         part: 'tail',
         species: 'rodent',
         name: 'rodent-tail-2',
         passive: 'damage',
         description: 'rodent-tail-2',
-        shield: getShield(1),
-        attack: getAttack(3),
-    },
+    }),
 ];
 
-const MOUTH_CARDS: Card<'rodent'>[] = [
-    {
+export const MOUTH_CARDS: Card<'rodent'>[] = [
+    new Card({
         cost: 1,
+        attack: 1,
+        shield: 3,
         part: 'mouth',
         species: 'rodent',
         name: 'rodent-mouth',
         passive: 'damage',
         description: 'rodent-mouth',
-        shield: getShield(3),
-        attack: getAttack(1),
-    },
-    {
+    }),
+    new Card({
         cost: 2,
+        attack: 3,
+        shield: 1,
         part: 'mouth',
         species: 'rodent',
         name: 'rodent-mouth-2',
         passive: 'damage',
         description: 'rodent-mouth-2',
-        shield: getShield(1),
-        attack: getAttack(3),
-    },
+    }),
 ];
-
-export default [...HORN_CARDS, ...TAIL_CARDS, ...MOUTH_CARDS];

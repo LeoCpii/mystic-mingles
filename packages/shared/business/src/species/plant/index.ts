@@ -1,0 +1,1 @@
+export { default, Plant } from './plant';

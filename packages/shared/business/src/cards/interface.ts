@@ -1,7 +1,5 @@
-import type { Species, ChooseSpecies, SpeciesCards } from "@/species";
-import type { ActionParts } from "@/parts";
-
-type GetCardInfo<SpeciesCard extends Species, PartCard extends ActionParts, Info extends keyof SpeciesCards[PartCard][0]> = ChooseSpecies<SpeciesCard>['cards'][PartCard][0][Info];
+import type { Species } from '@/species';
+import type { ActiveParts } from '@/parts';
 
 type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
   ? Acc[number]
@@ -9,17 +7,23 @@ type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] exte
 
 type IntRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>
 
+export type Cost = IntRange<0, 3>;
+export type Attack = IntRange<0, 8>;
+export type Shield = IntRange<0, 8>;
 export type Passive = 'heal' | 'damage' | 'speed';
 
-export type Card<SpeciesCard extends Species> = {
-    [Part in ActionParts]: {
-        part: Part;
-        attack: number;
-        shield: number;
-        passive: Passive;
-        cost: IntRange<0, 3>;
-        species: SpeciesCard;
-        name: GetCardInfo<SpeciesCard, Part, 'name'>;
-        description: GetCardInfo<SpeciesCard, Part, 'description'>;
-    };
-}[ActionParts];
+export type CardOptions<S extends Species> = {
+  cost: Cost;
+  species: S;
+  passive: Passive;
+  part: ActiveParts;
+  name: string;
+  attack: number;
+  shield: number;
+  description: string;
+};
+
+export interface CardOptionsLock<S extends Species> extends Omit<CardOptions<S>, 'attack' | 'shield'> {
+  attack: Attack;
+  shield: Shield;
+}

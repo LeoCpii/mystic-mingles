@@ -1,0 +1,1 @@
+export { default, Bird } from './bird';
