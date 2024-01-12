@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react",
+    "target": "ES2022",
+    "outDir": "dist",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "declarationDir": "type",
+    "allowJs": true,
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ]
+    },
+    "strict": true,
+    "sourceMap": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "src/",
+    "types/custom.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/stories/**",
+    "**/__mocks__",
+    "**/tests",
+    "**/*.spec.tsx"
+  ]
+}
