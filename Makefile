@@ -1,7 +1,9 @@
 RUN:=yarn
 
 # LIBS #
+UI:=ui
 BUSINESS:=business
+SERVICES:=services
 
 # WEB #
 LAB:=lab
@@ -65,17 +67,32 @@ build-lab-mock:
 
 ## SERVICES
 
+dev-ui:
+	$(call run_in_workspace,$(UI),storybook)
+
 # ------------------ BUILD ------------------ #
+
+build-ui:
+	$(call run_in_workspace,$(UI),build)
+
+build-services:
+	$(call run_in_workspace,$(SERVICES),build)
 
 build-business:
 	$(call run_in_workspace,$(BUSINESS),build)
 
-build-dependencies: build-business
+build-dependencies: build-business build-ui
 
 # ---------------------- WATCH ----------------------- #
 
 watch-business:
 	$(call run_in_workspace,$(BUSINESS),build:watch)
+
+watch-services:
+	$(call run_in_workspace,$(SERVICES),build:watch)
+
+watch-ui:
+	$(call run_in_workspace,$(UI),watch)
 
 # --------------------- CLEAR ---------------------- #
 

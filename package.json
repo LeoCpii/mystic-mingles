@@ -21,6 +21,8 @@
     "test:watchAll": "jest --watchAll"
   },
   "devDependencies": {
+    "@mingles/ui": "*",
+    "@mingles/services": "*",
     "@mingles/business": "*",
     "@mingles/lint": "*",
     "@types/node": "^18.11.18",

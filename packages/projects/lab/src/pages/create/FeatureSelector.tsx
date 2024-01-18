@@ -116,8 +116,9 @@ function GeneCards({ filtereds, onChange }: GeneCardsProps) {
 
 interface FeatureSelectorProps { onChange: (genes: Mingle<Species>['genes']) => void; }
 export default function FeatureSelector({ onChange }: FeatureSelectorProps) {
-    const [selectedSpecies, setSelectedSpecies] = useState<Species[]>([]);
+    const [selectedName, setSelectedName] = useState<ItemGene>();
     const [selectedGene, setSelectedGene] = useState<GeneParts[]>([]);
+    const [selectedSpecies, setSelectedSpecies] = useState<Species[]>([]);
 
     const listGenesFiltered = listGenes
         .filter(i => {
@@ -129,9 +130,12 @@ export default function FeatureSelector({ onChange }: FeatureSelectorProps) {
             return !selectedGene.length
                 ? listGenes
                 : selectedGene.includes(i.gene as GeneParts);
+        })
+        .filter(i => {
+            return !selectedName
+                ? listGenes
+                : i.name.includes(selectedName.name);
         });
-
-    console.log('listGenesFiltered', listGenesFiltered);
 
     const toggleGene = (gene: GeneParts) => {
         const shouldRemove = selectedGene.includes(gene);
@@ -180,8 +184,11 @@ export default function FeatureSelector({ onChange }: FeatureSelectorProps) {
                 />
                 <Autocomplete
                     disablePortal
-                    options={[]}
                     sx={{ mt: 3 }}
+                    options={listGenesFiltered}
+                    groupBy={(option) => option.species}
+                    getOptionLabel={(option) => option.name}
+                    onChange={(_, value) => setSelectedName(value as ItemGene)}
                     renderInput={(params) => <TextField
                         {...params}
                         label='Habilidade'

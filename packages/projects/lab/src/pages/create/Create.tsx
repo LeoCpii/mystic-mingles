@@ -17,33 +17,51 @@ import CardContent from '@mui/material/CardContent';
 import CasinoIcon from '@mui/icons-material/Casino';
 
 import { useMingle } from '@mingles/ui/game';
-import { type GeneParts, bodyFormats, BodyFormats } from '@mingles/business/parts';
 import { type Species, colors } from '@mingles/business/species';
 import Mingle, { generateRandomMingle } from '@mingles/business/mingle';
+import type { GeneParts, BodyFormats, ActiveParts } from '@mingles/business/parts';
 
 import MingleParts from '@/components/mingle-parts';
+import CardFake from '@/assets/card-fake.png';
 
 import GENES_CONFIG from './genes-config';
 import BODIES_CONFIG from './bodies-configs';
 import SPECIES_CONFIG from './species-config';
 import FeatureSelector from './FeatureSelector';
 
+
+interface OptionsProps<T> { mingle: Mingle<Species>; change: (data: T) => void; }
+
 interface StatsProps { stats: Mingle<Species>['stats']; };
 function StatsChart({ stats }: StatsProps) {
     return (
-        <pre>{JSON.stringify(stats, null, 2)}</pre>
+        <Stack direction="row" spacing={2}>
+            <Stack spacing={1} flex={1}>
+                <Typography variant="body2" color="text.secondary">Vidalidade</Typography>
+                <Typography variant="h5">{stats.life}</Typography>
+            </Stack>
+            <Stack spacing={1} flex={1}>
+                <Typography variant="body2" color="text.secondary">Velocidade</Typography>
+                <Typography variant="h5">{stats.speed}</Typography>
+            </Stack>
+            <Stack spacing={1} flex={1}>
+                <Typography variant="body2" color="text.secondary">Fúria</Typography>
+                <Typography variant="h5">{stats.fury}</Typography>
+            </Stack>
+        </Stack>
     );
 }
 
 interface GeneCardProps { icon: React.ReactNode; label: string; name: string; species: Species; };
 function GeneCard({ icon, label: title, name, species }: GeneCardProps) {
+    const newColors = colors[species].map(r => r).sort((a, b) => a > b ? 1 : -1);
     return (
         <Card elevation={0} sx={{ background: 'transparent' }}>
             <Stack direction="row" alignItems="center" gap={1}>
                 <Avatar
                     variant="rounded"
                     sx={{
-                        background: colors[species][0]
+                        background: newColors[0]
                     }}
                 >
                     {icon}
@@ -98,6 +116,148 @@ function BannerCard({ mingle, onGenerateRandom }: BannerProps) {
     );
 }
 
+function Body({ mingle, change }: OptionsProps<BodyFormats>) {
+    return (
+        <Box>
+            <Typography gutterBottom variant="h5" component="div">
+                Corpo
+            </Typography>
+            <Stack direction="row" spacing={1}>
+                {
+                    Object.keys(BODIES_CONFIG).map((body) => {
+                        const current = body as BodyFormats;
+                        const config = BODIES_CONFIG[current];
+                        return (
+                            <Chip
+                                key={body}
+                                icon={config.icon}
+                                label={config.label}
+                                onClick={() => change(current)}
+                                variant={mingle.body === body ? 'filled' : 'outlined'}
+                            />
+                        );
+                    })
+                }
+            </Stack>
+        </Box>
+    );
+}
+
+function MingleClass({ mingle, change }: OptionsProps<Species>) {
+    return (
+        <Box>
+            <Typography gutterBottom variant="h5" component="div">
+                Classe
+            </Typography>
+            <Stack direction="row" spacing={1}>
+                {
+                    Object.keys(SPECIES_CONFIG).map((species) => {
+                        const config = SPECIES_CONFIG[species as Species];
+                        return (
+                            <Chip
+                                key={species}
+                                variant="outlined"
+                                label={config.label}
+                                icon={config.icon}
+                                onClick={() => change(species as Species)}
+                                sx={{
+                                    background: mingle.species === species ? config.color : 'transparent',
+                                    borderColor: config.color
+                                }}
+                            />
+                        );
+                    })
+                }
+            </Stack>
+        </Box>
+    );
+}
+
+function Colors({ mingle, change }: OptionsProps<Mingle<Species>['color']>) {
+    const newColors = colors[mingle.species].map(r => r).sort((a, b) => a > b ? 1 : -1);
+    return (
+        <Box>
+            <Typography gutterBottom variant="h5" component="div">
+                Coloração
+            </Typography>
+            <Stack direction="row" spacing={1}>
+                {
+                    newColors
+                        .map((color) =>
+                            <Chip
+                                key={color}
+                                label={color}
+                                sx={{
+                                    borderColor: color,
+                                    textTransform: 'uppercase',
+                                    background: mingle.color === color ? color : 'transparent',
+                                }}
+                                variant={mingle.color === color ? 'filled' : 'outlined'}
+                                onClick={() => change(color)}
+                            />
+                        )
+                }
+            </Stack>
+        </Box>
+    );
+}
+
+interface CharacteristicsProps { mingle: Mingle<Species>; onToggleModalEdit: () => void; };
+function Characteristics({ mingle, onToggleModalEdit }: CharacteristicsProps) {
+    return (
+        <Box>
+            <Box display="flex" justifyContent="space-between" alignItems="flex-start">
+                <Typography gutterBottom variant="h5" component="div">
+                    Características
+                </Typography>
+                <IconButton onClick={onToggleModalEdit}>
+                    <EditIcon />
+                </IconButton>
+            </Box>
+            <Grid container spacing={2}>
+                {
+                    Object.keys(mingle.genes).map((gene) => {
+                        const current = gene as GeneParts;
+                        const config = GENES_CONFIG[current];
+
+                        return (
+                            <Grid item xs={4} key={gene}>
+                                <GeneCard
+                                    icon={config.icon}
+                                    label={config.label}
+                                    name={mingle.genes[current].name}
+                                    species={mingle.genes[current].species}
+                                />
+                            </Grid>
+                        );
+                    })
+                }
+            </Grid>
+        </Box>
+    );
+}
+
+interface CardsProps { mingle: Mingle<Species> }
+function Cards({ mingle }: CardsProps) {
+    return (
+        <Card>
+            <CardContent>
+                <Grid container spacing={2}>
+                    {
+                        Object.keys(mingle.cards).map(() => {
+                            return (
+                                <Grid item sm={4}>
+                                    <img style={{ width: '100%', borderRadius: 15 }} src={CardFake} alt="" />
+                                </Grid>
+                            );
+                        })
+                    }
+                </Grid>
+            </CardContent>
+        </Card >
+    );
+}
+
 interface CharacteristicCardProps {
     mingle: Mingle<Species>;
     onToggleModalEdit: () => void;
@@ -110,106 +270,13 @@ function CharacteristicCard({ mingle, onChangeSpecies, onChangeBody, onChangeCol
         <Card>
             <CardContent>
                 <Stack spacing={2}>
-                    <Box>
-                        <Typography gutterBottom variant="h5" component="div">
-                            Corpo
-                        </Typography>
-                        <Stack direction="row" spacing={1}>
-                            {
-                                bodyFormats.map((body) => {
-                                    const current = BODIES_CONFIG[body];
-                                    return (
-                                        <Chip
-                                            key={body}
-                                            icon={current.icon}
-                                            label={current.label}
-                                            onClick={() => onChangeBody(body)}
-                                            variant={mingle.body === body ? 'filled' : 'outlined'}
-                                        />
-                                    );
-                                })
-                            }
-                        </Stack>
-                    </Box>
+                    <Body mingle={mingle} change={onChangeBody} />
                     <Divider />
-                    <Box>
-                        <Typography gutterBottom variant="h5" component="div">
-                            Classe
-                        </Typography>
-                        <Stack direction="row" spacing={1}>
-                            {
-                                Object.keys(SPECIES_CONFIG).map((species) => {
-                                    const config = SPECIES_CONFIG[species as Species];
-                                    return (
-                                        <Chip
-                                            key={species}
-                                            variant="outlined"
-                                            label={config.label}
-                                            icon={config.icon}
-                                            onClick={() => onChangeSpecies(species as Species)}
-                                            sx={{
-                                                background: mingle.species === species ? config.color : 'transparent',
-                                                borderColor: config.color
-                                            }}
-                                        />
-                                    );
-                                })
-                            }
-                        </Stack>
-                    </Box>
+                    <MingleClass mingle={mingle} change={onChangeSpecies} />
                     <Divider />
-                    <Box>
-                        <Typography gutterBottom variant="h5" component="div">
-                            Coloração
-                        </Typography>
-                        <Stack direction="row" spacing={1}>
-                            {
-                                colors[mingle.species]
-                                    .map((color) =>
-                                        <Chip
-                                            key={color}
-                                            label={color}
-                                            sx={{
-                                                borderColor: color,
-                                                background: mingle.color === color ? color : 'transparent',
-                                            }}
-                                            variant={mingle.color === color ? 'filled' : 'outlined'}
-                                            onClick={() => onChangeColor(color)}
-                                        />
-                                    )
-                            }
-                        </Stack>
-                    </Box>
+                    <Colors mingle={mingle} change={onChangeColor} />
                     <Divider />
-                    <Box>
-                        <Box display="flex" justifyContent="space-between" alignItems="flex-start">
-                            <Typography gutterBottom variant="h5" component="div">
-                                Características
-                            </Typography>
-                            <IconButton onClick={onToggleModalEdit}>
-                                <EditIcon />
-                            </IconButton>
-                        </Box>
-                        <Grid container spacing={2}>
-                            {
-                                Object.keys(mingle.genes).map((gene) => {
-                                    const current = gene as GeneParts;
-                                    const config = GENES_CONFIG[current];
-
-                                    return (
-                                        <Grid item xs={4} key={gene}>
-                                            <GeneCard
-                                                icon={config.icon}
-                                                label={config.label}
-                                                name={mingle.genes[current].name}
-                                                species={mingle.genes[current].species}
-                                            />
-                                        </Grid>
-                                    );
-                                })
-                            }
-                        </Grid>
-                    </Box>
+                    <Characteristics mingle={mingle} onToggleModalEdit={onToggleModalEdit} />
                 </Stack>
             </CardContent>
         </Card>
@@ -220,8 +287,8 @@ export default function Create() {
     const [showModalEdit, setShowModalEdit] = useState(false);
     const { mingle, update, updateGenes } = useMingle(generateRandomMingle());
 
-    const handleUpdateSpecies = (species: Species) => { update({ species }); };
     const handleUpdateBody = (body: BodyFormats) => { update({ body }); };
+    const handleUpdateSpecies = (species: Species) => { update({ species }); };
     const handleUpdateColor = (color: Mingle<Species>['color']) => { update({ color }); };
     const handleUpdateGenes = (genes: Mingle<Species>['genes']) => { updateGenes(genes); };
 
@@ -245,15 +312,18 @@ export default function Create() {
                             onChangeSpecies={handleUpdateSpecies}
                             onToggleModalEdit={toggleModalEdit}
                         />
+                        <Cards mingle={mingle} />
                     </Stack>
                 </Grid>
                 <Grid item xs={4}>
                     <Card>
                         <CardContent>
-                            <StatsChart stats={mingle.stats} />
-                            <Button variant="contained" fullWidth>
-                                Salvar
-                            </Button>
+                            <Stack spacing={2}>
+                                <StatsChart stats={mingle.stats} />
+                                <Button variant="contained" fullWidth>
+                                    Criar
+                                </Button>
+                            </Stack>
                         </CardContent>
                     </Card>
                 </Grid>
