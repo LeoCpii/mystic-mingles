@@ -1,1 +1,1 @@
-export { default, Reptile } from './reptile';
+export { default, Reptile, ReptileGenes, ReptileColors } from './reptile';

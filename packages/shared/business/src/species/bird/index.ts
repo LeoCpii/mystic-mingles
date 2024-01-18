@@ -1,1 +1,1 @@
-export { default, Bird } from './bird';
+export { default, Bird, BirdGenes, BirdColors } from './bird';

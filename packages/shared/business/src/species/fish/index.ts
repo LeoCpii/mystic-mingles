@@ -1,1 +1,1 @@
-export { default, Fish } from './fish';
+export { default, Fish, FishGenes, FishColors } from './fish';

@@ -1,70 +1,53 @@
-import Card from '@/cards';
+import Card from '@/card';
 
-export const HORN_CARDS: Card<'bird'>[] = [
+export const HORN_CARDS: Card<'bird', 'horn'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'horn',
         species: 'bird',
-        name: 'bird-horn',
+        name: 'Bird Topknot',
         passive: 'damage',
-        description: 'bird-horn',
-    }),
-    new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'horn',
-        species: 'bird',
-        name: 'bird-horn',
-        passive: 'damage',
-        description: 'bird-horn',
-    }),
+        description: 'Bird Feather',
+    })
 ];
 
-export const TAIL_CARDS: Card<'bird'>[] = [
+export const TAIL_CARDS: Card<'bird', 'tail'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'tail',
         species: 'bird',
-        name: 'bird-tail',
+        name: 'Bird Feather',
         passive: 'damage',
-        description: 'bird-tail',
-    }),
-    new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'tail',
-        species: 'bird',
-        name: 'bird-tail-2',
-        passive: 'damage',
-        description: 'bird-tail-2',
-    }),
+        description: 'Bird Feather',
+    })
 ];
 
-export const MOUTH_CARDS: Card<'bird'>[] = [
+export const MOUTH_CARDS: Card<'bird', 'mouth'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'mouth',
         species: 'bird',
-        name: 'bird-mouth',
+        name: 'Bird Beak',
         passive: 'damage',
-        description: 'bird-mouth',
-    }),
+        description: 'Bird Beak',
+    })
+];
+
+export const BACK_CARDS: Card<'bird', 'back'>[] = [
     new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'mouth',
+        cost: 1,
+        attack: 1,
+        shield: 3,
+        part: 'back',
         species: 'bird',
-        name: 'bird-mouth-2',
+        name: 'Bird Wing',
         passive: 'damage',
-        description: 'bird-mouth-2',
-    }),
+        description: 'Bird Wing',
+    })
 ];

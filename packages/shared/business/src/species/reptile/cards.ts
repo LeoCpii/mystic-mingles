@@ -1,70 +1,53 @@
-import Card from '@/cards';
+import Card from '@/card';
 
-export const HORN_CARDS: Card<'reptile'>[] = [
+export const HORN_CARDS: Card<'reptile', 'horn'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'horn',
         species: 'reptile',
-        name: 'reptile-horn',
+        name: 'Reptile Iguana',
         passive: 'damage',
-        description: 'reptile-horn',
-    }),
-    new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'horn',
-        species: 'reptile',
-        name: 'reptile-horn',
-        passive: 'damage',
-        description: 'reptile-horn',
-    }),
+        description: 'Reptile Iguana',
+    })
 ];
 
-export const TAIL_CARDS: Card<'reptile'>[] = [
+export const TAIL_CARDS: Card<'reptile', 'tail'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'tail',
         species: 'reptile',
-        name: 'reptile-tail',
+        name: 'Reptile Lizard',
         passive: 'damage',
-        description: 'reptile-tail',
-    }),
-    new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'tail',
-        species: 'reptile',
-        name: 'reptile-tail-2',
-        passive: 'damage',
-        description: 'reptile-tail-2',
-    }),
+        description: 'Reptile Lizard',
+    })
 ];
 
-export const MOUTH_CARDS: Card<'reptile'>[] = [
+export const MOUTH_CARDS: Card<'reptile', 'mouth'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'mouth',
         species: 'reptile',
-        name: 'reptile-mouth',
+        name: 'Reptile Sad',
         passive: 'damage',
-        description: 'reptile-mouth',
-    }),
+        description: 'Reptile Sad',
+    })
+];
+
+export const BACK_CARDS: Card<'reptile', 'back'>[] = [
     new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'mouth',
+        cost: 1,
+        attack: 1,
+        shield: 3,
+        part: 'back',
         species: 'reptile',
-        name: 'reptile-mouth-2',
+        name: 'Reptile Turtle',
         passive: 'damage',
-        description: 'reptile-mouth-2',
-    }),
+        description: 'Reptile Turtle',
+    })
 ];

@@ -1,70 +1,53 @@
-import Card from '@/cards';
+import Card from '@/card';
 
-export const HORN_CARDS: Card<'bug'>[] = [
+export const HORN_CARDS: Card<'bug', 'horn'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'horn',
         species: 'bug',
-        name: 'bug-horn',
+        name: 'Bug Butterfly',
         passive: 'damage',
-        description: 'bug-horn',
-    }),
-    new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'horn',
-        species: 'bug',
-        name: 'bug-horn',
-        passive: 'damage',
-        description: 'bug-horn',
-    }),
+        description: 'Bug Butterfly',
+    })
 ];
 
-export const TAIL_CARDS: Card<'bug'>[] = [
+export const TAIL_CARDS: Card<'bug', 'tail'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'tail',
         species: 'bug',
-        name: 'bug-tail',
+        name: 'Bug Bee',
         passive: 'damage',
-        description: 'bug-tail',
-    }),
-    new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'tail',
-        species: 'bug',
-        name: 'bug-tail-2',
-        passive: 'damage',
-        description: 'bug-tail-2',
-    }),
+        description: 'Bug Bee',
+    })
 ];
 
-export const MOUTH_CARDS: Card<'bug'>[] = [
+export const MOUTH_CARDS: Card<'bug', 'mouth'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'mouth',
         species: 'bug',
-        name: 'bug-mouth',
+        name: 'Bug Termite',
         passive: 'damage',
-        description: 'bug-mouth',
-    }),
+        description: 'Bug Termite',
+    })
+];
+
+export const BACK_CARDS: Card<'bug', 'back'>[] = [
     new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'mouth',
+        cost: 1,
+        attack: 1,
+        shield: 3,
+        part: 'back',
         species: 'bug',
-        name: 'bug-mouth-2',
+        name: 'Bug Fly',
         passive: 'damage',
-        description: 'bug-mouth-2',
-    }),
+        description: 'Bug Fly',
+    })
 ];

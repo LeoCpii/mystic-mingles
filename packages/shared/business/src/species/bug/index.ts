@@ -1,1 +1,1 @@
-export { default, Bug } from './bug';
+export { default, Bug, BugGenes, BugColors } from './bug';

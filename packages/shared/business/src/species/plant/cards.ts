@@ -1,61 +1,41 @@
-import Card from '@/cards';
+import Card from '@/card';
 
-export const HORN_CARDS: Card<'plant'>[] = [
+export const HORN_CARDS: Card<'plant', 'horn'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'horn',
         species: 'plant',
-        name: 'plant-horn',
+        name: 'Plant Fall',
         passive: 'damage',
-        description: 'plant-horn',
-    }),
-    new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'horn',
-        species: 'plant',
-        name: 'plant-horn',
-        passive: 'damage',
-        description: 'plant-horn',
-    }),
+        description: 'Plant Fall',
+    })
 ];
 
-export const TAIL_CARDS: Card<'plant'>[] = [
+export const TAIL_CARDS: Card<'plant', 'tail'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'tail',
         species: 'plant',
-        name: 'plant-tail',
+        name: 'Plant Leaf',
         passive: 'damage',
-        description: 'plant-tail',
-    }),
-    new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'tail',
-        species: 'plant',
-        name: 'plant-tail-2',
-        passive: 'damage',
-        description: 'plant-tail-2',
-    }),
+        description: 'Plant Leaf',
+    })
 ];
 
-export const MOUTH_CARDS: Card<'plant'>[] = [
+export const MOUTH_CARDS: Card<'plant', 'mouth'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'mouth',
         species: 'plant',
-        name: 'plant-mouth',
+        name: 'Plant Laught',
         passive: 'damage',
-        description: 'plant-mouth',
+        description: 'Plant Laught',
     }),
     new Card({
         cost: 2,
@@ -63,8 +43,21 @@ export const MOUTH_CARDS: Card<'plant'>[] = [
         shield: 1,
         part: 'mouth',
         species: 'plant',
-        name: 'plant-mouth-2',
+        name: 'Plant Snack',
         passive: 'damage',
-        description: 'plant-mouth-2',
+        description: 'Plant Snack',
     }),
+];
+
+export const BACK_CARDS: Card<'plant', 'back'>[] = [
+    new Card({
+        cost: 1,
+        attack: 1,
+        shield: 3,
+        part: 'back',
+        species: 'plant',
+        name: 'Plant Flower',
+        passive: 'damage',
+        description: 'Plant Flower',
+    })
 ];

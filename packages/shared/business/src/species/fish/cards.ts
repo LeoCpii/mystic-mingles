@@ -1,70 +1,53 @@
-import Card from '@/cards';
+import Card from '@/card';
 
-export const HORN_CARDS: Card<'fish'>[] = [
+export const HORN_CARDS: Card<'fish', 'horn'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'horn',
         species: 'fish',
-        name: 'fish-horn',
+        name: 'Fish Shark',
         passive: 'damage',
-        description: 'fish-horn',
-    }),
-    new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'horn',
-        species: 'fish',
-        name: 'fish-horn',
-        passive: 'damage',
-        description: 'fish-horn',
-    }),
+        description: 'Fish Shark',
+    })
 ];
 
-export const TAIL_CARDS: Card<'fish'>[] = [
+export const TAIL_CARDS: Card<'fish', 'tail'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'tail',
         species: 'fish',
-        name: 'fish-tail',
+        name: 'Fish Gold',
         passive: 'damage',
-        description: 'fish-tail',
-    }),
-    new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'tail',
-        species: 'fish',
-        name: 'fish-tail-2',
-        passive: 'damage',
-        description: 'fish-tail-2',
-    }),
+        description: 'Fish Gold',
+    })
 ];
 
-export const MOUTH_CARDS: Card<'fish'>[] = [
+export const MOUTH_CARDS: Card<'fish', 'mouth'>[] = [
     new Card({
         cost: 1,
         attack: 1,
         shield: 3,
         part: 'mouth',
         species: 'fish',
-        name: 'fish-mouth',
+        name: 'Fish Eat',
         passive: 'damage',
-        description: 'fish-mouth',
-    }),
+        description: 'Fish Eat',
+    })
+];
+
+export const BACK_CARDS: Card<'fish', 'back'>[] = [
     new Card({
-        cost: 2,
-        attack: 3,
-        shield: 1,
-        part: 'mouth',
+        cost: 1,
+        attack: 1,
+        shield: 3,
+        part: 'back',
         species: 'fish',
-        name: 'fish-mouth-2',
+        name: 'Fish Fin',
         passive: 'damage',
-        description: 'fish-mouth-2',
-    }),
+        description: 'Fish Fin',
+    })
 ];

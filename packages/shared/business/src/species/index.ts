@@ -5,4 +5,5 @@ export { default as plant, Plant } from './plant';
 export { default as rodent, Rodent } from './rodent';
 export { default as reptile, Reptile } from './reptile';
 
+export * from './species';
 export * from './interface';

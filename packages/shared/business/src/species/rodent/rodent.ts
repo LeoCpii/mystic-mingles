@@ -1,14 +1,32 @@
-import { HORN_CARDS, MOUTH_CARDS, TAIL_CARDS } from './cards';
-import type { Species, SpeciesOptions, SpeciesParts, SpeciesCards, SpeciesStats } from '../interface';
+import { HORN_CARDS, MOUTH_CARDS, TAIL_CARDS, BACK_CARDS } from './cards';
+import type { Species, SpeciesOptions, SpeciesGenes, SpeciesCards, SpeciesStats } from '../interface';
 
-export class Rodent<S extends Species> implements SpeciesOptions<S> {
-    public readonly colors: string[];
-    public readonly parts: SpeciesParts;
+const EYES = ['Rodent Oriental'] as const;
+const BACK = ['Rodent Nut'] as const;
+const HORNS = ['Rodent Rat'] as const;
+const TAILS = ['Rodent Beaver'] as const;
+const MOUTHS = ['Rodent Squirrel'] as const;
+
+const COLORS = ['#f1cf77', '#ecbe49', '#e8ae1b'] as const;
+
+export interface RodentGenes {
+    eye: typeof EYES[number];
+    back: typeof BACK[number];
+    horn: typeof HORNS[number];
+    tail: typeof TAILS[number];
+    mouth: typeof MOUTHS[number];
+}
+
+export type RodentColors = typeof COLORS;
+
+export class Rodent<S extends Species, G extends RodentGenes, Colors extends RodentColors> implements SpeciesOptions<S, G, Colors> {
+    public readonly colors: Colors;
+    public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
     public readonly stats: SpeciesStats;
 
-    constructor({ parts, cards, colors, stats }: SpeciesOptions<S>) {
-        this.parts = parts;
+    constructor({ genes: parts, cards, colors, stats }: SpeciesOptions<S, G, Colors>) {
+        this.genes = parts;
         this.cards = cards;
         this.colors = colors;
         this.stats = stats;
@@ -16,21 +34,22 @@ export class Rodent<S extends Species> implements SpeciesOptions<S> {
 }
 
 export default new Rodent({
-    parts: {
-        body: ['rodent body', 'rodent body 2'],
-        eye: ['rodent eye', 'rodent eye 2'],
-        horn: ['rodent horn', 'rodent horn 2'],
-        tail: ['rodent tail', 'rodent tail 2'],
-        mouth: ['rodent mouth', 'rodent mouth 2'],
+    genes: {
+        eye: ['Rodent Oriental'],
+        horn: ['Rodent Rat'],
+        tail: ['Rodent Beaver'],
+        back: ['Rodent Nut'],
+        mouth: ['Rodent Squirrel'],
     },
     cards: {
         horn: HORN_CARDS,
-        tail: MOUTH_CARDS,
-        mouth: TAIL_CARDS,
+        tail: TAIL_CARDS,
+        back: BACK_CARDS,
+        mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 100, speed: 1.5 },
-        part: { life: 30, speed: 1.5 },
+        base: { life: 2, speed: 2 },
+        part: { life: 1, speed: 1 },
     },
-    colors: ['#f1cf77', '#ecbe49', '#e8ae1b']
+    colors: [...COLORS]
 });

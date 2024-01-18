@@ -1,14 +1,32 @@
-import { HORN_CARDS, MOUTH_CARDS, TAIL_CARDS } from './cards';
-import type { Species, SpeciesOptions, SpeciesParts, SpeciesCards, SpeciesStats } from '../interface';
+import { HORN_CARDS, MOUTH_CARDS, TAIL_CARDS, BACK_CARDS } from './cards';
+import type { Species, SpeciesOptions, SpeciesGenes, SpeciesCards, SpeciesStats } from '../interface';
 
-export class Bug<S extends Species> implements SpeciesOptions<S> {
-    public readonly colors: string[];
-    public readonly parts: SpeciesParts;
+const EYES = ['Bug Spider'] as const;
+const BACK = ['Bug Fly'] as const;
+const HORNS = ['Bug Butterfly'] as const;
+const TAILS = ['Bug Bee'] as const;
+const MOUTHS = ['Bug Termite'] as const;
+
+const COLORS = ['#ea3266', '#e81b55', '#bc1343'] as const;
+
+export interface BugGenes {
+    eye: typeof EYES[number];
+    back: typeof BACK[number];
+    horn: typeof HORNS[number];
+    tail: typeof TAILS[number];
+    mouth: typeof MOUTHS[number];
+}
+
+export type BugColors = typeof COLORS;
+
+export class Bug<S extends Species, G extends BugGenes, Colors extends BugColors> implements SpeciesOptions<S, G, Colors> {
+    public readonly colors: Colors;
+    public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
     public readonly stats: SpeciesStats;
 
-    constructor({ parts, cards, colors, stats }: SpeciesOptions<S>) {
-        this.parts = parts;
+    constructor({ genes: parts, cards, colors, stats }: SpeciesOptions<S, G, Colors>) {
+        this.genes = parts;
         this.cards = cards;
         this.colors = colors;
         this.stats = stats;
@@ -16,21 +34,22 @@ export class Bug<S extends Species> implements SpeciesOptions<S> {
 }
 
 export default new Bug({
-    parts: {
-        body: ['bug body', 'bug body 2'],
-        eye: ['bug eye', 'bug eye 2'],
-        horn: ['bug horn', 'bug horn 2'],
-        tail: ['bug tail', 'bug tail 2'],
-        mouth: ['bug mouth', 'bug mouth 2'],
+    genes: {
+        eye: ['Bug Spider'],
+        horn: ['Bug Butterfly'],
+        tail: ['Bug Bee'],
+        mouth: ['Bug Termite'],
+        back: ['Bug Fly'],
     },
     cards: {
         horn: HORN_CARDS,
-        tail: MOUTH_CARDS,
-        mouth: TAIL_CARDS,
+        tail: TAIL_CARDS,
+        back: BACK_CARDS,
+        mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 150, speed: 1.3 },
-        part: { life: 35, speed: 1.4 },
+        base: { life: 2, speed: 2 },
+        part: { life: 1, speed: 1 },
     },
-    colors: ['#ea3266', '#e81b55', '#bc1343']
+    colors: [...COLORS]
 });

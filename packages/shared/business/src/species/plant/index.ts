@@ -1,1 +1,1 @@
-export { default, Plant } from './plant';
+export { default, Plant, PlantGenes, PlantColors } from './plant';

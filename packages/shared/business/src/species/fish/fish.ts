@@ -1,14 +1,32 @@
-import { HORN_CARDS, MOUTH_CARDS, TAIL_CARDS } from './cards';
-import type { Species, SpeciesOptions, SpeciesParts, SpeciesCards, SpeciesStats } from '../interface';
+import { HORN_CARDS, MOUTH_CARDS, TAIL_CARDS, BACK_CARDS } from './cards';
+import type { Species, SpeciesOptions, SpeciesGenes, SpeciesCards, SpeciesStats } from '../interface';
 
-export class Fish<S extends Species> implements SpeciesOptions<S> {
-    public readonly colors: string[];
-    public readonly parts: SpeciesParts;
+const EYES = ['Fish Crazy'] as const;
+const BACK = ['Fish Fin'] as const;
+const HORNS = ['Fish Shark'] as const;
+const TAILS = ['Fish Gold'] as const;
+const MOUTHS = ['Fish Eat'] as const;
+
+const COLORS = ['#77d7f1', '#49c9ec', '#1bbbe8'] as const;
+
+export interface FishGenes {
+    eye: typeof EYES[number];
+    back: typeof BACK[number];
+    horn: typeof HORNS[number];
+    tail: typeof TAILS[number];
+    mouth: typeof MOUTHS[number];
+}
+
+export type FishColors = typeof COLORS;
+
+export class Fish<S extends Species, G extends FishGenes, Colors extends FishColors> implements SpeciesOptions<S, G, Colors> {
+    public readonly colors: Colors;
+    public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
     public readonly stats: SpeciesStats;
 
-    constructor({ parts, cards, colors, stats }: SpeciesOptions<S>) {
-        this.parts = parts;
+    constructor({ genes: parts, cards, colors, stats }: SpeciesOptions<S, G, Colors>) {
+        this.genes = parts;
         this.cards = cards;
         this.colors = colors;
         this.stats = stats;
@@ -16,21 +34,22 @@ export class Fish<S extends Species> implements SpeciesOptions<S> {
 }
 
 export default new Fish({
-    parts: {
-        body: ['fish body', 'fish body 2'],
-        eye: ['fish eye', 'fish eye 2'],
-        horn: ['fish horn', 'fish horn 2'],
-        tail: ['fish tail', 'fish tail 2'],
-        mouth: ['fish mouth', 'fish mouth 2'],
+    genes: {
+        eye: ['Fish Crazy'],
+        horn: ['Fish Shark'],
+        tail: ['Fish Gold'],
+        back: ['Fish Fin'],
+        mouth: ['Fish Eat'],
     },
     cards: {
         horn: HORN_CARDS,
-        tail: MOUTH_CARDS,
-        mouth: TAIL_CARDS,
+        tail: TAIL_CARDS,
+        back: BACK_CARDS,
+        mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 150, speed: 1.3 },
-        part: { life: 35, speed: 1.4 },
+        base: { life: 2, speed: 2 },
+        part: { life: 1, speed: 1 },
     },
-    colors: ['#77d7f1', '#49c9ec', '#1bbbe8']
+    colors: [...COLORS]
 });

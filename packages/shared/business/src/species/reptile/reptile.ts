@@ -1,14 +1,32 @@
-import { HORN_CARDS, MOUTH_CARDS, TAIL_CARDS } from './cards';
-import type { Species, SpeciesOptions, SpeciesParts, SpeciesCards, SpeciesStats } from '../interface';
+import { HORN_CARDS, MOUTH_CARDS, TAIL_CARDS, BACK_CARDS } from './cards';
+import type { Species, SpeciesOptions, SpeciesGenes, SpeciesCards, SpeciesStats } from '../interface';
 
-export class Reptile<S extends Species> implements SpeciesOptions<S> {
-    public readonly colors: string[];
-    public readonly parts: SpeciesParts;
+const EYES = ['Reptile Curious'] as const;
+const BACK = ['Reptile Turtle'] as const;
+const HORNS = ['Reptile Iguana'] as const;
+const TAILS = ['Reptile Lizard'] as const;
+const MOUTHS = ['Reptile Sad'] as const;
+
+const COLORS = ['#cf77f1', '#be49ec', '#ae1be8'] as const;
+
+export interface ReptileGenes {
+    eye: typeof EYES[number];
+    back: typeof BACK[number];
+    horn: typeof HORNS[number];
+    tail: typeof TAILS[number];
+    mouth: typeof MOUTHS[number];
+}
+
+export type ReptileColors = typeof COLORS;
+
+export class Reptile<S extends Species, G extends ReptileGenes, Colors extends ReptileColors> implements SpeciesOptions<S, G, Colors> {
+    public readonly colors: Colors;
+    public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
     public readonly stats: SpeciesStats;
 
-    constructor({ parts, cards, colors, stats }: SpeciesOptions<S>) {
-        this.parts = parts;
+    constructor({ genes: parts, cards, colors, stats }: SpeciesOptions<S, G, Colors>) {
+        this.genes = parts;
         this.cards = cards;
         this.colors = colors;
         this.stats = stats;
@@ -16,21 +34,22 @@ export class Reptile<S extends Species> implements SpeciesOptions<S> {
 }
 
 export default new Reptile({
-    parts: {
-        body: ['reptile body', 'reptile body 2'],
-        eye: ['reptile eye', 'reptile eye 2'],
-        horn: ['reptile horn', 'reptile horn 2'],
-        tail: ['reptile tail', 'reptile tail 2'],
-        mouth: ['reptile mouth', 'reptile mouth 2'],
+    genes: {
+        eye: ['Reptile Curious'],
+        horn: ['Reptile Iguana'],
+        tail: ['Reptile Lizard'],
+        back: ['Reptile Turtle'],
+        mouth: ['Reptile Sad'],
     },
     cards: {
         horn: HORN_CARDS,
-        tail: MOUTH_CARDS,
-        mouth: TAIL_CARDS,
+        tail: TAIL_CARDS,
+        back: BACK_CARDS,
+        mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 210, speed: 1.1 },
-        part: { life: 40, speed: 1.3 },
+        base: { life: 2, speed: 2 },
+        part: { life: 1, speed: 1 },
     },
-    colors: ['#cf77f1', '#be49ec', '#ae1be8']
+    colors: [...COLORS]
 });

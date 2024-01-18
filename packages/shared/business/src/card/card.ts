@@ -1,20 +1,20 @@
-import { Species } from '@/species';
-import { ActiveParts } from '@/parts';
+import type { Genes, Species } from '@/species';
+import type { ActiveParts } from '@/parts';
 
-import { CardOptions, CardOptionsLock, Cost, Passive } from './interface';
+import type { CardOptions, CardOptionsLock, Cost, Passive } from './interface';
 
-export default class Card<S extends Species> implements CardOptions<S> {
+export default class Card<S extends Species, P extends ActiveParts> implements CardOptions<S, P> {
     private _attack: number;
     private _shield: number;
 
+    public readonly part: P;
     public readonly species: S;
     public readonly cost: Cost;
     public readonly passive: Passive;
-    public readonly part: ActiveParts;
-    public readonly name: string;
     public readonly description: string;
+    public readonly name: Genes[S][P][number];
 
-    constructor(data: CardOptionsLock<S>) {
+    constructor(data: CardOptionsLock<S, P>) {
         this.name = data.name;
         this.cost = data.cost;
         this.part = data.part;
