@@ -19,7 +19,8 @@
       "import": "./dist/esm/*.js",
       "require": "./dist/cjs/*.js",
       "types": "./dist/esm/type/*/index.d.ts"
-    }
+    },
+    "./style": "./dist/esm/mingle/index.css"
   },
   "scripts": {
     "rollup": "rollup -c",

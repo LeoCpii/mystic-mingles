@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { MingleGenes } from '@mingles/business/mingle';
 
 type HornProps = { horn: MingleGenes['horn']['name'] };

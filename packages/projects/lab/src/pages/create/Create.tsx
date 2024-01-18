@@ -17,11 +17,12 @@ import CardContent from '@mui/material/CardContent';
 import CasinoIcon from '@mui/icons-material/Casino';
 
 import { useMingle } from '@mingles/ui/game';
+import MingleParts from '@mingles/ui/mingle-parts';
 import { type Species, colors } from '@mingles/business/species';
 import Mingle, { generateRandomMingle } from '@mingles/business/mingle';
-import type { GeneParts, BodyFormats, ActiveParts } from '@mingles/business/parts';
+import type { GeneParts, BodyFormats } from '@mingles/business/parts';
 
-import MingleParts from '@/components/mingle-parts';
+// import MingleParts from '@/components/mingle-parts';
 import CardFake from '@/assets/card-fake.png';
 
 import GENES_CONFIG from './genes-config';

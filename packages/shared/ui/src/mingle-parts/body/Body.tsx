@@ -1,5 +1,7 @@
-import { MingleOptions } from '@mingles/business/mingle';
-import { Species } from '@mingles/business/species';
+import React from 'react';
+
+import type { MingleOptions } from '@mingles/business/mingle';
+import type { Species } from '@mingles/business/species';
 
 import './Body.scss';
 

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { Species } from '@mingles/business/species';
 import type { BodyFormats, GeneParts } from '@mingles/business/parts';
 import type { MingleGenes, MingleColor, } from '@mingles/business/mingle';

@@ -13,5 +13,8 @@ export default defineConfig({
     },
     server: {
         host: 'dev.mystic-mingles.com',
+    },
+    css: {
+        postcss: '@mingles/ui/dist/esm/mingle/index.css'
     }
 });
