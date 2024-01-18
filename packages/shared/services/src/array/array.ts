@@ -18,3 +18,34 @@ export function getRandom<T>(arr: T[]): T {
 
     return shuffled[chosen];
 }
+
+function greaterOrLessThan<T>(arr: T[], path: string, position: 'higher' | 'less'): T {
+    const props = path.split('.');
+
+    const shuffled = shuffle(arr);
+
+    const navigate = (arr: any, prop: string[]) => {
+        const value = arr.reduce((p, c) => p[c], prop);
+
+        if (!value && value !== 0) { throw new Error(`Property path "${path}" does not exist.`); }
+
+        return value;
+    };
+
+    return shuffled.reduce((prev, current) => {
+        const currentValue = navigate(props, current);
+        const previousValue = navigate(props, prev);
+
+        return position === 'higher'
+            ? (previousValue > currentValue) ? prev : current
+            : (previousValue < currentValue) ? prev : current;
+    });
+}
+
+export function higherThan<T>(arr: T[], path: string): T {
+    return greaterOrLessThan(arr, path, 'higher');
+}
+
+export function lessThan<T>(arr: T[], path: string): T {
+    return greaterOrLessThan(arr, path, 'less');
+}
