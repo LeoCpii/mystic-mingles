@@ -48,8 +48,8 @@ export default new Fish({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 2, speed: 2 },
-        part: { life: 1, speed: 1 },
+        base: { life: 115, speed: 9, fury: 1 },
+        part: { life: 1.29, speed: 1.24, fury: 1.01 },
     },
     colors: [...COLORS]
 });

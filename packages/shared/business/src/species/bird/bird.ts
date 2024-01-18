@@ -48,8 +48,8 @@ export default new Bird({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 2, speed: 2 },
-        part: { life: 1, speed: 1 },
+        base: { life: 100, speed: 10, fury: 2 },
+        part: { life: 1.25, speed: 1.25, fury: 1.02 },
     },
     colors: [...COLORS]
 });

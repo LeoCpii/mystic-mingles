@@ -40,20 +40,26 @@ export default class Mingle<S extends Species> implements MingleOptions<S> {
         this.cards = this.setCards({ horn: genes.horn, tail: genes.tail, mouth: genes.mouth, back: genes.back });
     }
 
-    private setStats({ eye, horn, mouth, tail, species, back }: { [G in GeneParts]: Species } & { species: Species }): Stats {
-        const stats: Stats = { life: 0, speed: 0 };
+    private setStats({ eye, horn, mouth, tail, species, back }: { [G in GeneParts]: Species } & { species: Species }) {
+        const stats: Stats = { life: 0, speed: 0, fury: 0 };
 
         const geneParts = { eye, horn, tail, mouth, back };
 
         stats.life += getSpecieStats(species).base.life;
+        stats.fury += getSpecieStats(species).base.fury;
         stats.speed += getSpecieStats(species).base.speed;
 
         for (const part in geneParts) {
-            stats.life += getSpecieStats(geneParts[part]).part.life;
-            stats.speed += getSpecieStats(geneParts[part]).part.speed;
+            stats.life = stats.life * getSpecieStats(geneParts[part]).part.life;
+            stats.fury = stats.fury * getSpecieStats(geneParts[part]).part.fury;
+            stats.speed = stats.speed * getSpecieStats(geneParts[part]).part.speed;
         }
 
-        return stats;
+        return {
+            life: Math.round(stats.life),
+            fury: Math.round(stats.fury),
+            speed: Math.round(stats.speed),
+        };
     }
 
     private setCards({ horn, mouth, tail }: { [A in ActiveParts]: { species: Species; name: string; } }) {

@@ -48,8 +48,8 @@ export default new Rodent({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 2, speed: 2 },
-        part: { life: 1, speed: 1 },
+        base: { life: 110, speed: 8, fury: 6.5 },
+        part: { life: 1.27, speed: 1.2, fury: 1.06 },
     },
     colors: [...COLORS]
 });

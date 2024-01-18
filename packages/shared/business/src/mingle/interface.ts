@@ -4,6 +4,7 @@ import type { Species, SpeciesCards, SpeciesDetails } from '@/species';
 export type MingleCards = {
     horn: SpeciesCards<Species>['horn'][number];
     tail: SpeciesCards<Species>['tail'][number];
+    back: SpeciesCards<Species>['back'][number];
     mouth: SpeciesCards<Species>['mouth'][number];
 };
 export type MingleColor<S extends Species> = SpeciesDetails<S>['colors'][number];

@@ -48,8 +48,8 @@ export default new Plant({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 2, speed: 2 },
-        part: { life: 1, speed: 1 },
+        base: { life: 140, speed: 5, fury: 4 },
+        part: { life: 1.34, speed: 1.13, fury: 1.03 },
     },
     colors: [...COLORS]
 });

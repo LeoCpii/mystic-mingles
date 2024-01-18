@@ -48,8 +48,8 @@ export default new Bug({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 2, speed: 2 },
-        part: { life: 1, speed: 1 },
+        base: { life: 115, speed: 7, fury: 6 },
+        part: { life: 1.32, speed: 1.15, fury: 1.04 },
     },
     colors: [...COLORS]
 });

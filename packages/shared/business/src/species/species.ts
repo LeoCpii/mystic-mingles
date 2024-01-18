@@ -1,3 +1,5 @@
+import { GeneParts } from '@/parts';
+
 import bug from './bug';
 import bird from './bird';
 import fish from './fish';
@@ -6,7 +8,6 @@ import rodent from './rodent';
 import reptile from './reptile';
 import type { Species, SpeciesCards, SpeciesDetails, SpeciesGenes, SpeciesGenesParts } from './interface';
 
-import { GeneParts } from '..';
 
 export type Genes = typeof genes;
 
@@ -40,6 +41,10 @@ export const colors: { [S in Species]: SpeciesDetails<S>['colors'] } = {
     rodent: rodent.colors,
     reptile: reptile.colors,
 };
+
+export function specieColors(species: Species) {
+    return colors[species].map(r => r).sort((a, b) => a > b ? 1 : -1);
+}
 
 export const listGenes: ItemGene[] = Object.keys(genes)
     .map((species) => ({ species, genes: genes[species as Species] }))

@@ -48,8 +48,8 @@ export default new Reptile({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 2, speed: 2 },
-        part: { life: 1, speed: 1 },
+        base: { life: 125, speed: 6, fury: 5 },
+        part: { life: 1.33, speed: 1.1, fury: 1.05 },
     },
     colors: [...COLORS]
 });
