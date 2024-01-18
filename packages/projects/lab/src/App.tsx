@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function App() {
     return (
-        <ThemeProvider theme={createTheme()}>
+        <ThemeProvider theme={createTheme({ palette: { mode: 'dark' } })}>
             <SnackbarProvider
                 maxSnack={3}
                 hideIconVariant={false}
