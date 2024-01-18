@@ -40,4 +40,6 @@ const getInput = (name, path, plugins) => {
 export default [
     getInput('index', 'src/index.ts', [...pluginsTS]),
     getInput('form', 'src/form/index.ts', [...pluginsTS]),
+    getInput('game', 'src/game/index.ts', [...pluginsTS]),
+    getInput('utils', 'src/utils/index.ts', [...pluginsTS]),
 ];
