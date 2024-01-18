@@ -1,0 +1,82 @@
+#Bug-Spider {
+    .pupil {
+        fill: #010202;
+    }
+    .shine {
+        fill: #ffffff;
+    }
+}
+
+#Bird-Glass {
+    .makeup {
+        display: inline;
+        opacity: 0.5;
+        fill: #ffffff;
+    }
+
+    .pupil {
+        fill: #010202;
+    }
+
+    .shine {
+        fill: #ffffff;
+    }
+
+    .glass-1 {
+        fill: none;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+
+    .glass-2 {
+        fill: none;
+        stroke: #010202;
+        stroke-miterlimit: 10;
+    }
+}
+
+#Plant-Closed {
+    .closed-eyes {
+        display: inline;
+        fill: #0b0c0c;
+    }
+}
+
+#Plant-Cyclope {
+    .eye {
+        display: inline;
+        fill: #ffffff;
+    }
+    .shadow {
+        display: inline;
+        opacity: 0.15;
+        fill: #010202;
+    }
+    .pupil {
+        display: inline;
+        fill: #3d4851;
+    }
+}
+
+#Reptile-Curious {
+    .stroke {
+        opacity: 0.15;
+        fill: #010202;
+    }
+    .pupil {
+        fill: #010202;
+    }
+    .eye {
+        fill: #ffecbb;
+    }
+}
+
+#Fish-Crazy {
+    .eye {
+        fill: #ffffff;
+    }
+    .pupil {
+        fill: #010202;
+    }
+}

@@ -1,0 +1,144 @@
+.stroke {
+    display: inline;
+    fill: none;
+    stroke: #010202;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-miterlimit: 10;
+}
+
+#Bug-Fly {
+    .fly-wing {
+        display: inline;
+        fill: #e8e8e8;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+}
+
+#Plant-Flower {
+    .flower-1 {
+        fill: #ee6f49;
+    }
+    .flower-2 {
+        fill: #e84539;
+    }
+    .flower-3 {
+        display: inline;
+        fill: #d92926;
+    }
+    .st71 {
+        display: inline;
+        fill: #dfb7a3;
+    }
+}
+
+#Reptile-Turtle {
+    .shell-1 {
+        display: inline;
+        fill: #dfb7a3;
+    }
+    .shell-2 {
+        display: inline;
+        opacity: 0.1;
+        fill: #010202;
+    }
+    .shell-3 {
+        display: inline;
+        fill: #a07765;
+    }
+    .shell-4 {
+        display: inline;
+        fill: none;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+    .shell-stroke {
+        display: inline;
+        fill: #fff3e4;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+}
+
+#Rodent-Nut {
+    .stem-stroke {
+        fill: #010202;
+    }
+
+    .stem {
+        fill: #9e562e;
+    }
+
+    .nut {
+        fill: #f9b44e;
+        stroke: #000000;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+
+    .nut-top {
+        fill: #c76d3c;
+    }
+
+    .nut-top-details {
+        fill: #ab5f33;
+    }
+
+    .nut-top-stroke {
+        fill: none;
+        stroke: #000000;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+
+    .nut-details {
+        opacity: 0.1;
+        fill: #010202;
+    }
+}
+
+#Fish-Fin {
+    .fin {
+        display: inline;
+        fill: #ef7818;
+    }
+
+    .fin-stroke {
+        display: inline;
+        fill: none;
+        stroke: #000000;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+
+    .fin-details {
+        display: inline;
+        fill: #f3921f;
+    }
+}
+
+#Bird-Wing {
+    .wing-1 {
+        display: inline;
+        fill: #83cfee;
+    }
+
+    .wing-2 {
+        fill: #a1d9f8;
+    }
+
+    .wing-3 {
+        fill: #68c8f3;
+    }
+
+    .wing-4 {
+        fill: #4baae0;
+    }
+}

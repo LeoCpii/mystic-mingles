@@ -1,0 +1,111 @@
+#Bug-Bee {
+    .sting {
+        display: inline;
+        fill: #4a5059;
+    }
+    .shadow {
+        display: inline;
+        opacity: 0.1;
+        fill: #010202;
+        enable-background: new;
+    }
+    .stroke {
+        display: inline;
+        fill: none;
+        stroke: #0a0c0c;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+}
+
+#Plant-Leaf {
+    .plant {
+        display: inline;
+        fill: #45ae57;
+    }
+    .detail {
+        display: inline;
+        fill: #bbdcbe;
+    }
+    .stroke {
+        display: inline;
+        fill: none;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+}
+
+#Reptile-Lizard {
+    .tail {
+        display: inline;
+        fill: #f3a0b7;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+    .details {
+        opacity: 0.15;
+        fill: #010202;
+    }
+}
+
+#Rodent-Squirrel {
+    .tail {
+        fill: #a39aa5;
+    }
+    .details {
+        fill: #8c818f;
+    }
+    .stroke {
+        fill: none;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+}
+
+#Fish-Gold {
+    .tail {
+        display: inline;
+        fill: #ef7818;
+    }
+    .details {
+        display: inline;
+        opacity: 0.15;
+        fill: #ffffff;
+    }
+    .stroke {
+        display: inline;
+        fill: none;
+        stroke: #000000;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+}
+
+#Bird-Feather {
+    .feather-1 {
+        fill: #3f7fc1;
+    }
+    .feather-2 {
+        fill: #4baae0;
+    }
+    .feather-3 {
+        fill: #68c8f3;
+    }
+
+    .stroke {
+        display: inline;
+        fill: none;
+        stroke: #000000;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+}

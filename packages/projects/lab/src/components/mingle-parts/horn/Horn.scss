@@ -1,0 +1,110 @@
+#Bug-ButterFly {
+    .antenna {
+        fill: #c18e5c;
+    }
+    .stroke {
+        fill: none;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+    .antenna-details {
+        display: inline;
+        opacity: 0.15;
+        fill: #010202;
+    }
+}
+
+#Plant-Fall {
+    .stroke {
+        display: inline;
+        fill: none;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+    .detail {
+        opacity: 0.15;
+        fill: #010202;
+    }
+    .steam {
+        display: inline;
+        fill: #c03518;
+    }
+    .fall-1 {
+        fill: #f1871e;
+    }
+    .fall-2 {
+        fill: #c45017;
+    }
+}
+
+#Reptile-Iguana {
+    .stroke {
+        display: inline;
+        fill: none;
+        stroke: #000000;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+    .horn-details {
+        display: inline;
+        opacity: 0.15;
+        fill: #010202;
+    }
+    .horn {
+        display: inline;
+        fill: #86bc2e;
+    }
+}
+
+#Rodent-Beaver {
+    .horn {
+        fill: #aa7f7f;
+    }
+    .stroke {
+        fill: none;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+}
+
+#Fish-Shark {
+    .stoke {
+        display: inline;
+        fill: none;
+        stroke: #000000;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+    .horn {
+        display: inline;
+        fill: #878088;
+    }
+}
+
+#Bird-Topknot {
+    .topknot-1 {
+        display: inline;
+        fill: #a8dcf5;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+    .topknot-2 {
+        display: inline;
+        fill: #6cc9f2;
+        stroke: #010202;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+}

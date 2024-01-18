@@ -1,0 +1,92 @@
+#Bug-Cupim {
+    .mouth {
+        display: inline;
+        opacity: 0.35;
+        fill: #010202;
+    }
+    .tooth {
+        fill: #ffffff;
+    }
+}
+
+#Plant-Laught {
+    .shadow {
+        display: inline;
+        opacity: 0.15;
+        fill: #010202;
+    }
+    .mouth {
+        display: inline;
+        fill: #0b0c0c;
+    }
+    .tongue {
+        display: inline;
+        fill: #ea516d;
+    }
+    .stroke {
+        display: inline;
+        fill: none;
+        stroke: #0a0c0c;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+    }
+}
+
+#Plant-Snack {
+    .lip {
+        display: inline;
+        fill: #f18c73;
+    }
+    .mouth {
+        display: inline;
+        fill: #333a41;
+    }
+    .tooth {
+        display: inline;
+        fill: #e8e8e8;
+    }
+}
+
+#Reptile-Sad {
+    .shadow {
+        display: inline;
+        opacity: 0.15;
+        fill: #010202;
+    }
+    .mouth {
+        fill: #010202;
+    }
+}
+
+#Rodent-Squirrel {
+    .tooth {
+        fill: #ffffff;
+    }
+    .shadow {
+        fill: #edecf7;
+    }
+}
+
+#Fish-Eat {
+    .mouth {
+        display: inline;
+        fill: none;
+        stroke: #000000;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+}
+
+#Bird-Beak {
+    .shadow {
+        display: inline;
+        opacity: 0.15;
+        fill: #010202;
+    }
+    .beak {
+        display: inline;
+        fill: #f6ea6a;
+    }
+}
