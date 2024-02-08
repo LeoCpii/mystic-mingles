@@ -30,7 +30,7 @@ $enemiesColor: #f73434;
 
 .HUD {
     .header {
-        margin-bottom: 180px;
+        margin-bottom: 70px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -39,7 +39,7 @@ $enemiesColor: #f73434;
             width: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             gap: 20px;
 
             &-item {
@@ -102,6 +102,7 @@ $enemiesColor: #f73434;
         justify-content: center;
         align-items: center;
         gap: 30px;
+        margin-top: -30px;
 
         .energy {
             width: 50px;

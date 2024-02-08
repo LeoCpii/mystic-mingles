@@ -5,7 +5,6 @@ import { joinClass } from '@mingles/ui/utils';
 import type Team from '@mingles/business/team';
 import type Ally from '@mingles/business/ally';
 import type Card from '@mingles/business/card';
-import { shuffle } from '@mingles/services/array';
 import useSpecies from '@mingles/ui/useSpecies';
 import { type Species } from '@mingles/business/species';
 import type { ActiveParts } from '@mingles/business/parts';
@@ -62,7 +61,7 @@ function Warrior({ ally, direction }: WarriorProps) {
 
 interface AllyCardProps { id: string; cards: Card<Species, ActiveParts>[]; order: number; }
 function AllyCard({ id, cards, order }: AllyCardProps) {
-    const { allies } = useBattle();
+    const { allies, addCard } = useBattle();
 
     const ally = allies.find(ally => ally.id === id) as Ally<Species>;
 
@@ -72,7 +71,11 @@ function AllyCard({ id, cards, order }: AllyCardProps) {
                 {
                     cards.map((card, index) => {
                         return (
-                            <div className="card" key={`${card.name}_${index}`}>
+                            <div
+                                className="card"
+                                key={`${card.name}_${index}`}
+                                onClick={() => addCard(ally, card)}
+                            >
                                 <DeckCard
                                     key={index}
                                     part={card.part}
@@ -122,11 +125,46 @@ function HUD({ children }: HUDProps) {
     );
 }
 
-function Header() {
-    const { allies, alive } = useBattle();
-    // const shuffleAllies = shuffle(allies.concat(enemies));
+interface PositionsProps { ally: Ally<Species>; index: number; }
+function Positions({ ally, index }: PositionsProps) {
+    const { allies, chooseCards } = useBattle();
 
-    // const order = shuffleAllies.sort((a, b) => a.stats.speed - b.stats.speed ? 1 : -1);
+    const isAlly = allies.find(a => a.id === ally.id);
+
+    return (
+        <div>
+            <div key={ally.id} className={joinClass(['order-priority-item', isAlly ? 'ally' : 'enemy'])}>
+                <div className="order">
+                    <span className={joinClass([isAlly ? 'ally' : 'enemy'])}>{index + 1}</span>
+                </div>
+                <div className={joinClass(['order-priority-item-image', isAlly ? 'ally' : 'enemy'])}>
+                    <MingleParts
+                        direction={isAlly ? 'right' : 'left'}
+                        body={ally.body}
+                        color={ally.color}
+                        eye={ally.genes.eye.name}
+                        horn={ally.genes.horn.name}
+                        back={ally.genes.back.name}
+                        tail={ally.genes.tail.name}
+                        mouth={ally.genes.mouth.name}
+                    />
+                </div>
+            </div>
+            <div>
+                {
+                    chooseCards[ally.id]?.map((card, i) => {
+                        return (
+                            <p key={`${card.name}-${i}`}>{card.name}</p>
+                        );
+                    })
+                }
+            </div>
+        </div>
+    );
+}
+
+function Header() {
+    const { alive } = useBattle();
 
     return (
         <div className="header">
@@ -135,29 +173,8 @@ function Header() {
             </div>
             <div className="order-priority">
                 {
-
-                    alive
-                        .map((ally, index) => {
-                            const isAlly = allies.find(a => a.id === ally.id);
-
-                            return <div key={ally.id} className={joinClass(['order-priority-item', isAlly ? 'ally' : 'enemy'])}>
-                                <div className="order">
-                                    <span className={joinClass([isAlly ? 'ally' : 'enemy'])}>{index + 1}</span>
-                                </div>
-                                <div className={joinClass(['order-priority-item-image', isAlly ? 'ally' : 'enemy'])}>
-                                    <MingleParts
-                                        direction={isAlly ? 'right' : 'left'}
-                                        body={ally.body}
-                                        color={ally.color}
-                                        eye={ally.genes.eye.name}
-                                        horn={ally.genes.horn.name}
-                                        back={ally.genes.back.name}
-                                        tail={ally.genes.tail.name}
-                                        mouth={ally.genes.mouth.name}
-                                    />
-                                </div>
-                            </div>;
-                        })
+                    alive.map((ally, index) =>
+                        <Positions key={ally.id} ally={ally} index={index} />)
                 }
             </div>
             <div>
@@ -218,8 +235,8 @@ function Content() {
     return (
         <Box
             display="flex"
-            justifyContent="center"
             alignItems="center"
+            justifyContent="center"
             sx={{ p: 2, height: '100vh' }}
         >
             <HUD>

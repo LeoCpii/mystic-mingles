@@ -104,7 +104,7 @@ build-services:
 build-business:
 	$(call run_in_workspace,$(BUSINESS),build)
 
-build-dependencies: build-business build-ui
+build-dependencies: build-services build-business build-ui
 
 # ---------------------- WATCH ----------------------- #
 
