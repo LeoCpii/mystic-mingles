@@ -1,7 +1,9 @@
-import { initializeApp } from 'firebase/app';
-import { getRemoteConfig } from 'firebase/remote-config';
-import { getAnalytics, logEvent } from 'firebase/analytics';
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+// import { initializeApp } from 'firebase/app';
+// import { getRemoteConfig } from 'firebase/remote-config';
+// import { getAnalytics, logEvent } from 'firebase/analytics';
+// import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+
+import { colors } from '@mingles/business/species';
 
 import * as Sentry from '@sentry/react';
 
@@ -34,19 +36,19 @@ isProd && Sentry.init({
 });
 
 // FIREBASE
-const app = initializeApp({
-    appId: import.meta.env.VITE_ID,
-    apiKey: import.meta.env.VITE_API_KEY,
-    projectId: import.meta.env.VITE_PROJECT_ID,
-    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-    measurementId: import.meta.env.VITE_MEASUREMENT_ID,
-    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-}, 'lab');
+// const app = initializeApp({
+//     appId: import.meta.env.VITE_ID,
+//     apiKey: import.meta.env.VITE_API_KEY,
+//     projectId: import.meta.env.VITE_PROJECT_ID,
+//     authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+//     storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+//     measurementId: import.meta.env.VITE_MEASUREMENT_ID,
+//     messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+// }, 'lab');
 
-const auth = getAuth(app);
-const config = getRemoteConfig(app);
-const analytics = getAnalytics(app);
+// const auth = getAuth(app);
+// const config = getRemoteConfig(app);
+// const analytics = getAnalytics(app);
 
 // setUserId(analytics, '');
 
@@ -54,3 +56,14 @@ const analytics = getAnalytics(app);
 
 // export const featureToggle = new FeatureToggle(config, REMOTE_CONFIG, isProd);
 // export const tracking = new Tracking((event, params) => { logEvent(analytics, event, params); }, isProd);
+
+// MINGLE COLORS
+
+export const classColors = {
+    bug: colors.bug.map(r => r).sort((a, b) => a > b ? 1 : -1),
+    bird: colors.bird.map(r => r).sort((a, b) => a > b ? 1 : -1),
+    fish: colors.fish.map(r => r).sort((a, b) => a > b ? 1 : -1),
+    plant: colors.plant.map(r => r).sort((a, b) => a > b ? 1 : -1),
+    rodent: colors.rodent.map(r => r).sort((a, b) => a > b ? 1 : -1),
+    reptile: colors.reptile.map(r => r).sort((a, b) => a > b ? 1 : -1),
+};

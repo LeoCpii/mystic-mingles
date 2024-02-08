@@ -1,14 +1,16 @@
-import type { IntRange } from '@mingles/services/interface';
-
-import type Mingle from '@/mingle';
+import type Ally from '@/ally';
+import type Card from '@/card';
 import type { Species } from '@/species';
-
-export type Positions = { id: string; x: IntRange<0, 3>; y: IntRange<0, 3>; }
+import type { ActiveParts } from '@/parts';
 
 export interface TeamOptions {
+    deck?: Deck;
+    id?: string;
     name: string;
-    positions: Positions[];
-    mingles: Mingle<Species>[];
+    energy?: number;
+    allies: Ally<Species>[];
 }
 
-export type Deck = Mingle<Species>['cards'][];
+export type Deck = {
+    [id: string]: Card<Species, ActiveParts>[];
+};

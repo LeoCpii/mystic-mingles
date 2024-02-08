@@ -8,7 +8,7 @@ export const HORN_CARDS: Card<'reptile', 'horn'>[] = [
         part: 'horn',
         species: 'reptile',
         name: 'Reptile Iguana',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Reptile Iguana',
     })
 ];
@@ -21,7 +21,7 @@ export const TAIL_CARDS: Card<'reptile', 'tail'>[] = [
         part: 'tail',
         species: 'reptile',
         name: 'Reptile Lizard',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Reptile Lizard',
     })
 ];
@@ -34,7 +34,7 @@ export const MOUTH_CARDS: Card<'reptile', 'mouth'>[] = [
         part: 'mouth',
         species: 'reptile',
         name: 'Reptile Sad',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Reptile Sad',
     })
 ];
@@ -47,7 +47,7 @@ export const BACK_CARDS: Card<'reptile', 'back'>[] = [
         part: 'back',
         species: 'reptile',
         name: 'Reptile Turtle',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Reptile Turtle',
     })
 ];

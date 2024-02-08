@@ -7,6 +7,7 @@ SERVICES:=services
 
 # WEB #
 LAB:=lab
+ARENA:=arena
 
 # E2E #
 
@@ -64,6 +65,28 @@ build-lab-stg:
 
 build-lab-mock:
 	$(call run_in_workspace,$(LAB),build:mock)
+
+## LAB
+arena-prod:
+	$(call run_in_workspace,$(ARENA),start:prod)
+
+arena-stg:
+	$(call run_in_workspace,$(ARENA),start:stg)
+
+arena-local:
+	$(call run_in_workspace,$(ARENA),start:local)
+
+arena-test:
+	$(call run_in_workspace,$(ARENA),start:test)
+
+build-arena-prod:
+	$(call run_in_workspace,$(ARENA),build:prod)
+
+build-arena-stg:
+	$(call run_in_workspace,$(ARENA),build:stg)
+
+build-arena-mock:
+	$(call run_in_workspace,$(ARENA),build:mock)
 
 ## SERVICES
 
@@ -124,7 +147,7 @@ test-business:
 test-business-coverage:
 	$(call run_in_workspace,$(BUSINESS),test:coverage)
 
-## e2e
+## E2E
 
 # -------------------- LINT -------------------- #
 

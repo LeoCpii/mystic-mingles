@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { MingleGenes } from '@mingles/business/mingle';
+import type { MingleGenes } from '@mingles/business';
 
 import './Mouth.scss';
 

@@ -6,24 +6,22 @@
     "outDir": "dist",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "declarationDir": "type",
     "allowJs": true,
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
       ]
     },
     "strict": true,
     "sourceMap": true,
     "declaration": true,
     "skipLibCheck": true,
+    "declarationMap": true,
     "noUnusedLocals": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "emitDeclarationOnly": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true
   },

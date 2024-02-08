@@ -28,42 +28,42 @@ export default {
         label: 'Pássaro',
         species: 'bird',
         icon: <AirIcon color="action" />,
-        color: colors['bird'][2],
+        color: colors['bird'].map(r => r).sort((a, b) => a > b ? 1 : -1)[2],
         backgroundImage: `url(${Sky})`
     },
     bug: {
         label: 'Inseto',
         species: 'bug',
         icon: <BugReportIcon />,
-        color: colors['bug'][2],
+        color: colors['bug'].map(r => r).sort((a, b) => a > b ? 1 : -1)[2],
         backgroundImage: `url(${Clay})`
     },
     fish: {
         label: 'Peixe',
         species: 'fish',
         icon: <PhishingIcon />,
-        color: colors['fish'][2],
+        color: colors['fish'][1],
         backgroundImage: `url(${Ocean})`
     },
     plant: {
         label: 'Planta',
         species: 'plant',
         icon: <GrassIcon />,
-        color: colors['plant'][2],
+        color: colors['plant'].map(r => r).sort((a, b) => a > b ? 1 : -1)[2],
         backgroundImage: `url(${Garden})`
     },
     reptile: {
         label: 'Réptil',
         species: 'reptile',
         icon: <EggIcon />,
-        color: colors['reptile'][2],
+        color: colors['reptile'].map(r => r).sort((a, b) => a > b ? 1 : -1)[2],
         backgroundImage: `url(${Forest})`
     },
     rodent: {
         label: 'Roedor',
         species: 'rodent',
         icon: <PetsIcon />,
-        color: colors['rodent'][2],
+        color: colors['rodent'].map(r => r).sort((a, b) => a > b ? 1 : -1)[2],
         backgroundImage: `url(${Desert})`
     }
 } as SpeciesChips;

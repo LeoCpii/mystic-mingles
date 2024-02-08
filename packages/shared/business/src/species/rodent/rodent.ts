@@ -7,7 +7,7 @@ const HORNS = ['Rodent Rat'] as const;
 const TAILS = ['Rodent Beaver'] as const;
 const MOUTHS = ['Rodent Squirrel'] as const;
 
-const COLORS = ['#f1cf77', '#ecbe49', '#e8ae1b'] as const;
+const COLORS = ['#f5a037', '#fdb014', '#ffd500', '#544f44', '#fdfcf2'] as const;
 
 export interface RodentGenes {
     eye: typeof EYES[number];
@@ -24,12 +24,14 @@ export class Rodent<S extends Species, G extends RodentGenes, Colors extends Rod
     public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
     public readonly stats: SpeciesStats;
+    public readonly life_multiplicator: number;
 
-    constructor({ genes: parts, cards, colors, stats }: SpeciesOptions<S, G, Colors>) {
+    constructor({ genes: parts, cards, colors, stats, life_multiplicator }: SpeciesOptions<S, G, Colors>) {
         this.genes = parts;
         this.cards = cards;
         this.colors = colors;
         this.stats = stats;
+        this.life_multiplicator = life_multiplicator;
     }
 }
 
@@ -48,8 +50,9 @@ export default new Rodent({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 110, speed: 8, fury: 6.5 },
-        part: { life: 1.27, speed: 1.2, fury: 1.06 },
+        base: { life: 31, speed: 35, fury: 43 },
+        part: { life: 0, speed: 1, fury: 3 },
     },
-    colors: [...COLORS]
+    colors: [...COLORS],
+    life_multiplicator: 11.5
 });

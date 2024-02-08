@@ -8,7 +8,7 @@ export const HORN_CARDS: Card<'plant', 'horn'>[] = [
         part: 'horn',
         species: 'plant',
         name: 'Plant Fall',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Plant Fall',
     })
 ];
@@ -21,7 +21,7 @@ export const TAIL_CARDS: Card<'plant', 'tail'>[] = [
         part: 'tail',
         species: 'plant',
         name: 'Plant Leaf',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Plant Leaf',
     })
 ];
@@ -34,7 +34,7 @@ export const MOUTH_CARDS: Card<'plant', 'mouth'>[] = [
         part: 'mouth',
         species: 'plant',
         name: 'Plant Laught',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Plant Laught',
     }),
     new Card({
@@ -44,7 +44,7 @@ export const MOUTH_CARDS: Card<'plant', 'mouth'>[] = [
         part: 'mouth',
         species: 'plant',
         name: 'Plant Snack',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Plant Snack',
     }),
 ];
@@ -57,7 +57,7 @@ export const BACK_CARDS: Card<'plant', 'back'>[] = [
         part: 'back',
         species: 'plant',
         name: 'Plant Flower',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Plant Flower',
     })
 ];

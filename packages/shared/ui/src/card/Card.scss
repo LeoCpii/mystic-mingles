@@ -1,75 +1,24 @@
-$card-primary: #fe3073;
-$card-secondary: #ffd658;
-$card-base: #fffed9;
-$shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+.shadow {
+    opacity: 0.5;
+    fill: #020202;
+}
 
-.card {
-    border: 4px solid $card-secondary;
-    border-radius: 20px;
+.secondary {
+    fill: #ffffdd;
+}
 
-    .card-content {
-        border-radius: 16px;
-        border: 4px solid $card-primary;
-        overflow: hidden;
-        position: relative;
+.title {
+    font-size: 21px;
+}
 
-        .card-header {
-            display: flex;
-            justify-content: start;
-            align-items: center;
-            position: absolute;
-            top: 10px;
+.text {
+    font-size: 18px;
+}
 
-            background: $card-base;
-            border: 4px solid $card-primary;
-            border-radius: 100px 20px 20px 100px;
-            box-shadow: $shadow;
-            width: 100%;
+.description {
+    font-size: 14px;
+}
 
-            .energy {
-                width: 20px;
-                height: 20px;
-                padding: 10px;
-                display: flex;
-                font-size: 24px;
-                border-radius: 50%;
-                font-weight: bold;
-                align-items: center;
-                justify-content: center;
-                background: $card-primary;
-                border: 4px solid $card-secondary;
-                box-shadow: $shadow;
-                color: white;
-                text-shadow:
-                    2px 0 #333,
-                    -2px 0 #333,
-                    0 2px #333,
-                    0 -2px #333,
-                    1px 1px #333,
-                    -1px -1px #333,
-                    1px -1px #333,
-                    -1px 1px #333;
-            }
-
-            .name {
-                font-size: 18px;
-                font-weight: bold;
-            }
-        }
-
-        .card-image {
-            img {
-                width: 100%;
-            }
-        }
-
-        .card-stats {
-        }
-
-        .card-description {
-        }
-
-        .card-passive {
-        }
-    }
+.cost {
+    font-size: 27px;
 }

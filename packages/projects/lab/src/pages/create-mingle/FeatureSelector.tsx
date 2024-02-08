@@ -15,11 +15,12 @@ import Avatar from '@mui/material/Avatar';
 
 import type Mingle from '@mingles/business/mingle';
 import type { GeneParts } from '@mingles/business/parts';
-import { type Species, type ItemGene, listGenes, colors, cards } from '@mingles/business/species';
+import { type Species, type ItemGene, listGenes, cards } from '@mingles/business/species';
+
+import { classColors } from '@/shared/core';
 
 import GENES_CONFIG from './genes-config';
 import SPECIES_CONFIG from './species-config';
-
 
 interface ChipsProps<T> { selecteds: T[]; onChange: (species: T) => void; };
 
@@ -90,7 +91,7 @@ function GeneCards({ filtereds, onChange }: GeneCardsProps) {
                                     <CardHeader
                                         avatar={
                                             <Avatar
-                                                sx={{ bgcolor: colors[opt.species][0] }}
+                                                sx={{ bgcolor: classColors[opt.species][1] }}
                                                 aria-label="recipe"
                                             >
                                                 {opt.name.split(' ').map((i) => i[0]).join('')}

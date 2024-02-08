@@ -42,9 +42,14 @@ export const colors: { [S in Species]: SpeciesDetails<S>['colors'] } = {
     reptile: reptile.colors,
 };
 
-export function specieColors(species: Species) {
-    return colors[species].map(r => r).sort((a, b) => a > b ? 1 : -1);
-}
+export const modificators: { [S in Species]: number } = {
+    bug: bug.life_multiplicator,
+    bird: bird.life_multiplicator,
+    fish: fish.life_multiplicator,
+    plant: plant.life_multiplicator,
+    rodent: rodent.life_multiplicator,
+    reptile: reptile.life_multiplicator,
+};
 
 export const listGenes: ItemGene[] = Object.keys(genes)
     .map((species) => ({ species, genes: genes[species as Species] }))

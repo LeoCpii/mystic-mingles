@@ -8,7 +8,7 @@ export const HORN_CARDS: Card<'bird', 'horn'>[] = [
         part: 'horn',
         species: 'bird',
         name: 'Bird Topknot',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Bird Feather',
     })
 ];
@@ -21,7 +21,7 @@ export const TAIL_CARDS: Card<'bird', 'tail'>[] = [
         part: 'tail',
         species: 'bird',
         name: 'Bird Feather',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Bird Feather',
     })
 ];
@@ -34,7 +34,7 @@ export const MOUTH_CARDS: Card<'bird', 'mouth'>[] = [
         part: 'mouth',
         species: 'bird',
         name: 'Bird Beak',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Bird Beak',
     })
 ];
@@ -47,7 +47,7 @@ export const BACK_CARDS: Card<'bird', 'back'>[] = [
         part: 'back',
         species: 'bird',
         name: 'Bird Wing',
-        passive: 'damage',
+        effect: 'damage',
         description: 'Bird Wing',
     })
 ];

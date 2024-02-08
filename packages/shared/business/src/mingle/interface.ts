@@ -1,12 +1,10 @@
-import type { BodyFormats, GeneParts, Stats } from '@/parts';
+import type { ActiveParts, BodyFormats, GeneParts, Stats } from '@/parts';
 import type { Species, SpeciesCards, SpeciesDetails } from '@/species';
 
 export type MingleCards = {
-    horn: SpeciesCards<Species>['horn'][number];
-    tail: SpeciesCards<Species>['tail'][number];
-    back: SpeciesCards<Species>['back'][number];
-    mouth: SpeciesCards<Species>['mouth'][number];
+    [A in ActiveParts]: SpeciesCards<Species>[A][number]
 };
+
 export type MingleColor<S extends Species> = SpeciesDetails<S>['colors'][number];
 export type MingleGenes = {
     [S in Species]: {

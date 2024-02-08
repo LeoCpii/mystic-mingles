@@ -22,6 +22,7 @@ export interface SpeciesOptions<S extends Species, SGP extends SpeciesGenesParts
     readonly stats: SpeciesStats;
     readonly cards: SpeciesCards<S>;
     readonly genes: SpeciesGenes<SGP>;
+    readonly life_multiplicator: number;
 }
 
 export type SpeciesDetails<S extends Species> =

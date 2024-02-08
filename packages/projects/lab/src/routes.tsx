@@ -1,7 +1,10 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import Create from './pages/create';
+import Menu from './pages/menu';
+import Team from './pages/team';
+import MyTeams from './pages/my-teams';
+import CreateMingle from './pages/create-mingle';
 
 function getBase() {
     const base = import.meta.env.BASE_URL;
@@ -19,12 +22,20 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Navigate to='/create' />,
+                element: <Menu />,
             },
             {
                 path: '/create',
-                element: <Create />,
+                element: <CreateMingle />,
             },
+            {
+                path: '/my-teams',
+                element: <MyTeams />,
+            },
+            {
+                path: '/team/:id',
+                element: <Team />,
+            }
         ]
     },
 ], {

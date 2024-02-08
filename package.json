@@ -21,10 +21,10 @@
     "test:watchAll": "jest --watchAll"
   },
   "devDependencies": {
-    "@mingles/ui": "*",
-    "@mingles/services": "*",
     "@mingles/business": "*",
     "@mingles/lint": "*",
+    "@mingles/services": "*",
+    "@mingles/ui": "*",
     "@types/node": "^18.11.18",
     "jest": "^29.6.2",
     "jest-environment-jsdom": "^28.1.1",

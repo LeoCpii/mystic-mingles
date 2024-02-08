@@ -1,52 +1,56 @@
 import { uuid } from '@mingles/services/uuid';
-import { getRandom, higherThan, lessThan } from '@mingles/services/array';
+import { higherThan, lessThan, getRandom } from '@mingles/services/array';
 
-import type Mingle from '@/mingle';
+import type Ally from '@/ally';
+import { activeParts } from '@/parts';
 import type { Species } from '@/species';
 
-import type { TeamOptions, Positions, Deck } from './interface';
+import type { TeamOptions, Deck } from './interface';
 
 export default class Team implements TeamOptions {
     public deck: Deck;
-    public id = uuid();
-    public energy = 10;
+    public id: string;
+    public energy = 3;
 
     public readonly name: string;
-    public readonly positions: Positions[];
-    public readonly mingles: Mingle<Species>[];
+    public readonly allies: Ally<Species>[] = [];
 
-    constructor({ mingles, name, positions }: TeamOptions) {
-        this.name = name;
-        this.mingles = mingles;
-        this.positions = positions;
-        this.deck = this.mingles.map(m => m.cards);
+    constructor({ allies, name, deck, energy, id }: TeamOptions) {
+        this.name = name || this.name;
+
+        this.id = id || uuid();
+        this.allies = allies || this.allies;
+        this.deck = deck || this.getCards(6);
+        this.energy = energy || this.energy;
     }
 
-    get higherLife(): Mingle<Species> { return higherThan(this.mingles, 'stats.life'); }
-    get higherSpeed(): Mingle<Species> { return higherThan(this.mingles, 'stats.speed'); }
-
-    get lessLife(): Mingle<Species> { return lessThan(this.mingles, 'stats.life'); }
-    get lessSpeed(): Mingle<Species> { return lessThan(this.mingles, 'stats.speed'); }
-
-    get first(): Mingle<Species> {
-        const higherX = higherThan(this.positions, 'x').x;
-        const id = getRandom(this.positions.filter(p => p.x === higherX)).id;
-
-        console.log('id', id);
-        return this.mingles.find(m => m.id === id);
-    }
-
-    get last(): Mingle<Species> {
-        const lessX = lessThan(this.positions, 'x').x;
-        const id = getRandom(this.positions.filter(p => p.x === lessX)).id;
-        return this.mingles.find(m => m.id === id);
-    }
-
-    get priorityOrder(): Mingle<Species>[] {
-        return this.mingles.sort((a, b) => {
-            if (a.stats.speed > b.stats.speed) { return -1; };
-            if (a.stats.speed < b.stats.speed) { return 1; };
-            return 0;
+    get priorityOrder() {
+        return this.allies.sort((a, b) => {
+            return a.stats.speed > b.stats.speed ? -1 : 1;
         });
+    }
+
+    get higherLife() { return higherThan(this.allies, 'stats.life'); }
+    get higherSpeed() { return higherThan(this.allies, 'stats.speed'); }
+
+    get lessLife() { return lessThan(this.allies, 'stats.life'); }
+    get lessSpeed() { return lessThan(this.allies, 'stats.speed'); }
+
+    public getCards(count: number): Deck {
+        const arr = Array.from(Array(count), () => '');
+
+        return arr.reduce((acc) => {
+            const chosen = getRandom(this.allies);
+            const part = getRandom(activeParts);
+
+            acc[chosen.id] = [...acc[chosen.id], chosen.cards[part]];
+
+            return acc;
+        }, { [this.allies[0].id]: [], [this.allies[1].id]: [], [this.allies[2].id]: [] });
+    }
+
+    public buyCard(count: number) {
+        const newCards = this.getCards(count);
+        Object.keys(newCards).forEach((id) => { this.deck[id] = [...this.deck[id], ...newCards[id]]; });
     }
 }

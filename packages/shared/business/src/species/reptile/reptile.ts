@@ -7,7 +7,7 @@ const HORNS = ['Reptile Iguana'] as const;
 const TAILS = ['Reptile Lizard'] as const;
 const MOUTHS = ['Reptile Sad'] as const;
 
-const COLORS = ['#cf77f1', '#be49ec', '#ae1be8'] as const;
+const COLORS = ['#9967fb', '#c569cf', '#f8bbff', '#5e436d', '#fff7ff'] as const;
 
 export interface ReptileGenes {
     eye: typeof EYES[number];
@@ -24,12 +24,14 @@ export class Reptile<S extends Species, G extends ReptileGenes, Colors extends R
     public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
     public readonly stats: SpeciesStats;
+    public readonly life_multiplicator: number;
 
-    constructor({ genes: parts, cards, colors, stats }: SpeciesOptions<S, G, Colors>) {
+    constructor({ genes: parts, cards, colors, stats, life_multiplicator }: SpeciesOptions<S, G, Colors>) {
         this.genes = parts;
         this.cards = cards;
         this.colors = colors;
         this.stats = stats;
+        this.life_multiplicator = life_multiplicator;
     }
 }
 
@@ -48,8 +50,9 @@ export default new Reptile({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 125, speed: 6, fury: 5 },
-        part: { life: 1.33, speed: 1.1, fury: 1.05 },
+        base: { life: 39, speed: 35, fury: 35 },
+        part: { life: 3, speed: 1, fury: 0 },
     },
-    colors: [...COLORS]
+    colors: [...COLORS],
+    life_multiplicator: 9
 });

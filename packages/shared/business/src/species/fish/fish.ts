@@ -7,7 +7,7 @@ const HORNS = ['Fish Shark'] as const;
 const TAILS = ['Fish Gold'] as const;
 const MOUTHS = ['Fish Eat'] as const;
 
-const COLORS = ['#77d7f1', '#49c9ec', '#1bbbe8'] as const;
+const COLORS = ['#00b8ff', '#00dff3', '#00f1d2', '#4d545e', '#f4fff4'] as const;
 
 export interface FishGenes {
     eye: typeof EYES[number];
@@ -24,12 +24,14 @@ export class Fish<S extends Species, G extends FishGenes, Colors extends FishCol
     public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
     public readonly stats: SpeciesStats;
+    public readonly life_multiplicator: number;
 
-    constructor({ genes: parts, cards, colors, stats }: SpeciesOptions<S, G, Colors>) {
+    constructor({ genes: parts, cards, colors, stats, life_multiplicator }: SpeciesOptions<S, G, Colors>) {
         this.genes = parts;
         this.cards = cards;
         this.colors = colors;
         this.stats = stats;
+        this.life_multiplicator = life_multiplicator;
     }
 }
 
@@ -48,8 +50,9 @@ export default new Fish({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 115, speed: 9, fury: 1 },
-        part: { life: 1.29, speed: 1.24, fury: 1.01 },
+        base: { life: 39, speed: 39, fury: 27 },
+        part: { life: 1, speed: 3, fury: 0 },
     },
-    colors: [...COLORS]
+    colors: [...COLORS],
+    life_multiplicator: 10
 });

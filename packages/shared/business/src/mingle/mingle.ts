@@ -50,22 +50,23 @@ export default class Mingle<S extends Species> implements MingleOptions<S> {
         stats.speed += getSpecieStats(species).base.speed;
 
         for (const part in geneParts) {
-            stats.life = stats.life * getSpecieStats(geneParts[part]).part.life;
-            stats.fury = stats.fury * getSpecieStats(geneParts[part]).part.fury;
-            stats.speed = stats.speed * getSpecieStats(geneParts[part]).part.speed;
+            stats.fury += getSpecieStats(geneParts[part]).part.fury;
+            stats.speed += getSpecieStats(geneParts[part]).part.speed;
+            stats.life += getSpecieStats(geneParts[part]).part.life;
         }
 
         return {
-            life: Math.round(stats.life),
             fury: Math.round(stats.fury),
             speed: Math.round(stats.speed),
+            life: Math.round(stats.life),
         };
     }
 
-    private setCards({ horn, mouth, tail }: { [A in ActiveParts]: { species: Species; name: string; } }) {
+    private setCards({ horn, mouth, tail, back }: { [A in ActiveParts]: { species: Species; name: string; } }) {
         return {
             horn: species[horn.species].cards.horn.find(card => card.name === horn.name),
             tail: species[tail.species].cards.tail.find(card => card.name === tail.name),
+            back: species[back.species].cards.back.find(card => card.name === back.name),
             mouth: species[mouth.species].cards.mouth.find(card => card.name === mouth.name),
         };
     }

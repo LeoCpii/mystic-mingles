@@ -1,7 +1,6 @@
 import React from 'react';
 
-import type { MingleOptions } from '@mingles/business/mingle';
-import type { Species } from '@mingles/business/species';
+import type { MingleOptions, Species } from '@mingles/business';
 
 import './Body.scss';
 

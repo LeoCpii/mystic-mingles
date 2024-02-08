@@ -7,7 +7,7 @@ const HORNS = ['Bird Topknot'] as const;
 const TAILS = ['Bird Feather'] as const;
 const MOUTHS = ['Bird Beak'] as const;
 
-const COLORS = ['#f8bceb', '#f6a5e5', '#f38ede'] as const;
+const COLORS = ['#ff78b4', '#ffafc1', '#ff99b0', '#583c44', '#fff7ff'] as const;
 
 export interface BirdGenes {
     eye: typeof EYES[number];
@@ -24,12 +24,14 @@ export class Bird<S extends Species, G extends BirdGenes, Colors extends BirdCol
     public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
     public readonly stats: SpeciesStats;
+    public readonly life_multiplicator: number;
 
-    constructor({ genes, cards, colors, stats }: SpeciesOptions<S, G, Colors>) {
+    constructor({ genes, cards, colors, stats, life_multiplicator }: SpeciesOptions<S, G, Colors>) {
         this.genes = genes;
         this.cards = cards;
         this.stats = stats;
         this.colors = colors;
+        this.life_multiplicator = life_multiplicator;
     }
 }
 
@@ -48,8 +50,9 @@ export default new Bird({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 100, speed: 10, fury: 2 },
-        part: { life: 1.25, speed: 1.25, fury: 1.02 },
+        base: { life: 27, speed: 43, fury: 35 },
+        part: { life: 0, speed: 3, fury: 1 },
     },
-    colors: [...COLORS]
+    colors: [...COLORS],
+    life_multiplicator: 12,
 });

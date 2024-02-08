@@ -7,7 +7,7 @@ const HORNS = ['Plant Fall'] as const;
 const TAILS = ['Plant Leaf'] as const;
 const MOUTHS = ['Plant Laught', 'Plant Snack'] as const;
 
-const COLORS = ['#32eab7', '#15d49f', '#11a67c'] as const;
+const COLORS = ['#afdb1b', '#decd00', '#99ff73', '#4e523e', '#fefdf1'] as const;
 
 export interface PlantGenes {
     eye: typeof EYES[number];
@@ -24,12 +24,14 @@ export class Plant<S extends Species, G extends PlantGenes, Colors extends Plant
     public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
     public readonly stats: SpeciesStats;
+    public readonly life_multiplicator: number;
 
-    constructor({ genes: parts, cards, colors, stats }: SpeciesOptions<S, G, Colors>) {
+    constructor({ genes: parts, cards, colors, stats, life_multiplicator }: SpeciesOptions<S, G, Colors>) {
         this.genes = parts;
         this.cards = cards;
         this.colors = colors;
         this.stats = stats;
+        this.life_multiplicator = life_multiplicator;
     }
 }
 
@@ -48,8 +50,9 @@ export default new Plant({
         mouth: MOUTH_CARDS,
     },
     stats: {
-        base: { life: 140, speed: 5, fury: 4 },
-        part: { life: 1.34, speed: 1.13, fury: 1.03 },
+        base: { life: 43, speed: 31, fury: 35 },
+        part: { life: 3, speed: 0, fury: 1 },
     },
-    colors: [...COLORS]
+    colors: [...COLORS],
+    life_multiplicator: 9
 });

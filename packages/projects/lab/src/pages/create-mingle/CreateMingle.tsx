@@ -16,38 +16,90 @@ import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import CasinoIcon from '@mui/icons-material/Casino';
 
+import DeckCard from '@mingles/ui/card';
 import { useMingle } from '@mingles/ui/game';
 import MingleParts from '@mingles/ui/mingle-parts';
-import { type Species, colors } from '@mingles/business/species';
+import { type Species, rodent, plant, bird, fish } from '@mingles/business/species';
+import type { GeneParts, BodyFormats, ActiveParts } from '@mingles/business/parts';
 import Mingle, { generateRandomMingle } from '@mingles/business/mingle';
-import type { GeneParts, BodyFormats } from '@mingles/business/parts';
 
-// import MingleParts from '@/components/mingle-parts';
-import CardFake from '@/assets/card-fake.png';
+import { classColors } from '@/shared/core';
 
 import GENES_CONFIG from './genes-config';
 import BODIES_CONFIG from './bodies-configs';
 import SPECIES_CONFIG from './species-config';
 import FeatureSelector from './FeatureSelector';
 
-
 interface OptionsProps<T> { mingle: Mingle<Species>; change: (data: T) => void; }
+
+interface ProgressBarProps { background: string; max: number; min: number; value: number; }
+function ProgressBar({ background, max, min, value }: ProgressBarProps) {
+    const percent = (value / max) * 100;
+
+    return (
+        <Stack direction="row" display="flex" justifyContent="center" alignItems="center">
+            {min}
+            <Box sx={{
+                height: 20,
+                width: '100%',
+                position: 'relative',
+                marginLeft: 1,
+                marginRight: 1,
+                backgroundColor: (theme) => theme.palette.action.hover,
+                borderRadius: 5
+            }}>
+                <Box sx={{
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    width: `${percent}%`,
+                    position: 'absolute',
+                    backgroundColor: background,
+                    borderRadius: 5,
+                    textAlign: 'center',
+                    transition: (theme) => theme.transitions.create('width', { duration: 300 })
+                }}>
+                    {value}
+                </Box>
+            </Box>
+            {max}
+        </Stack>
+    );
+}
 
 interface StatsProps { stats: Mingle<Species>['stats']; };
 function StatsChart({ stats }: StatsProps) {
+    const barColors = {
+        life: classColors.plant[2],
+        speed: classColors.bird[1],
+        fury: classColors.rodent[2]
+    };
+
+    const barStatsMax = {
+        life: plant.stats.base.life + (plant.stats.part.life * 5),
+        speed: bird.stats.base.speed + (bird.stats.part.speed * 5),
+        fury: rodent.stats.base.fury + (rodent.stats.part.fury * 5),
+    };
+
+    const barStatsMin = {
+        life: bird.stats.base.life + (bird.stats.part.life * 5),
+        speed: plant.stats.base.speed + (plant.stats.part.speed * 5),
+        fury: fish.stats.base.fury + (fish.stats.part.fury * 5),
+    };
+
     return (
-        <Stack direction="row" spacing={2}>
+        <Stack direction="column" spacing={2}>
             <Stack spacing={1} flex={1}>
-                <Typography variant="body2" color="text.secondary">Vidalidade</Typography>
-                <Typography variant="h5">{stats.life}</Typography>
+                <Typography variant="body2" color="text.secondary">Vitalidade</Typography>
+                <ProgressBar background={barColors.life} max={barStatsMax.life} min={barStatsMin.life} value={stats.life} />
             </Stack>
             <Stack spacing={1} flex={1}>
                 <Typography variant="body2" color="text.secondary">Velocidade</Typography>
-                <Typography variant="h5">{stats.speed}</Typography>
+                <ProgressBar background={barColors.speed} max={barStatsMax.speed} min={barStatsMin.speed} value={stats.speed} />
             </Stack>
             <Stack spacing={1} flex={1}>
                 <Typography variant="body2" color="text.secondary">Fúria</Typography>
-                <Typography variant="h5">{stats.fury}</Typography>
+                <ProgressBar background={barColors.fury} max={barStatsMax.fury} min={barStatsMin.fury} value={stats.fury} />
             </Stack>
         </Stack>
     );
@@ -55,14 +107,13 @@ function StatsChart({ stats }: StatsProps) {
 
 interface GeneCardProps { icon: React.ReactNode; label: string; name: string; species: Species; };
 function GeneCard({ icon, label: title, name, species }: GeneCardProps) {
-    const newColors = colors[species].map(r => r).sort((a, b) => a > b ? 1 : -1);
     return (
         <Card elevation={0} sx={{ background: 'transparent' }}>
             <Stack direction="row" alignItems="center" gap={1}>
                 <Avatar
                     variant="rounded"
                     sx={{
-                        background: newColors[0]
+                        background: classColors[species][1]
                     }}
                 >
                     {icon}
@@ -103,6 +154,7 @@ function BannerCard({ mingle, onGenerateRandom }: BannerProps) {
                 </Box>
                 <Box maxWidth={250} margin="auto">
                     <MingleParts
+                        direction='right'
                         body={mingle.body}
                         color={mingle.color}
                         eye={mingle.genes.eye.name}
@@ -175,7 +227,6 @@ function MingleClass({ mingle, change }: OptionsProps<Species>) {
 }
 
 function Colors({ mingle, change }: OptionsProps<Mingle<Species>['color']>) {
-    const newColors = colors[mingle.species].map(r => r).sort((a, b) => a > b ? 1 : -1);
     return (
         <Box>
             <Typography gutterBottom variant="h5" component="div">
@@ -183,19 +234,29 @@ function Colors({ mingle, change }: OptionsProps<Mingle<Species>['color']>) {
             </Typography>
             <Stack direction="row" spacing={1}>
                 {
-                    newColors
+                    classColors[mingle.species]
                         .map((color) =>
-                            <Chip
+                            <Box
                                 key={color}
-                                label={color}
                                 sx={{
-                                    borderColor: color,
-                                    textTransform: 'uppercase',
-                                    background: mingle.color === color ? color : 'transparent',
-                                }}
-                                variant={mingle.color === color ? 'filled' : 'outlined'}
-                                onClick={() => change(color)}
-                            />
+                                    padding: '5px',
+                                    borderRadius: '100%',
+                                    border: (theme) => `2px solid ${mingle.color === color ? theme.palette.action.active : 'transparent'}`,
+                                    transition: (theme) => theme.transitions.create('border-color', { duration: 300 }),
+                                }}>
+                                <Chip
+                                    sx={{
+                                        width: 40,
+                                        background: color,
+                                        borderColor: 'transparent',
+                                        ':hover': {
+                                            background: color,
+                                        }
+                                    }}
+
+                                    onClick={() => change(color)}
+                                />
+                            </Box>
                         )
                 }
             </Stack>
@@ -245,10 +306,20 @@ function Cards({ mingle }: CardsProps) {
             <CardContent>
                 <Grid container spacing={2}>
                     {
-                        Object.keys(mingle.cards).map(() => {
+                        Object.keys(mingle.cards).map((key) => {
+                            const k = key as ActiveParts;
                             return (
-                                <Grid item sm={4}>
-                                    <img style={{ width: '100%', borderRadius: 15 }} src={CardFake} alt="" />
+                                <Grid key={key} item sm={4}>
+                                    <DeckCard
+                                        part={k}
+                                        cost={mingle.cards[k].cost}
+                                        name={mingle.cards[k].name}
+                                        attack={mingle.cards[k].attack}
+                                        effect={mingle.cards[k].effect}
+                                        shield={mingle.cards[k].shield}
+                                        species={mingle.cards[k].species}
+                                        description={mingle.cards[k].description}
+                                    />
                                 </Grid>
                             );
                         })
@@ -284,7 +355,7 @@ function CharacteristicCard({ mingle, onChangeSpecies, onChangeBody, onChangeCol
     );
 }
 
-export default function Create() {
+export default function CreateMingle() {
     const [showModalEdit, setShowModalEdit] = useState(false);
     const { mingle, update, updateGenes } = useMingle(generateRandomMingle());
 
