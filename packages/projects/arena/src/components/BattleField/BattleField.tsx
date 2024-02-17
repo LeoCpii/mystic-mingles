@@ -1,12 +1,18 @@
+import { useEffect } from 'react';
+
 import Box from '@mui/material/Box';
+import Zoom from '@mui/material/Zoom';
+import Button from '@mui/material/Button';
 
 import DeckCard from '@mingles/ui/card';
+import Effects from '@mingles/ui/effects';
+import MiniCard from '@mingles/ui/mini-card';
 import { joinClass } from '@mingles/ui/utils';
 import type Team from '@mingles/business/team';
 import type Ally from '@mingles/business/ally';
 import type Card from '@mingles/business/card';
 import useSpecies from '@mingles/ui/useSpecies';
-import { type Species } from '@mingles/business/species';
+import type { Species } from '@mingles/business/species';
 import type { ActiveParts } from '@mingles/business/parts';
 import MingleParts, { type Direction } from '@mingles/ui/mingle-parts';
 
@@ -21,39 +27,73 @@ interface BattleFieldProps {
     teamEnemy: Team;
 }
 
+function Shield() {
+    return (
+        <svg width="34" height="34" x="0" y="0" viewBox="0 0 512 512">
+            <g>
+                <path d="M461.143 60.883 260.313.633a14.996 14.996 0 0 0-8.622 0L50.857 60.883A15 15 0 0 0 40.168 75.25v220.916c0 28.734 11.633 58.148 34.574 87.425 17.521 22.36 41.762 44.813 72.047 66.736 50.877 36.828 100.976 59.42 103.084 60.363a14.99 14.99 0 0 0 12.258 0c2.107-.943 52.205-23.535 103.082-60.363 30.285-21.923 54.525-44.376 72.047-66.736 22.941-29.276 34.572-58.69 34.572-87.425V75.25a14.997 14.997 0 0 0-10.689-14.367z" fill="#0465a4" opacity="1">
+                </path>
+            </g>
+        </svg>
+    );
+}
+
 interface WarriorProps { ally: Ally<Species>; direction: Direction; }
 function Warrior({ ally, direction }: WarriorProps) {
+    const { deck, tookDamage } = useBattle();
     const { color, icon } = useSpecies(ally.species);
 
+    useEffect(() => {
+        if (tookDamage?.id === ally.id) {
+            console.log('tookDamage', tookDamage);
+            const element = document.getElementById(ally.id);
+            if (element) {
+                element.classList.add('took-damage');
+                setTimeout(() => {
+                    element.classList.remove('took-damage');
+                }, 600);
+            }
+        }
+    }, [tookDamage]);
+
     return (
-        <div className="warrior">
+        <div id={ally.id} className="warrior blink_me">
             <div className="warrior-hud">
-                <div className="warrior-class" style={{ background: color }}>
-                    {icon({ color: 'white', size: 16 })}
+                <div className="effects">
+                    {
+                        [...ally.buffs, ...ally.debuffs].map((effect, index) => {
+                            return (
+                                <div key={index} className="effect">
+                                    <Effects effect={effect} />
+                                </div>
+                            );
+                        })
+                    }
                 </div>
-                <div className="warrior-life">{ally.life}</div>
-                <div className="life-bar-container">
-                    <div
-                        className="life-bar-content"
-                        style={{
-                            width: `${(ally.life / (ally.totalLife)) * 100}%`,
-                            backgroundColor: ally.life > ally.totalLife / 2 ? '#31c957' : 'red'
-                        }}
-                    />
+                <div className="life-hud">
+                    <Zoom in={!!ally.shield}>
+                        <div className="shield">
+                            <Shield />
+                            <span className="value">{ally.shield}</span>
+                        </div>
+                    </Zoom>
+                    <div className="warrior-class" style={{ background: color }}>
+                        {icon({ color: 'white', size: 16 })}
+                    </div>
+                    <div className="warrior-life">{ally.life}</div>
+                    <div className="life-bar-container">
+                        <div
+                            className="life-bar-content"
+                            style={{
+                                width: `${(ally.life / (ally.totalLife)) * 100}%`,
+                                backgroundColor: ally.life > ally.totalLife / 2 ? '#31c957' : 'red'
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
-            <div>
-                <MingleParts
-                    direction={direction}
-                    body={ally.body}
-                    color={ally.color}
-                    eye={ally.genes.eye.name}
-                    horn={ally.genes.horn.name}
-                    back={ally.genes.back.name}
-                    tail={ally.genes.tail.name}
-                    mouth={ally.genes.mouth.name}
-                />
-                {ally.stats.speed}
+            <div onClick={() => console.log('ally', deck[ally.id])}>
+                <MingleParts direction={direction} mingle={ally} />
             </div>
         </div>
     );
@@ -71,23 +111,29 @@ function AllyCard({ id, cards, order }: AllyCardProps) {
                 {
                     cards.map((card, index) => {
                         return (
-                            <div
-                                className="card"
-                                key={`${card.name}_${index}`}
-                                onClick={() => addCard(ally, card)}
+                            <Zoom
+                                in
+                                key={`${card.name}-${index}`}
+                                style={{ transitionDelay: `${index * 100}ms` }}
                             >
-                                <DeckCard
-                                    key={index}
-                                    part={card.part}
-                                    cost={card.cost}
-                                    name={card.name}
-                                    attack={card.attack}
-                                    effect={card.effect}
-                                    shield={card.shield}
-                                    species={card.species}
-                                    description={card.description}
-                                />
-                            </div>
+                                <div
+                                    className="card"
+                                    key={`${card.name}_${index}`}
+                                    onClick={() => addCard(ally, card)}
+                                >
+                                    <DeckCard
+                                        key={index}
+                                        part={card.part}
+                                        cost={card.cost}
+                                        name={card.name}
+                                        attack={card.attack}
+                                        effect={card.effect}
+                                        shield={card.shield}
+                                        species={card.species}
+                                        description={card.description}
+                                    />
+                                </div>
+                            </Zoom>
                         );
                     })
                 }
@@ -97,16 +143,7 @@ function AllyCard({ id, cards, order }: AllyCardProps) {
                     {order}
                 </div>
                 <div className="identificator-image">
-                    <MingleParts
-                        direction="right"
-                        body={ally.body}
-                        color={ally.color}
-                        eye={ally.genes.eye.name}
-                        horn={ally.genes.horn.name}
-                        back={ally.genes.back.name}
-                        tail={ally.genes.tail.name}
-                        mouth={ally.genes.mouth.name}
-                    />
+                    <MingleParts direction="right" mingle={ally} />
                 </div>
             </div>
         </div>
@@ -126,35 +163,45 @@ function HUD({ children }: HUDProps) {
 }
 
 interface PositionsProps { ally: Ally<Species>; index: number; }
-function Positions({ ally, index }: PositionsProps) {
-    const { allies, chooseCards } = useBattle();
+function OrdemPriorityItem({ ally, index }: PositionsProps) {
+    const { allies, chosenCards, rollbackCards } = useBattle();
 
     const isAlly = allies.find(a => a.id === ally.id);
 
+    const handleRollbackCards = () => { rollbackCards(ally); };
+
     return (
-        <div>
-            <div key={ally.id} className={joinClass(['order-priority-item', isAlly ? 'ally' : 'enemy'])}>
+        <div className="order-priority-item">
+            <div key={ally.id} className={joinClass(['fighter', isAlly ? 'ally' : 'enemy'])}>
                 <div className="order">
                     <span className={joinClass([isAlly ? 'ally' : 'enemy'])}>{index + 1}</span>
                 </div>
-                <div className={joinClass(['order-priority-item-image', isAlly ? 'ally' : 'enemy'])}>
-                    <MingleParts
-                        direction={isAlly ? 'right' : 'left'}
-                        body={ally.body}
-                        color={ally.color}
-                        eye={ally.genes.eye.name}
-                        horn={ally.genes.horn.name}
-                        back={ally.genes.back.name}
-                        tail={ally.genes.tail.name}
-                        mouth={ally.genes.mouth.name}
-                    />
+                <div className={joinClass(['fighter-image', isAlly ? 'ally' : 'enemy'])}>
+                    <MingleParts direction={isAlly ? 'right' : 'left'} mingle={ally} />
                 </div>
             </div>
-            <div>
+            <div className="fighter-cards">
                 {
-                    chooseCards[ally.id]?.map((card, i) => {
+                    chosenCards[ally.id]?.map((card, i) => {
                         return (
-                            <p key={`${card.name}-${i}`}>{card.name}</p>
+                            <Zoom
+                                in={true}
+                                key={i}
+                                style={{ transitionDelay: `${i * 100}ms` }}
+                            >
+                                <div
+                                    key={i}
+                                    className="card"
+                                    style={{ zIndex: index + 1 }}
+                                    onClick={handleRollbackCards}
+                                >
+                                    <MiniCard
+                                        name={card.name}
+                                        attack={card.attack}
+                                        species={card.species}
+                                    />
+                                </div>
+                            </Zoom>
                         );
                     })
                 }
@@ -164,17 +211,17 @@ function Positions({ ally, index }: PositionsProps) {
 }
 
 function Header() {
-    const { alive } = useBattle();
+    const { alive, round } = useBattle();
 
     return (
         <div className="header">
             <div>
-                Round 1
+                Round {round}
             </div>
             <div className="order-priority">
                 {
                     alive.map((ally, index) =>
-                        <Positions key={ally.id} ally={ally} index={index} />)
+                        <OrdemPriorityItem key={ally.id} ally={ally} index={index} />)
                 }
             </div>
             <div>
@@ -203,7 +250,8 @@ function Footer() {
                             key={ally.id}
                             id={ally.id}
                             order={index + 1}
-                            cards={deck[ally.id]} />
+                            cards={deck[ally.id]}
+                        />
                     )
                 }
             </div>
@@ -215,23 +263,13 @@ function Footer() {
 }
 
 function Content() {
-    const { allies, enemies, attack, buyCard } = useBattle();
+    const { allies, enemies, endTurn } = useBattle();
 
     const board = [
         Array.from(Array(11), () => ''),
         Array.from(Array(11), () => ''),
         Array.from(Array(11), () => ''),
     ];
-
-    const handleTakeDamage = () => {
-        console.log('allies', allies);
-        attack(allies[0]);
-    };
-
-    const handleBuyCard = () => {
-        buyCard();
-    };
-
     return (
         <Box
             display="flex"
@@ -258,15 +296,22 @@ function Content() {
                                                 return exist ? <Warrior key={ally.id} direction="left" ally={ally} /> : '';
                                             })
                                         }
-                                        x{x} y{Math.abs(y - 2)}
                                     </div>
                                 </div>
                             ));
                         })
                     }
-                    {/* <button onClick={handleTakeDamage}>Take Damage</button> */}
                 </div>
             </HUD>
+            <Box sx={{ position: 'absolute', bottom: 30, right: 30 }}>
+                <Button
+                    onClick={endTurn}
+                    variant="contained"
+                    color="secondary"
+                >
+                    Próximo turno
+                </Button>
+            </Box>
         </Box>
     );
 }

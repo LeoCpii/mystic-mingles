@@ -3,9 +3,7 @@ import { IntRange } from '@mingles/services/interface';
 import type Mingle from '@/mingle';
 import type { Species } from '@/species';
 import type { MingleOptions } from '@/mingle';
-
-export type Buff = 'damage' | 'heal' | 'fury' | 'speed';
-export type Debuff = 'poison' | 'stun';
+import type { Buff, Debuff } from '@/effect';
 
 export type Coordinates = { x: IntRange<0, 6>; y: IntRange<0, 4> };
 

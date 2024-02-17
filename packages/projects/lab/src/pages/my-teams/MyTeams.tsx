@@ -103,13 +103,7 @@ function TeamCard({ team, selected, onRemove, onSelect }: TeamCardProps) {
                                     <MingleParts
                                         key={ally.id}
                                         direction="right"
-                                        eye={ally.genes.eye.name}
-                                        body={ally.body}
-                                        color={ally.color}
-                                        tail={ally.genes.tail.name}
-                                        back={ally.genes.back.name}
-                                        mouth={ally.genes.mouth.name}
-                                        horn={ally.genes.horn.name}
+                                        mingle={ally}
                                     />
                                 </Grid>
                             ))

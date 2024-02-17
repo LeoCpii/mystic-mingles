@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './App';
+import Test from './pages/test';
 import Battle from './pages/battle';
 
 function getBase() {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
             {
                 path: '/',
                 element: <Battle />
+            },
+            {
+                path: '/test',
+                element: <Test />
             }
         ]
     },

@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import '@mingles/ui/style';
+import '@mingles/ui/fonts';
 
 function App() {
     return (

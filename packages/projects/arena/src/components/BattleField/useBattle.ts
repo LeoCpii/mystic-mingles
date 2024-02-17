@@ -6,64 +6,148 @@ import type Card from '@mingles/business/card';
 import type { Species } from '@mingles/business/species';
 import type { ActiveParts } from '@mingles/business/parts';
 
+import { attack } from './action-fight';
 import { BattleContext } from './BattleProvider';
+import { getTarget, goTo, goBack } from './actions-target';
+import { chooseCards, getCardsToBuy, rollbackChooseCards } from './actions-deck';
 
 export default function useBattle() {
     const {
+        round,
         teamAlly,
         teamEnemy,
-        chooseCards,
+        chosenCards,
+        setChosenCards,
+        nextRount,
+        setTookDamage,
+        tookDamage,
         updateTeamAlly,
         updateTeamEnemy,
-        updateChooseCards
     } = useContext(BattleContext);
 
     const isAlly = (fighter: Ally<Species>) => teamAlly.allies.some(a => a.id === fighter.id);
-    const getOriginalTeam = (fighter: Ally<Species>) => { return isAlly(fighter) ? teamAlly : teamEnemy; };
+
+    const getAlive = () => {
+        return [...teamAlly.priorityOrder, ...teamEnemy.priorityOrder]
+            .filter(a => a.stats.life > 0)
+            .sort((a, b) => a.stats.speed > b.stats.speed ? -1 : 1);
+    };
 
     const updateTeam = (team: Team) => {
         const isAllyTeam = teamAlly.id === team.id;
+
         isAllyTeam ? updateTeamAlly(team) : updateTeamEnemy(team);
     };
 
-    const attack = (target: Ally<Species>) => {
-        const damage = 100;
-        target.takesDamage(damage);
-
-        const original = getOriginalTeam(target);
-
-        const newTeam = new Team({ ...original, allies: [...original.allies.filter(a => a.id !== target.id), target] });
-
-        updateTeam(newTeam);
-    };
-
-    const buyCard = () => {
-        teamAlly.buyCard(3);
-
-        const newTeam = new Team({ ...teamAlly });
-
-        updateTeam(newTeam);
-    };
-
     const addCard = (fighter: Ally<Species>, card: Card<Species, ActiveParts>) => {
-        const newChooseCards = chooseCards[fighter.id]
-            ? [...chooseCards[fighter.id], card]
-            : [card];
+        const { newTeam, newChosenCards } = chooseCards({ teamAlly, fighter, fighterCards: chosenCards[fighter.id], card });
 
-        updateChooseCards({ ...chooseCards, [fighter.id]: newChooseCards });
+        updateTeam(newTeam);
+        setChosenCards({ ...chosenCards, [fighter.id]: newChosenCards });
+    };
+
+    const rollbackCards = (fighter: Ally<Species>) => {
+        const newTeam = rollbackChooseCards(teamAlly, fighter, chosenCards[fighter.id]);
+
+        updateTeam(newTeam);
+        setChosenCards({ ...chosenCards, [fighter.id]: [] });
+    };
+
+    const replenishCardsAndEnergy = () => {
+        const energies = teamAlly.energy + 2;
+
+        const cardsDrawn = getCardsToBuy(teamAlly);
+
+        const newTeam = new Team({
+            ...teamAlly,
+            deck: cardsDrawn,
+            energy: energies > 10 ? 10 : energies,
+            allies: teamAlly.allies.map(a => {
+                a.shield = 0;
+                return a;
+            })
+        });
+
+        setChosenCards({ [teamAlly.allies[0].id]: [], [teamAlly.allies[1].id]: [], [teamAlly.allies[2].id]: [] });
+        updateTeam(newTeam);
+        nextRount();
+    };
+
+    const endTurn = () => {
+        new Promise((resolve) => {
+            let promiseChain = Promise.resolve();
+
+            // PARA CADA TAMANHO
+            getAlive().forEach((fighter, index) => {
+                const _isAlly = isAlly(fighter);
+                const enemies = _isAlly ? teamEnemy.priorityOrder : teamAlly.priorityOrder;
+                const cards = chosenCards[fighter.id];
+
+                if (!cards || !cards.length) { return; }
+
+                const target = getTarget({ card: cards[0], enemies, ally: fighter });
+
+                promiseChain = promiseChain.then(() => {
+                    return new Promise((resolveInner) => {
+                        setTimeout(() => {
+                            const promiseCards = cards.reduce((acc, card) => {
+                                goTo(fighter, target);
+                                return acc.then(() => {
+                                    return new Promise((resolveCard) => {
+                                        setTimeout(() => {
+
+                                            const { newAllyTeam, newChosenCards, newEnemyTeam } = attack({
+                                                card,
+                                                index,
+                                                target,
+                                                fighter,
+                                                teamAlly,
+                                                teamEnemy,
+                                                isAlly: _isAlly,
+                                                chosenFighterCards: cards,
+                                            });
+
+                                            updateTeam(newEnemyTeam);
+                                            updateTeam(newAllyTeam);
+
+                                            setChosenCards(prev => {
+                                                return { ...prev, [fighter.id]: newChosenCards };
+                                            });
+
+                                            setTookDamage(target);
+
+                                            resolveCard();
+                                        }, 600);
+                                    });
+                                });
+                            }, Promise.resolve());
+
+                            promiseCards.then(() => {
+                                goBack(fighter);
+                                setTookDamage(undefined);
+                                resolveInner();
+                            });
+                        }, 600);
+                    });
+                });
+            });
+
+            promiseChain.then(() => { resolve({}); });
+        }).then(() => replenishCardsAndEnergy());
     };
 
     return {
+        round,
+        addCard,
+        endTurn,
+        chosenCards,
+        rollbackCards,
+        setTookDamage,
+        tookDamage,
+        alive: getAlive(),
         deck: teamAlly.deck,
         energy: teamAlly.energy,
-        allies: teamAlly.priorityOrder,
-        enemies: teamEnemy.priorityOrder,
-        alive: [...teamAlly.priorityOrder, ...teamEnemy.priorityOrder]
-            .filter(a => a.stats.life > 0)
-            .sort((a, b) => a.stats.speed > b.stats.speed ? -1 : 1),
-        attack,
-        buyCard,
-        addCard,
-        chooseCards,
+        allies: teamAlly.priorityOrder.filter(a => a.stats.life > 0),
+        enemies: teamEnemy.priorityOrder.filter(a => a.stats.life > 0),
     };
-}
+};

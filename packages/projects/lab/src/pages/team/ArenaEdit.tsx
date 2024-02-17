@@ -41,16 +41,7 @@ function Content({ x, y, allies, shouldHighlight, onChooseCoordinate, onChooseAl
 
         if (ally) {
             return <div style={{ width: '100%' }} onClick={() => onChooseAlly(ally)}>
-                <MingleParts
-                    direction='right'
-                    body={ally.body}
-                    color={ally.color}
-                    eye={ally.genes.eye.name}
-                    horn={ally.genes.horn.name}
-                    back={ally.genes.back.name}
-                    tail={ally.genes.tail.name}
-                    mouth={ally.genes.mouth.name}
-                />
+                <MingleParts direction='right' mingle={ally} />
             </div>;
         }
 

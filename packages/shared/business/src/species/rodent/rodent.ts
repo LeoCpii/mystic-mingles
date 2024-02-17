@@ -1,5 +1,5 @@
 import { HORN_CARDS, MOUTH_CARDS, TAIL_CARDS, BACK_CARDS } from './cards';
-import type { Species, SpeciesOptions, SpeciesGenes, SpeciesCards, SpeciesStats } from '../interface';
+import type { Species, SpeciesOptions, SpeciesGenes, SpeciesCards, SpeciesStats, Category } from '../interface';
 
 const EYES = ['Rodent Oriental'] as const;
 const BACK = ['Rodent Nut'] as const;
@@ -21,16 +21,18 @@ export type RodentColors = typeof COLORS;
 
 export class Rodent<S extends Species, G extends RodentGenes, Colors extends RodentColors> implements SpeciesOptions<S, G, Colors> {
     public readonly colors: Colors;
+    public readonly category: Category;
+    public readonly stats: SpeciesStats;
     public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
-    public readonly stats: SpeciesStats;
     public readonly life_multiplicator: number;
 
-    constructor({ genes: parts, cards, colors, stats, life_multiplicator }: SpeciesOptions<S, G, Colors>) {
+    constructor({ genes: parts, cards, colors, stats, category, life_multiplicator }: SpeciesOptions<S, G, Colors>) {
         this.genes = parts;
         this.cards = cards;
-        this.colors = colors;
         this.stats = stats;
+        this.colors = colors;
+        this.category = category;
         this.life_multiplicator = life_multiplicator;
     }
 }
@@ -53,6 +55,7 @@ export default new Rodent({
         base: { life: 31, speed: 35, fury: 43 },
         part: { life: 0, speed: 1, fury: 3 },
     },
+    category: 'dps',
     colors: [...COLORS],
     life_multiplicator: 11.5
 });

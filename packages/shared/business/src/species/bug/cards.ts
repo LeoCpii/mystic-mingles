@@ -8,7 +8,6 @@ export const HORN_CARDS: Card<'bug', 'horn'>[] = [
         part: 'horn',
         species: 'bug',
         name: 'Bug Butterfly',
-        effect: 'damage',
         description: 'Bug Butterfly',
     })
 ];
@@ -21,7 +20,6 @@ export const TAIL_CARDS: Card<'bug', 'tail'>[] = [
         part: 'tail',
         species: 'bug',
         name: 'Bug Bee',
-        effect: 'damage',
         description: 'Bug Bee',
     })
 ];
@@ -34,7 +32,6 @@ export const MOUTH_CARDS: Card<'bug', 'mouth'>[] = [
         part: 'mouth',
         species: 'bug',
         name: 'Bug Termite',
-        effect: 'damage',
         description: 'Bug Termite',
     })
 ];
@@ -47,7 +44,6 @@ export const BACK_CARDS: Card<'bug', 'back'>[] = [
         part: 'back',
         species: 'bug',
         name: 'Bug Fly',
-        effect: 'damage',
         description: 'Bug Fly',
     })
 ];

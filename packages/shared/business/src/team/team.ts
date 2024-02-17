@@ -8,7 +8,7 @@ import type { Species } from '@/species';
 import type { TeamOptions, Deck } from './interface';
 
 export default class Team implements TeamOptions {
-    public deck: Deck;
+    public deck: Deck = {};
     public id: string;
     public energy = 3;
 
@@ -21,7 +21,7 @@ export default class Team implements TeamOptions {
         this.id = id || uuid();
         this.allies = allies || this.allies;
         this.deck = deck || this.getCards(6);
-        this.energy = energy || this.energy;
+        this.energy = energy ?? this.energy;
     }
 
     get priorityOrder() {
@@ -36,14 +36,36 @@ export default class Team implements TeamOptions {
     get lessLife() { return lessThan(this.allies, 'stats.life'); }
     get lessSpeed() { return lessThan(this.allies, 'stats.speed'); }
 
+    private getUniqueCard(newDeck: Deck) {
+        const chosenAlly = getRandom(this.allies);
+        // const chosenAlly = this.allies[0];
+        const part = getRandom(activeParts);
+
+        const reference = [...(this.deck[chosenAlly.id] || []), ...newDeck[chosenAlly.id]];
+
+        const chosenCard = chosenAlly.cards[part];
+
+        if (reference) {
+            const numberOfExistingCards = reference.filter((card) => card.name === chosenCard.name);
+
+            if (numberOfExistingCards.length >= 2) {
+                // não pode ter mais de 2 cartas iguais
+                return this.getUniqueCard(newDeck);
+            }
+
+            return { chosenAlly, chosenCard };
+        }
+
+        return { chosenAlly, chosenCard };;
+    }
+
     public getCards(count: number): Deck {
         const arr = Array.from(Array(count), () => '');
 
         return arr.reduce((acc) => {
-            const chosen = getRandom(this.allies);
-            const part = getRandom(activeParts);
+            const { chosenCard, chosenAlly } = this.getUniqueCard(acc);
 
-            acc[chosen.id] = [...acc[chosen.id], chosen.cards[part]];
+            acc[chosenAlly.id] = [...acc[chosenAlly.id], chosenCard];
 
             return acc;
         }, { [this.allies[0].id]: [], [this.allies[1].id]: [], [this.allies[2].id]: [] });

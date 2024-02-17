@@ -153,16 +153,7 @@ function BannerCard({ mingle, onGenerateRandom }: BannerProps) {
                     </IconButton>
                 </Box>
                 <Box maxWidth={250} margin="auto">
-                    <MingleParts
-                        direction='right'
-                        body={mingle.body}
-                        color={mingle.color}
-                        eye={mingle.genes.eye.name}
-                        horn={mingle.genes.horn.name}
-                        back={mingle.genes.back.name}
-                        tail={mingle.genes.tail.name}
-                        mouth={mingle.genes.mouth.name}
-                    />
+                    <MingleParts direction='right' mingle={mingle} />
                 </Box>
             </CardContent>
         </Card>

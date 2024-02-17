@@ -1,8 +1,11 @@
-import { type Species, modificators } from '@/species';
-import type { BodyFormats, Stats } from '@/parts';
+import { buffs } from '@/effect';
+import type Card from '@/card';
+import type { Buff, Debuff } from '@/effect';
+import type { BodyFormats, Stats, ActiveParts } from '@/parts';
 import type { MingleCards, MingleGenes, MingleColor } from '@/mingle';
+import { type Species, type Category, modificators, interaction, categories } from '@/species';
 
-import type { AllyBasicOptions, AllyOptions, Coordinates, Buff, Debuff } from './interface';
+import type { AllyBasicOptions, AllyOptions, Coordinates } from './interface';
 
 export default class Ally<S extends Species> implements AllyOptions {
     public id: string;
@@ -16,8 +19,9 @@ export default class Ally<S extends Species> implements AllyOptions {
     public body: BodyFormats;
     public genes: MingleGenes;
     public cards: MingleCards;
-    public coordinates: Coordinates;
+    public category: Category;
     public color: MingleColor<S>;
+    public coordinates: Coordinates;
 
     constructor({ mingle, coordinates: positions }: AllyBasicOptions<S>) {
         this.buffs = [];
@@ -31,6 +35,7 @@ export default class Ally<S extends Species> implements AllyOptions {
         this.genes = mingle.genes;
         this.color = mingle.color;
         this.coordinates = positions;
+        this.category = mingle.category;
         this.species = mingle.species;
         this.life = Math.ceil(mingle.stats.life * modificators[mingle.species]);
     }
@@ -41,10 +46,49 @@ export default class Ally<S extends Species> implements AllyOptions {
     public applyBuff(buff: Buff) { this.buffs.push(buff); }
     public applyDebuff(debuff: Debuff) { this.debuffs.push(debuff); }
 
+    public calculateDamage(card: Card<Species, ActiveParts>, target: Ally<Species>) {
+        let damage = card.attack;
+
+        // BUFF
+        const multiplicator = this.buffs.filter(buff => buff === 'damage');
+
+        if (multiplicator.length) {
+            damage = multiplicator.reduce((acc) => acc = buffs.damage(acc), card.attack);
+            this.buffs = this.buffs.filter(buff => buff !== 'damage');
+        }
+
+        // SPECIES
+        if (card.species === this.species) {
+            damage += card.attack * .1;
+        }
+
+        // COUNTER
+        const cardCategory = categories[card.species];
+
+        if (interaction[cardCategory].advantage === target.category) { damage += card.attack * .15; }
+        if (interaction[cardCategory].disadvantage === target.category) { damage -= card.attack * .15; }
+
+        return Math.ceil(damage);
+    }
+
     public takesDamage(damage: number) {
-        const totalDamage = damage - this.shield;
-        const newLife = this.life - totalDamage;
+        const remainingDamage = damage - this.shield;
+
+        if (remainingDamage < 0) {
+            this.shield = Math.abs(Math.ceil(remainingDamage));
+            return;
+        }
+
+        this.shield = 0;
+
+        const newLife = this.life - remainingDamage;
 
         this.life = newLife > 0 ? newLife : 0;
     };
+
+    public takesTrueDamage(damage: number) {
+        const newLife = this.life - damage;
+
+        this.life = newLife > 0 ? newLife : 0;
+    }
 }

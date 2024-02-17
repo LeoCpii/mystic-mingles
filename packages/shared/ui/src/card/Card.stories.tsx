@@ -24,7 +24,7 @@ export const HowToUse: StoryObj<typeof Card> = {
                         effect='poison'
                         species='bird'
                         name='Parasite'
-                        description='A plant card with a stun effect'
+                        description='A plant card with a stun <br/> effect'
                     />
                     <Card
                         cost={2}
@@ -34,27 +34,7 @@ export const HowToUse: StoryObj<typeof Card> = {
                         effect='poison'
                         species='bug'
                         name='Parasite'
-                        description='A plant card with a stun effect'
-                    />
-                    <Card
-                        cost={2}
-                        shield={35}
-                        attack={150}
-                        part='back'
-                        effect='poison'
-                        species='fish'
-                        name='Parasite'
-                        description='A plant card with a stun effect'
-                    />
-                    <Card
-                        cost={2}
-                        shield={35}
-                        attack={150}
-                        part='back'
-                        effect='poison'
-                        species='plant'
-                        name='Parasite'
-                        description='A plant card with a stun effect'
+                        description='A plant card with a stun <br/> effect'
                     />
                     <Card
                         cost={2}
@@ -64,7 +44,27 @@ export const HowToUse: StoryObj<typeof Card> = {
                         effect='poison'
                         species='reptile'
                         name='Parasite'
-                        description='A plant card with a stun effect'
+                        description='A plant card with a stun <br/> effect'
+                    />
+                    <Card
+                        cost={2}
+                        shield={35}
+                        attack={150}
+                        part='back'
+                        effect='poison'
+                        species='plant'
+                        name='BOlin de arroz'
+                        description='A plant card with a stun <br/> effect.<br/>A plant card with a stun <br/> effect'
+                    />
+                    <Card
+                        cost={2}
+                        shield={35}
+                        attack={150}
+                        part='back'
+                        effect='poison'
+                        species='fish'
+                        name='Parasite'
+                        description='A plant card with a stun <br/> effect'
                     />
                     <Card
                         cost={2}
@@ -74,7 +74,7 @@ export const HowToUse: StoryObj<typeof Card> = {
                         effect='poison'
                         species='rodent'
                         name='Parasite'
-                        description='A plant card with a stun effect'
+                        description='A plant card with a stun <br/> effect'
                     />
                 </div>
             </div>

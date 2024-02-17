@@ -8,7 +8,6 @@ export const HORN_CARDS: Card<'rodent', 'horn'>[] = [
         part: 'horn',
         species: 'rodent',
         name: 'Rodent Rat',
-        effect: 'damage',
         description: 'Rodent Rat',
     })
 ];
@@ -21,7 +20,6 @@ export const TAIL_CARDS: Card<'rodent', 'tail'>[] = [
         part: 'tail',
         species: 'rodent',
         name: 'Rodent Beaver',
-        effect: 'damage',
         description: 'Rodent Beaver',
     })
 ];
@@ -34,7 +32,6 @@ export const MOUTH_CARDS: Card<'rodent', 'mouth'>[] = [
         part: 'mouth',
         species: 'rodent',
         name: 'Rodent Squirrel',
-        effect: 'damage',
         description: 'Rodent Squirrel',
     })
 ];
@@ -47,7 +44,6 @@ export const BACK_CARDS: Card<'rodent', 'back'>[] = [
         part: 'back',
         species: 'rodent',
         name: 'Rodent Nut',
-        effect: 'damage',
         description: 'Rodent Nut',
     })
 ];

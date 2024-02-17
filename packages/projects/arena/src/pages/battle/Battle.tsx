@@ -10,22 +10,40 @@ import BattleField from '@/components/BattleField';
 const team1 = new Team({
     name: 'Team 1',
     allies: [
-        new Ally({ coordinates: { x: 1, y: 2 }, mingle: new Mingle(generateRandomMingle()), }),
-        new Ally({ coordinates: { x: 3, y: 2 }, mingle: new Mingle(generateRandomMingle()), }),
-        new Ally({ coordinates: { x: 4, y: 1 }, mingle: new Mingle(generateRandomMingle()), }),
+        new Ally({
+            coordinates: { x: 1, y: 2 }, mingle: new Mingle({
+                name: 'aaa',
+                body: 'square',
+                species: 'bird',
+                color: '#ff78b4',
+                genes: {
+                    back: { name: 'Bird Wing', species: 'bird' },
+                    eye: { name: 'Fish Crazy', species: 'fish' },
+                    horn: { name: 'Plant Fall', species: 'plant' },
+                    mouth: { name: 'Bug Termite', species: 'bug' },
+                    tail: { name: 'Rodent Beaver', species: 'rodent' },
+                }
+            }),
+        }),
+        new Ally({ coordinates: { x: 3, y: 2 }, mingle: new Mingle({ ...generateRandomMingle(), name: 'bbb' }), }),
+        new Ally({ coordinates: { x: 4, y: 1 }, mingle: new Mingle({ ...generateRandomMingle(), name: 'ccc' }), }),
     ]
 });
 
 const team2 = new Team({
     name: 'Team 2',
     allies: [
-        new Ally({ coordinates: { x: 4, y: 1 }, mingle: new Mingle(generateRandomMingle()), }),
-        new Ally({ coordinates: { x: 3, y: 0 }, mingle: new Mingle(generateRandomMingle()), }),
-        new Ally({ coordinates: { x: 1, y: 0 }, mingle: new Mingle(generateRandomMingle()), }),
+        new Ally({ coordinates: { x: 3, y: 0 }, mingle: new Mingle({ ...generateRandomMingle(), name: 'ddd' }), }),
+        new Ally({ coordinates: { x: 4, y: 1 }, mingle: new Mingle({ ...generateRandomMingle(), name: 'eee' }), }),
+        new Ally({ coordinates: { x: 1, y: 0 }, mingle: new Mingle({ ...generateRandomMingle(), name: 'fff' }), }),
     ]
 });
 
 export default function Battle() {
+    team2.priorityOrder[0].shield = 100;
+    team2.priorityOrder[1].shield = 100;
+    team2.priorityOrder[2].shield = 100;
+
     const game = new Game({
         id: '',
         players: [

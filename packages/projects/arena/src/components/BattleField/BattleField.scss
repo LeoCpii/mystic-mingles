@@ -30,7 +30,7 @@ $enemiesColor: #f73434;
 
 .HUD {
     .header {
-        margin-bottom: 70px;
+        margin-bottom: 200px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -44,53 +44,74 @@ $enemiesColor: #f73434;
 
             &-item {
                 position: relative;
-                width: 100px;
-                height: 75px;
-                border-radius: 8px;
-                overflow: hidden;
 
-                &.ally {
-                    background-color: $alliesColor;
-                    transform: scale(1.1);
-                }
-
-                &.enemy {
-                    background-color: $enemiesColor;
-                    transform: scale(0.9);
-                }
-
-                .order {
+                .fighter {
                     position: relative;
-                    font-size: 48px;
-                    z-index: 2;
-
-                    .ally,
-                    .enemy {
-                        position: absolute;
-                        top: -14px;
-                    }
-
-                    .ally {
-                        right: 2px;
-                    }
-
-                    .enemy {
-                        left: 2px;
-                    }
-                }
-
-                &-image {
-                    position: absolute;
-                    top: -25px;
+                    width: 100px;
+                    height: 75px;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    z-index: 99;
 
                     &.ally {
-                        width: 150px;
-                        left: -50px;
+                        background-color: $alliesColor;
+                        transform: scale(1.1);
                     }
 
                     &.enemy {
-                        width: 150px;
-                        right: -50px;
+                        background-color: $enemiesColor;
+                        transform: scale(0.9);
+                    }
+
+                    .order {
+                        position: relative;
+                        font-size: 48px;
+                        z-index: 2;
+
+                        .ally,
+                        .enemy {
+                            position: absolute;
+                            top: -14px;
+                        }
+
+                        .ally {
+                            right: 2px;
+                        }
+
+                        .enemy {
+                            left: 2px;
+                        }
+                    }
+
+                    &-image {
+                        position: absolute;
+                        top: -25px;
+
+                        &.ally {
+                            width: 150px;
+                            left: -50px;
+                        }
+
+                        &.enemy {
+                            width: 150px;
+                            right: -50px;
+                        }
+                    }
+                }
+
+                .fighter-cards {
+                    margin-top: 10px;
+                    display: flex;
+                    position: absolute;
+                    flex-direction: column-reverse;
+
+                    .card {
+                        width: 100px;
+                        margin-top: -60px;
+
+                        &:last-child {
+                            margin-top: 0px;
+                        }
                     }
                 }
             }
@@ -102,7 +123,7 @@ $enemiesColor: #f73434;
         justify-content: center;
         align-items: center;
         gap: 30px;
-        margin-top: -30px;
+        // margin-top: -30px;
 
         .energy {
             width: 50px;
@@ -181,7 +202,7 @@ $enemiesColor: #f73434;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid #fff;
+        // border: 1px solid #fff;
 
         .arena-slot-content {
             width: 100%;
@@ -197,51 +218,86 @@ $enemiesColor: #f73434;
 
 .warrior {
     width: 100%;
+    transition: all 0.5s ease-in-out;
+
+    &.took-damage {
+        animation: blinker 0.6s linear infinite;
+    }
+
+    @keyframes blinker {
+        10% {
+            opacity: 0;
+        }
+    }
 
     .warrior-hud {
-        position: relative;
         z-index: 2;
-        width: 170px;
-        height: 25px;
+        position: relative;
         margin-bottom: -30px;
-        padding-right: 10px;
-        border-radius: 50px;
-        gap: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(0, 0, 0, 0.2);
 
-        .warrior-class {
-            height: 25px;
-            padding: 2px;
-            padding: 0px 5px;
+        .effects {
+            gap: 5px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 50px 0px 0px 50px;
+            position: absolute;
+            top: -35px;
+            left: 60%;
         }
 
-        .warrior-life {
-            font-weight: 700;
-            min-width: 27px;
-        }
-
-        .life-bar-container {
-            width: 100%;
-            height: 15px;
-            position: relative;
+        .life-hud {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            width: 170px;
+            height: 25px;
+            padding-right: 10px;
             border-radius: 50px;
-            background-color: #333;
+            background-color: rgba(0, 0, 0, 0.2);
 
-            .life-bar-content {
-                top: 0;
-                left: 0;
-                bottom: 0;
-                position: absolute;
+            .shield {
+                position: relative;
+                .value {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -63%);
+                    font-weight: 600;
+                }
+            }
+
+            .warrior-class {
+                height: 25px;
+                padding: 2px;
+                padding: 0px 5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50px 0px 0px 50px;
+            }
+
+            .warrior-life {
+                font-weight: 700;
+                min-width: 27px;
+            }
+
+            .life-bar-container {
+                min-width: 90px;
+                height: 15px;
+                position: relative;
                 border-radius: 50px;
-                text-align: center;
-                transition: all 0.2s;
+                background-color: #333;
+
+                .life-bar-content {
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    position: absolute;
+                    border-radius: 50px;
+                    text-align: center;
+                    transition: all 0.2s;
+                }
             }
         }
     }

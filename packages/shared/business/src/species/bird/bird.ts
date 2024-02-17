@@ -1,5 +1,5 @@
 import { HORN_CARDS, MOUTH_CARDS, TAIL_CARDS, BACK_CARDS } from './cards';
-import type { Species, SpeciesOptions, SpeciesGenes, SpeciesCards, SpeciesStats } from '../interface';
+import type { Species, SpeciesOptions, SpeciesGenes, SpeciesCards, SpeciesStats, Category } from '../interface';
 
 const EYES = ['Bird Glass'] as const;
 const BACK = ['Bird Wing'] as const;
@@ -21,16 +21,18 @@ export type BirdColors = typeof COLORS;
 
 export class Bird<S extends Species, G extends BirdGenes, Colors extends BirdColors> implements SpeciesOptions<S, G, Colors> {
     public readonly colors: Colors;
+    public readonly category: Category;
+    public readonly stats: SpeciesStats;
     public readonly genes: SpeciesGenes<G>;
     public readonly cards: SpeciesCards<S>;
-    public readonly stats: SpeciesStats;
     public readonly life_multiplicator: number;
 
-    constructor({ genes, cards, colors, stats, life_multiplicator }: SpeciesOptions<S, G, Colors>) {
-        this.genes = genes;
+    constructor({ genes: parts, cards, colors, stats, category, life_multiplicator }: SpeciesOptions<S, G, Colors>) {
+        this.genes = parts;
         this.cards = cards;
         this.stats = stats;
         this.colors = colors;
+        this.category = category;
         this.life_multiplicator = life_multiplicator;
     }
 }
@@ -53,6 +55,7 @@ export default new Bird({
         base: { life: 27, speed: 43, fury: 35 },
         part: { life: 0, speed: 3, fury: 1 },
     },
+    category: 'speed',
     colors: [...COLORS],
     life_multiplicator: 12,
 });

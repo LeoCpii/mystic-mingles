@@ -8,7 +8,6 @@ export const HORN_CARDS: Card<'fish', 'horn'>[] = [
         part: 'horn',
         species: 'fish',
         name: 'Fish Shark',
-        effect: 'damage',
         description: 'Fish Shark',
     })
 ];
@@ -21,7 +20,6 @@ export const TAIL_CARDS: Card<'fish', 'tail'>[] = [
         part: 'tail',
         species: 'fish',
         name: 'Fish Gold',
-        effect: 'damage',
         description: 'Fish Gold',
     })
 ];
@@ -34,7 +32,6 @@ export const MOUTH_CARDS: Card<'fish', 'mouth'>[] = [
         part: 'mouth',
         species: 'fish',
         name: 'Fish Eat',
-        effect: 'damage',
         description: 'Fish Eat',
     })
 ];
@@ -47,7 +44,6 @@ export const BACK_CARDS: Card<'fish', 'back'>[] = [
         part: 'back',
         species: 'fish',
         name: 'Fish Fin',
-        effect: 'damage',
         description: 'Fish Fin',
     })
 ];

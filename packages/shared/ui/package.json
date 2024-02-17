@@ -19,18 +19,21 @@
       "require": "./dist/*/index.js",
       "types": "./dist/*/index.d.ts"
     },
-    "./style": "./dist/style/index.css"
+    "./style": "./dist/style/index.css",
+    "./fonts": "./dist/style/fonts.css"
   },
   "scripts": {
     "rollup": "rollup -c",
-    "build": "rimraf dist && npm run rollup",
+    "build": "rimraf dist && npm run fonts && npm run style && npm run rollup",
     "watch": "rollup -c --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --collectCoverage",
-    "lint": "eslint --ext .ts,.tsx . --ignore-pattern '/dist'"
+    "lint": "eslint --ext .ts,.tsx . --ignore-pattern '/dist'",
+    "fonts": "mkdirp dist/fonts && cp -r fonts/* dist/fonts",
+    "style": "mkdirp dist/style && cp -r style/* dist/style"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",

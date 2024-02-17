@@ -1,8 +1,8 @@
 import type { ActiveParts, BodyFormats, GeneParts, Stats } from '@/parts';
-import type { Species, SpeciesCards, SpeciesDetails } from '@/species';
+import type { Category, Species, SpeciesCards, SpeciesDetails } from '@/species';
 
 export type MingleCards = {
-    [A in ActiveParts]: SpeciesCards<Species>[A][number]
+    [A in ActiveParts]: SpeciesCards<Species>[A][number];
 };
 
 export type MingleColor<S extends Species> = SpeciesDetails<S>['colors'][number];
@@ -22,6 +22,7 @@ export type MingleOptions<S extends Species> = {
     body: BodyFormats;
     genes: MingleGenes;
     cards: MingleCards;
+    category: Category;
     color: MingleColor<S>;
 };
 

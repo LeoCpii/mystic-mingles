@@ -6,8 +6,7 @@ import fish from './fish';
 import plant from './plant';
 import rodent from './rodent';
 import reptile from './reptile';
-import type { Species, SpeciesCards, SpeciesDetails, SpeciesGenes, SpeciesGenesParts } from './interface';
-
+import type { Category, Species, SpeciesCards, SpeciesDetails, SpeciesGenes, SpeciesGenesParts } from './interface';
 
 export type Genes = typeof genes;
 
@@ -49,6 +48,21 @@ export const modificators: { [S in Species]: number } = {
     plant: plant.life_multiplicator,
     rodent: rodent.life_multiplicator,
     reptile: reptile.life_multiplicator,
+};
+
+export const categories: { [S in Species]: Category } = {
+    bug: bug.category,
+    bird: bird.category,
+    fish: fish.category,
+    plant: plant.category,
+    rodent: rodent.category,
+    reptile: reptile.category,
+};
+
+export const interaction: { [C in Category]: { advantage: Category; disadvantage: Category; } } = {
+    dps: { advantage: 'tank', disadvantage: 'speed' },
+    tank: { advantage: 'speed', disadvantage: 'dps' },
+    speed: { advantage: 'dps', disadvantage: 'tank' },
 };
 
 export const listGenes: ItemGene[] = Object.keys(genes)

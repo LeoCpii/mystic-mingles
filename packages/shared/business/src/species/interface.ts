@@ -8,6 +8,8 @@ import type { Plant, PlantGenes, PlantColors } from './plant';
 import type { Rodent, RodentGenes, RodentColors } from './rodent';
 import type { Reptile, ReptileGenes, ReptileColors } from './reptile';
 
+export type Category = 'dps' | 'speed' | 'tank';
+
 export type Species = 'fish' | 'bird' | 'reptile' | 'rodent' | 'plant' | 'bug';
 
 export type SpeciesGenesParts = { [Key in GeneParts]: string; };
@@ -19,6 +21,7 @@ export type SpeciesGenes<SGP extends SpeciesGenesParts> = { [Key in GeneParts]: 
 
 export interface SpeciesOptions<S extends Species, SGP extends SpeciesGenesParts, Colors extends SpeciesColors> {
     readonly colors: Colors;
+    readonly category: Category;
     readonly stats: SpeciesStats;
     readonly cards: SpeciesCards<S>;
     readonly genes: SpeciesGenes<SGP>;

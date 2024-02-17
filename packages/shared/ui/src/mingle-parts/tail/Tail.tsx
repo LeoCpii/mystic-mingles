@@ -4,7 +4,7 @@ import type { MingleGenes } from '@mingles/business';
 
 import './Tail.scss';
 
-type TailProps = { tail: MingleGenes['tail']['name'] };
+type TailProps = { tail: MingleGenes['tail']['name']; };
 
 function BugBee() {
     return (

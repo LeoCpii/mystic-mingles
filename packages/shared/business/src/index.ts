@@ -6,8 +6,9 @@ export { default as Mingle } from './mingle';
 
 export * from './card';
 export * from './team';
+export * from './game';
+export * from './ally';
 export * from './parts';
 export * from './mingle';
-export * from './ally';
-export * from './game';
+export * from './effect';
 export * from './species';

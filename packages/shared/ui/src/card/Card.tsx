@@ -2,6 +2,8 @@ import React from 'react';
 
 import type { CardOptions, Species, ActiveParts } from '@mingles/business';
 
+import background from '@/utils/species-card-colors';
+
 import './Card.scss';
 
 function Stun() {
@@ -52,18 +54,14 @@ function Effects({ effect }: { effect: CardOptions<Species, ActiveParts>['effect
 }
 
 export default function Card({ name, attack, cost, description, shield, effect, species }: CardOptions<Species, ActiveParts>) {
-    const background = {
-        plant: '#D3FAEF',
-        reptile: '#EFD3FA',
-        bug: '#F8BCCE',
-        bird: '#FDEAF9',
-        fish: '#BBECF9',
-        rodent: '#FFF4B4'
-    };
-
     return (
         <svg version="1.1" x="0px" y="0px"
             viewBox="0 0 250 350">
+            <defs>
+                <pattern id="img1" patternUnits="userSpaceOnUse" width="600" height="450">
+                    <image href="https://www.boogdesign.com/examples/svg/daisy-grass-repeating-background.jpg" x="0" y="0" width="600" height="450" />
+                </pattern>
+            </defs>
             <g id="Card">
                 <path fill={background[species]} d="M233.56,350.1H16.44C7.36,350.1,0,342.74,0,333.66V16.55C0,7.46,7.36,0.1,16.44,0.1h217.11
 		c9.08,0,16.44,7.36,16.44,16.44v317.11C250,342.74,242.64,350.1,233.56,350.1z"/>
@@ -75,7 +73,7 @@ export default function Card({ name, attack, cost, description, shield, effect, 
 			c5.92,0,10.72-4.8,10.72-10.72V18.32C242.5,12.4,237.7,7.6,231.78,7.6z M239.86,331.38c0,4.81-3.9,8.72-8.72,8.72H18.57
 			c-4.81,0-8.72-3.9-8.72-8.72V18.82c0-4.81,3.9-8.72,8.72-8.72h212.56c4.81,0,8.72,3.9,8.72,8.72V331.38z"/>
                 </g>
-                <path id="Shape_image" className="shadow" d="M223.48,201.25H28.92c-4.83,0-8.75-3.92-8.75-8.75v-127c0-4.83,3.92-8.75,8.75-8.75h194.56
+                <path id="Shape_image" fill="url(#img1)" d="M223.48,201.25H28.92c-4.83,0-8.75-3.92-8.75-8.75v-127c0-4.83,3.92-8.75,8.75-8.75h194.56
 		c4.83,0,8.75,3.92,8.75,8.75v127C232.23,197.33,228.31,201.25,223.48,201.25z"/>
                 <g id="Damage">
                     <path id="Shape_00000007391783372314003880000003206562627022469763_" className="shadow" d="M80.72,327.51H44.7
@@ -112,14 +110,16 @@ export default function Card({ name, attack, cost, description, shield, effect, 
 			c-9.67,0-17.5-7.84-17.5-17.5s7.83-17.5,17.5-17.5c9.66,0,17.5,7.84,17.5,17.5S45.91,51.85,36.24,51.85z"/>
                     <circle className="shadow" cx="36.24" cy="34.35" r="15" />
                 </g>
-                <text transform="matrix(1 0 0 1 115.0651 41.7022)" className="secondary title">{name}</text>
+                <text transform="matrix(1 0 0 1 85.0651 41.7022)" className="secondary title">{name}</text>
                 <text transform="matrix(1 0 0 1 29.8156 44.0484)" className="secondary cost">{cost}</text>
                 <text id="Damage-Text" transform="matrix(1 0 0 1 60.3877 321.3079)" className="secondary text">{attack}</text>
                 <text id="Shield-Text" transform="matrix(1 0 0 1 188.1714 321.3079)" className="secondary text">{shield}</text>
                 <text transform="matrix(1 0 0 1 27.8286 229.9775)" className="secondary description">
-                    {/* <tspan x="0">very long text</tspan>
-                    <tspan x="0" dy="1.2em">very long text</tspan> */}
-                    {description}
+                    {
+                        description.split('<br/>').map((phrase, i) =>
+                            <tspan key={phrase} x="0" dy={`${i ? 1.2 : 0}em`}>{phrase}</tspan>
+                        )
+                    }
                 </text>
             </g>
         </svg>

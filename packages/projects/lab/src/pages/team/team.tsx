@@ -56,16 +56,7 @@ function MingleCard({ mingle, team, currentSlot, onChooseAlly, onRemoveAlly }: M
             <CardHeader
                 avatar={
                     <Avatar sx={{ width: 72, height: 72 }}>
-                        <MingleParts
-                            direction="right"
-                            body={mingle.body}
-                            color={mingle.color}
-                            eye={mingle.genes.eye.name}
-                            tail={mingle.genes.tail.name}
-                            back={mingle.genes.back.name}
-                            mouth={mingle.genes.mouth.name}
-                            horn={mingle.genes.horn.name}
-                        />
+                        <MingleParts direction="right" mingle={mingle} />
                     </Avatar>
                 }
                 title={mingle.name}

@@ -1,7 +1,7 @@
 import { uuid } from '@mingles/services/uuid';
 
 import { ActiveParts, BodyFormats, GeneParts, Stats } from '@/parts';
-import { Species, bird, bug, fish, plant, reptile, rodent } from '@/species';
+import { Category, Species, bird, bug, fish, plant, reptile, rodent, categories } from '@/species';
 
 import type { MingleOptions, MingleColor, MingleGenes, MingleCards, MingleBasicOptions } from './interface';
 
@@ -19,6 +19,7 @@ export default class Mingle<S extends Species> implements MingleOptions<S> {
     public species: S;
     public body: BodyFormats;
     public genes: MingleGenes;
+    public category: Category;
     public color: MingleColor<S>;
 
     constructor({ name, species, genes, body, color }: MingleBasicOptions<S>) {
@@ -27,6 +28,7 @@ export default class Mingle<S extends Species> implements MingleOptions<S> {
         this.body = body;
         this.color = color;
         this.species = species;
+        this.category = categories[species];
 
         this.stats = this.setStats({
             species,
@@ -62,12 +64,12 @@ export default class Mingle<S extends Species> implements MingleOptions<S> {
         };
     }
 
-    private setCards({ horn, mouth, tail, back }: { [A in ActiveParts]: { species: Species; name: string; } }) {
+    private setCards({ horn, mouth, tail, back }: { [A in ActiveParts]: { species: Species; name: string; } }): MingleCards {
         return {
             horn: species[horn.species].cards.horn.find(card => card.name === horn.name),
             tail: species[tail.species].cards.tail.find(card => card.name === tail.name),
             back: species[back.species].cards.back.find(card => card.name === back.name),
-            mouth: species[mouth.species].cards.mouth.find(card => card.name === mouth.name),
+            mouth: species[mouth.species].cards.mouth.find(card => card.name === mouth.name)
         };
     }
 };

@@ -1,7 +1,8 @@
-import type { Genes, Species } from '@/species';
+import type { Effect } from '@/effect';
 import type { ActiveParts } from '@/parts';
+import type { Genes, Species } from '@/species';
 
-import type { CardOptions, CardOptionsLock, Cost, Effect } from './interface';
+import type { CardOptions, CardOptionsLock, Cost } from './interface';
 
 export default class Card<S extends Species, P extends ActiveParts> implements CardOptions<S, P> {
     private _attack: number;

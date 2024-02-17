@@ -1,19 +1,21 @@
 import React from 'react';
 
-import type { Species, BodyFormats, GeneParts, MingleGenes, MingleColor } from '@mingles/business';
+import type { Species, Ally, Mingle } from '@mingles/business';
 
 import Eyes from './eyes';
 import Body from './body';
 import Tail from './tail';
 import Horn from './horn';
-import Mouth from './mouth';
 import Back from './back';
+import Mouth from './mouth';
 import { Direction } from './interface';
 
 import './Mingles.scss';
 
-type MinglePartsProps = { [G in GeneParts]: MingleGenes[G]['name'] } & { body: BodyFormats; color: MingleColor<Species>; direction?: Direction; size?: number };
-export default function MingleParts({ eye, body, tail, horn, back, mouth, color, direction, size = 1 }: MinglePartsProps) {
+type MinglePartsProps<S extends Species = Species> = { mingle: Mingle<S> | Ally<S>; direction?: Direction; size?: number };
+export default function MingleParts({ mingle, direction, size = 1 }: MinglePartsProps) {
+    const { body, color, genes: { back, eye, horn, mouth, tail } } = mingle;
+
     return (
         <svg
             x="0px"
@@ -26,12 +28,12 @@ export default function MingleParts({ eye, body, tail, horn, back, mouth, color,
             <g id="Floor">
                 <ellipse className="floor" cx="104.17" cy="221.76" rx="68.94" ry="3.64" />
             </g>
-            <Tail tail={tail} />
+            <Tail tail={tail.name} />
             <Body body={body} color={color} />
-            <Horn horn={horn} />
-            <Mouth mouth={mouth} />
-            <Eyes eyes={eye} />
-            <Back back={back} />
+            <Horn horn={horn.name} />
+            <Mouth mouth={mouth.name} />
+            <Eyes eyes={eye.name} />
+            <Back back={back.name} />
         </svg >
     );
 }
