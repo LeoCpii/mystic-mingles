@@ -40,9 +40,9 @@ const team2 = new Team({
 });
 
 export default function Battle() {
-    team2.priorityOrder[0].shield = 100;
-    team2.priorityOrder[1].shield = 100;
-    team2.priorityOrder[2].shield = 100;
+    team2.priorityOrder[0].debuffs = ['poison', 'poison'];
+    team2.priorityOrder[1].debuffs = ['poison'];
+    team2.priorityOrder[2].debuffs = ['poison'];
 
     const game = new Game({
         id: '',

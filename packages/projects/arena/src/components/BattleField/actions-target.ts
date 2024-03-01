@@ -11,6 +11,11 @@ interface GetTarget {
     enemies: Ally<Species>[];
 }
 
+export const getElem = (id: string) => {
+    const el = document.getElementById(id) as HTMLElement;
+    return { el, rect: el.getBoundingClientRect() };
+};
+
 const calculateDistance = (ally: Ally<Species>, enemy: Ally<Species>) => {
     const x = Math.pow(ally.coordinates.x - (10 - enemy.coordinates.x), 2);
     const y = Math.pow(ally.coordinates.y - enemy.coordinates.y, 2);
@@ -19,10 +24,12 @@ const calculateDistance = (ally: Ally<Species>, enemy: Ally<Species>) => {
 };
 
 const getClosestEnemy = (ally: Ally<Species>, enemies: Ally<Species>[]) => {
-    const closest = enemies.map(enemy => {
-        const distance = calculateDistance(ally, enemy);
-        return { id: enemy.id, distance };
-    })
+    const closest = enemies
+        .filter(e => e.isAlive)
+        .map(enemy => {
+            const distance = calculateDistance(ally, enemy);
+            return { id: enemy.id, distance };
+        })
         .sort((a, b) => a.distance > b.distance ? 1 : -1)
         .filter((enemy, _, ordered) => enemy.distance === ordered[0].distance);
 
@@ -37,20 +44,21 @@ export function getTarget({ card, enemies, ally }: GetTarget) {
     return getClosestEnemy(ally, enemies);
 }
 
-export function goTo(ally: Ally<Species>, enemy: Ally<Species>) {
-    const attacker = document.getElementById(ally.id) as HTMLElement;
-    const defender = document.getElementById(enemy.id) as HTMLElement;
+export function getCoordinates(ally: Ally<Species>, enemy: Ally<Species>) {
+    const attacker = getElem(ally.id);
+    const defender = getElem(enemy.id);
 
-    if (attacker && defender) {
-        const attackerRect = attacker.getBoundingClientRect();
-        const defenderRect = defender.getBoundingClientRect();
+    const x = defender.rect.x - attacker.rect.x - 190;
+    const y = defender.rect.y - attacker.rect.y;
 
-        const x = defenderRect.x - attackerRect.x - 190;
-        const y = defenderRect.y - attackerRect.y;
+    return { x, y };
+}
 
-        attacker.style.transform = `translate(${x}px, ${y}px)`;
-        attacker.style.zIndex = '100';
-    }
+export function goTo(ally: Ally<Species>, x: number, y: number) {
+    const attacker = getElem(ally.id);
+
+    attacker.el.style.transform = `translate(${x}px, ${y}px)`;
+    attacker.el.style.zIndex = '100';
 }
 
 export function goBack(ally: Ally<Species>) {

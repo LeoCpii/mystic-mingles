@@ -8,3 +8,12 @@ export function waitDoing<T>(arr: Array<T>, callback: (item: T, index: number, a
         });
     }));
 }
+
+export function wait(callback: () => void, ms: number) {
+    return new Promise<void>(resolve => {
+        setTimeout(() => {
+            callback();
+            resolve();
+        }, ms);
+    });
+}

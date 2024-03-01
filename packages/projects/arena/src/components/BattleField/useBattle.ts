@@ -5,22 +5,28 @@ import Ally from '@mingles/business/ally';
 import type Card from '@mingles/business/card';
 import type { Species } from '@mingles/business/species';
 import type { ActiveParts } from '@mingles/business/parts';
+import { wait } from '@mingles/services/promise';
 
-import { attack } from './action-fight';
+import { attack, poisonDamage } from './action-fight';
 import { BattleContext } from './BattleProvider';
-import { getTarget, goTo, goBack } from './actions-target';
+import { getTarget, goTo, getCoordinates, goBack, getElem } from './actions-target';
 import { chooseCards, getCardsToBuy, rollbackChooseCards } from './actions-deck';
+import { damageAnimation, throwingAnimation, impactAnimation, damageMultipleAnimation } from './action-animation';
+import { useCanvas } from '../Canvas';
 
 export default function useBattle() {
+    const { ref } = useCanvas();
+    const canvas = ref.current as HTMLCanvasElement;
+
     const {
         round,
         teamAlly,
         teamEnemy,
         chosenCards,
+
         setChosenCards,
+
         nextRount,
-        setTookDamage,
-        tookDamage,
         updateTeamAlly,
         updateTeamEnemy,
     } = useContext(BattleContext);
@@ -73,58 +79,90 @@ export default function useBattle() {
         nextRount();
     };
 
-    const endTurn = () => {
-        new Promise((resolve) => {
+    const endTurn = async () => {
+        return new Promise((resolve) => {
             let promiseChain = Promise.resolve();
 
-            // PARA CADA TAMANHO
-            getAlive().forEach((fighter, index) => {
+            getAlive().forEach((fighter) => {
                 const _isAlly = isAlly(fighter);
                 const enemies = _isAlly ? teamEnemy.priorityOrder : teamAlly.priorityOrder;
+
                 const cards = chosenCards[fighter.id];
 
                 if (!cards || !cards.length) { return; }
-
-                const target = getTarget({ card: cards[0], enemies, ally: fighter });
 
                 promiseChain = promiseChain.then(() => {
                     return new Promise((resolveInner) => {
                         setTimeout(() => {
                             const promiseCards = cards.reduce((acc, card) => {
-                                goTo(fighter, target);
-                                return acc.then(() => {
-                                    return new Promise((resolveCard) => {
-                                        setTimeout(() => {
+                                const target = getTarget({ card: cards[0], enemies, ally: fighter });
+                                const refCoordinate = getCoordinates(fighter, target);
+                                const isMelee = card.type === 'melee';
 
-                                            const { newAllyTeam, newChosenCards, newEnemyTeam } = attack({
-                                                card,
-                                                index,
-                                                target,
-                                                fighter,
-                                                teamAlly,
-                                                teamEnemy,
-                                                isAlly: _isAlly,
-                                                chosenFighterCards: cards,
-                                            });
+                                return acc
+                                    .then(() => {
+                                        if (!target.isAlive) { throw new Error('Target is dead'); }
+                                    })
+                                    .then(() => {
+                                        return wait(() => {
+                                            const { newTeam: newTeamEnemy, poisoned: poisonedTeamEnemy } = poisonDamage(teamEnemy);
+                                            const { newTeam: newTeamAlly, poisoned: poisonedTeamAlly } = poisonDamage(teamAlly);
 
-                                            updateTeam(newEnemyTeam);
-                                            updateTeam(newAllyTeam);
+                                            if (poisonedTeamEnemy.length || poisonedTeamAlly.length) {
 
-                                            setChosenCards(prev => {
-                                                return { ...prev, [fighter.id]: newChosenCards };
-                                            });
+                                                if (poisonedTeamEnemy.length) {
+                                                    damageMultipleAnimation(canvas, poisonedTeamEnemy);
+                                                    updateTeamEnemy(newTeamEnemy);
+                                                }
 
-                                            setTookDamage(target);
+                                                if (poisonedTeamAlly.length) {
+                                                    damageMultipleAnimation(canvas, poisonedTeamAlly);
+                                                    updateTeamAlly(newTeamAlly);
+                                                }
+                                            }
+                                        }, 1600);
+                                    })
+                                    .then(() => {
+                                        if (isMelee) {
+                                            return wait(() => { goTo(fighter, refCoordinate.x, refCoordinate.y); }, 500);
+                                        }
+                                    })
+                                    .then(() => {
+                                        // ANIMATION    
+                                        return wait(() => {
+                                            const attackData = attack({ card, target, fighter, teamAlly, teamEnemy, isAlly: _isAlly, });
 
-                                            resolveCard();
-                                        }, 600);
-                                    });
-                                });
+                                            const { newAllyTeam, newEnemyTeam, critical, damage } = attackData;
+
+                                            const { rect: targetRect } = getElem(target.id);
+                                            const { rect: allyRect } = getElem(fighter.id);
+
+                                            if (isMelee) {
+                                                impactAnimation(fighter.id, 'attack');
+                                                impactAnimation(target.id, 'took-damage');
+
+                                                updateTeamAlly(newAllyTeam);
+                                                updateTeamEnemy(newEnemyTeam);
+
+                                                return damageAnimation(canvas, { x: targetRect.x, y: targetRect.y, }, damage, critical);
+                                            } else {
+                                                impactAnimation(fighter.id, 'attack');
+
+                                                return throwingAnimation(canvas, { x: allyRect.x, y: allyRect.y }, { x: targetRect.x, y: targetRect.y })
+                                                    .then(() => {
+                                                        updateTeamAlly(newAllyTeam);
+                                                        updateTeamEnemy(newEnemyTeam);
+                                                        impactAnimation(target.id, 'took-damage');
+                                                        damageAnimation(canvas, { x: targetRect.x, y: targetRect.y, }, damage, critical);
+                                                    });
+                                            }
+                                        }, 1600);
+                                    })
+                                    .catch(() => { });
                             }, Promise.resolve());
 
                             promiseCards.then(() => {
                                 goBack(fighter);
-                                setTookDamage(undefined);
                                 resolveInner();
                             });
                         }, 600);
@@ -133,17 +171,17 @@ export default function useBattle() {
             });
 
             promiseChain.then(() => { resolve({}); });
-        }).then(() => replenishCardsAndEnergy());
+        }).then(() => wait(() => { replenishCardsAndEnergy(); }, 1000));
     };
 
     return {
         round,
         addCard,
         endTurn,
+
         chosenCards,
         rollbackCards,
-        setTookDamage,
-        tookDamage,
+
         alive: getAlive(),
         deck: teamAlly.deck,
         energy: teamAlly.energy,

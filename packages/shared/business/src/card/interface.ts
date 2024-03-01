@@ -6,8 +6,9 @@ import type { ActiveParts } from '@/parts';
 import type { Species, Genes } from '../species';
 
 export type Cost = IntRange<0, 3>;
-export type Attack = IntRange<0, 8>;
-export type Shield = IntRange<0, 8>;
+export type Attack = number;
+export type Shield = number;
+export type Type = 'ranged' | 'melee';
 
 export type CardOptions<S extends Species, P extends ActiveParts> = {
   attack: number;
@@ -18,6 +19,7 @@ export type CardOptions<S extends Species, P extends ActiveParts> = {
   species: S;
   effect?: Effect;
   name: Genes[S][P][number];
+  type: Type;
 };
 
 export interface CardOptionsLock<S extends Species, P extends ActiveParts> extends Omit<CardOptions<S, P>, 'attack' | 'shield'> {

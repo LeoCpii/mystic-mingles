@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    .content {
+        width: 1056px;
+        height: 594px;
+        margin: 0 auto;
+        position: relative;
+
+        .battle-field {
+            top: 0;
+            position: absolute;
+            background-size: cover;
+            image-rendering: pixelated;
+            background-image: url("./../../assets/map/base-map.png");
+        }
+
+        .teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            width: 100%;
+            top: 66.5%;
+            transform: translateY(-50%);
+
+            .ally-team,
+            .enemy-team {
+                width: 100%;
+                height: 200px;
+                position: relative;
+
+                .warrior {
+                    width: 100px;
+                    position: absolute;
+                    top: 0px;
+                }
+            }
+        }
+    }
+}

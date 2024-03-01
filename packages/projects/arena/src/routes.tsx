@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import Test from './pages/test';
 import Battle from './pages/battle';
+import CanvasProvider from './components/Canvas/CanvaProvider';
 
 function getBase() {
     const base = import.meta.env.BASE_URL;
@@ -20,11 +21,15 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Battle />
+                element: <CanvasProvider>
+                    <Battle />
+                </CanvasProvider>
             },
             {
                 path: '/test',
-                element: <Test />
+                element: <CanvasProvider>
+                    <Test />
+                </CanvasProvider>
             }
         ]
     },

@@ -9,6 +9,7 @@
         "outDir": "./dist",
         "declaration": true,
         "downlevelIteration": true,
+        "declarationMap": true,
         "resolveJsonModule": true,
         "allowJs": true,
         "lib": [

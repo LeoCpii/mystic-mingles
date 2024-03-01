@@ -2,3 +2,8 @@
     font-family: "bebas";
     src: url("./../fonts/BebasNeue-Regular.ttf") format("truetype");
 }
+
+@font-face {
+    font-family: "riffic";
+    src: url("./../fonts/RifficFree-Bold.ttf") format("truetype");
+}

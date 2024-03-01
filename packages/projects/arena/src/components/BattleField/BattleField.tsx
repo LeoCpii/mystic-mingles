@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Zoom from '@mui/material/Zoom';
@@ -16,10 +16,11 @@ import type { Species } from '@mingles/business/species';
 import type { ActiveParts } from '@mingles/business/parts';
 import MingleParts, { type Direction } from '@mingles/ui/mingle-parts';
 
-import { BattleProvider } from '@/components/BattleField';
+import BaseMap from '@/assets/map/base-map.png';
+import { Canvas } from '@/components/Canvas';
 
 import useBattle from './useBattle';
-
+import BattleProvider from './BattleProvider';
 import './BattleField.scss';
 
 interface BattleFieldProps {
@@ -40,24 +41,12 @@ function Shield() {
 
 interface WarriorProps { ally: Ally<Species>; direction: Direction; }
 function Warrior({ ally, direction }: WarriorProps) {
-    const { deck, tookDamage } = useBattle();
+    // const { deck } = useBattle();
     const { color, icon } = useSpecies(ally.species);
-
-    useEffect(() => {
-        if (tookDamage?.id === ally.id) {
-            console.log('tookDamage', tookDamage);
-            const element = document.getElementById(ally.id);
-            if (element) {
-                element.classList.add('took-damage');
-                setTimeout(() => {
-                    element.classList.remove('took-damage');
-                }, 600);
-            }
-        }
-    }, [tookDamage]);
+    // const { animation } = useMingleAnimations();
 
     return (
-        <div id={ally.id} className="warrior blink_me">
+        <div id={ally.id} className="warrior">
             <div className="warrior-hud">
                 <div className="effects">
                     {
@@ -69,6 +58,7 @@ function Warrior({ ally, direction }: WarriorProps) {
                             );
                         })
                     }
+                    <p style={{ color: '#333' }}>{ally.isAlive ? '' : 'mortin'}</p>
                 </div>
                 <div className="life-hud">
                     <Zoom in={!!ally.shield}>
@@ -77,30 +67,32 @@ function Warrior({ ally, direction }: WarriorProps) {
                             <span className="value">{ally.shield}</span>
                         </div>
                     </Zoom>
-                    <div className="warrior-class" style={{ background: color }}>
-                        {icon({ color: 'white', size: 16 })}
-                    </div>
-                    <div className="warrior-life">{ally.life}</div>
-                    <div className="life-bar-container">
-                        <div
-                            className="life-bar-content"
-                            style={{
-                                width: `${(ally.life / (ally.totalLife)) * 100}%`,
-                                backgroundColor: ally.life > ally.totalLife / 2 ? '#31c957' : 'red'
-                            }}
-                        />
+                    <div className="info-bar">
+                        <div className="warrior-class" style={{ background: color }}>
+                            {icon({ color: 'white', size: 16 })}
+                        </div>
+                        <div className="warrior-life">{ally.life}</div>
+                        <div className="life-bar-container">
+                            <div
+                                className="life-bar-content"
+                                style={{
+                                    width: `${(ally.life / (ally.totalLife)) * 100}%`,
+                                    backgroundColor: ally.life > ally.totalLife / 2 ? '#31c957' : 'red'
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
-            <div onClick={() => console.log('ally', deck[ally.id])}>
+            <div onClick={() => console.log('ally', ally)}>
                 <MingleParts direction={direction} mingle={ally} />
             </div>
         </div>
     );
 }
 
-interface AllyCardProps { id: string; cards: Card<Species, ActiveParts>[]; order: number; }
-function AllyCard({ id, cards, order }: AllyCardProps) {
+interface WarriorsProps { id: string; cards: Card<Species, ActiveParts>[]; order: number; }
+function WarriorsCards({ id, cards, order }: WarriorsProps) {
     const { allies, addCard } = useBattle();
 
     const ally = allies.find(ally => ally.id === id) as Ally<Species>;
@@ -111,29 +103,24 @@ function AllyCard({ id, cards, order }: AllyCardProps) {
                 {
                     cards.map((card, index) => {
                         return (
-                            <Zoom
-                                in
-                                key={`${card.name}-${index}`}
-                                style={{ transitionDelay: `${index * 100}ms` }}
+                            <div
+                                className="card"
+                                key={`${card.name}_${index}`}
+                                onClick={() => addCard(ally, card)}
                             >
-                                <div
-                                    className="card"
-                                    key={`${card.name}_${index}`}
-                                    onClick={() => addCard(ally, card)}
-                                >
-                                    <DeckCard
-                                        key={index}
-                                        part={card.part}
-                                        cost={card.cost}
-                                        name={card.name}
-                                        attack={card.attack}
-                                        effect={card.effect}
-                                        shield={card.shield}
-                                        species={card.species}
-                                        description={card.description}
-                                    />
-                                </div>
-                            </Zoom>
+                                <DeckCard
+                                    key={index}
+                                    type={card.type}
+                                    part={card.part}
+                                    cost={card.cost}
+                                    name={card.name}
+                                    attack={card.attack}
+                                    effect={card.effect}
+                                    shield={card.shield}
+                                    species={card.species}
+                                    description={card.description}
+                                />
+                            </div>
                         );
                     })
                 }
@@ -143,7 +130,7 @@ function AllyCard({ id, cards, order }: AllyCardProps) {
                     {order}
                 </div>
                 <div className="identificator-image">
-                    <MingleParts direction="right" mingle={ally} />
+                    <MingleParts direction="right" mingle={ally} isStatic />
                 </div>
             </div>
         </div>
@@ -177,7 +164,7 @@ function OrdemPriorityItem({ ally, index }: PositionsProps) {
                     <span className={joinClass([isAlly ? 'ally' : 'enemy'])}>{index + 1}</span>
                 </div>
                 <div className={joinClass(['fighter-image', isAlly ? 'ally' : 'enemy'])}>
-                    <MingleParts direction={isAlly ? 'right' : 'left'} mingle={ally} />
+                    <MingleParts direction={isAlly ? 'right' : 'left'} mingle={ally} isStatic />
                 </div>
             </div>
             <div className="fighter-cards">
@@ -246,7 +233,7 @@ function Footer() {
             <div className="cards-container">
                 {
                     allies.map((ally, index) =>
-                        <AllyCard
+                        <WarriorsCards
                             key={ally.id}
                             id={ally.id}
                             order={index + 1}
@@ -262,64 +249,96 @@ function Footer() {
     );
 }
 
-function Content() {
-    const { allies, enemies, endTurn } = useBattle();
+function Arena() {
+    const { allies, enemies } = useBattle();
 
     const board = [
         Array.from(Array(11), () => ''),
         Array.from(Array(11), () => ''),
         Array.from(Array(11), () => ''),
     ];
+
     return (
-        <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            sx={{ p: 2, height: '100vh' }}
-        >
-            <HUD>
-                <div className="arena-container">
-                    {
-                        board.map((row, y) => {
-                            return row.map((_, x) => (
-                                <div key={`y${y}x${x}`} className="arena-slot">
-                                    <div className="arena-slot-content">
-                                        {
-                                            allies.map(ally => {
-                                                const exist = ally.coordinates.x === x && ally.coordinates.y === Math.abs(y - 2);
-                                                return exist ? <Warrior key={ally.id} direction="right" ally={ally} /> : '';
-                                            })
-                                        }
-                                        {
-                                            enemies.map(ally => {
-                                                const exist = (10 - ally.coordinates.x) === x && ally.coordinates.y === Math.abs(y - 2);
-                                                return exist ? <Warrior key={ally.id} direction="left" ally={ally} /> : '';
-                                            })
-                                        }
-                                    </div>
-                                </div>
-                            ));
-                        })
-                    }
-                </div>
-            </HUD>
-            <Box sx={{ position: 'absolute', bottom: 30, right: 30 }}>
-                <Button
-                    onClick={endTurn}
-                    variant="contained"
-                    color="secondary"
-                >
-                    Próximo turno
-                </Button>
+        <div className="arena-container">
+            {
+                board.map((row, y) => {
+                    return row.map((_, x) => (
+                        <div key={`y${y}x${x}`} className="arena-slot">
+                            <div className="arena-slot-content">
+                                {
+                                    allies.map(ally => {
+                                        const exist = ally.coordinates.x === x && ally.coordinates.y === Math.abs(y - 2);
+                                        return exist ? <Warrior key={ally.id} direction="right" ally={ally} /> : '';
+                                    })
+                                }
+                                {
+                                    enemies.map(ally => {
+                                        const exist = (10 - ally.coordinates.x) === x && ally.coordinates.y === Math.abs(y - 2);
+                                        return exist ? <Warrior key={ally.id} direction="left" ally={ally} /> : '';
+                                    })
+                                }
+                            </div>
+                        </div>
+                    ));
+                })
+            }
+        </div>
+    );
+}
+
+function Content() {
+    const [end, setEnd] = useState(false);
+
+    const { endTurn } = useBattle();
+
+    const handleEndTurn = () => {
+        setEnd(true);
+        endTurn()
+            .then(() => { setEnd(false); });
+    };
+
+    // useEffect(() => {
+    //     end
+    //         ? draw(ref.current as HTMLCanvasElement)
+    //         : stopDrawing();
+    // }, [end]);
+
+    return (
+        <>
+            <Canvas width={1280} height={720} style={{ zIndex: end ? 100 : 1, position: 'relative' }} />
+            <Box sx={{
+                p: 2,
+                top: 0,
+                position: 'absolute',
+                backgroundSize: 'cover',
+                backgroundImage: `url(${BaseMap})`,
+                zIndex: 2
+            }}>
+                <HUD>
+                    <Arena />
+                </HUD>
+                <Box sx={{ position: 'absolute', bottom: 30, right: 30 }}>
+                    <Button
+                        onClick={handleEndTurn}
+                        variant="contained"
+                        color="secondary"
+                    >
+                        Próximo turno
+                    </Button>
+                </Box>
             </Box>
-        </Box>
+        </>
     );
 }
 
 export default function BattleField({ teamAlly, teamEnemy }: BattleFieldProps) {
     return (
         <BattleProvider teamAlly={teamAlly} teamEnemy={teamEnemy}>
-            <Content />
+            <div className="screen">
+                <div className="screen-content">
+                    <Content />
+                </div>
+            </div>
         </BattleProvider>
     );
 }

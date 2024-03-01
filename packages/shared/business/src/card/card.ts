@@ -2,7 +2,7 @@ import type { Effect } from '@/effect';
 import type { ActiveParts } from '@/parts';
 import type { Genes, Species } from '@/species';
 
-import type { CardOptions, CardOptionsLock, Cost } from './interface';
+import type { CardOptions, CardOptionsLock, Cost, Type } from './interface';
 
 export default class Card<S extends Species, P extends ActiveParts> implements CardOptions<S, P> {
     private _attack: number;
@@ -11,14 +11,17 @@ export default class Card<S extends Species, P extends ActiveParts> implements C
     public readonly part: P;
     public readonly species: S;
     public readonly cost: Cost;
+    public readonly type: Type;
     public readonly effect: Effect;
     public readonly description: string;
     public readonly name: Genes[S][P][number];
+
 
     constructor(data: CardOptionsLock<S, P>) {
         this.name = data.name;
         this.cost = data.cost;
         this.part = data.part;
+        this.type = data.type;
         this.attack = data.attack;
         this.shield = data.shield;
         this.effect = data.effect;
@@ -30,5 +33,5 @@ export default class Card<S extends Species, P extends ActiveParts> implements C
     set attack(value: number) { this._attack = value * 10; };
 
     get shield() { return this._shield; };
-    set shield(value: number) { this._shield = value * 5; };
+    set shield(value: number) { this._shield = value * 10; };
 }

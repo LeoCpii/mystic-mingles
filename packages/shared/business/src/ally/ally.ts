@@ -1,3 +1,5 @@
+import { probably } from '@mingles/services/number';
+
 import { buffs } from '@/effect';
 import type Card from '@/card';
 import type { Buff, Debuff } from '@/effect';
@@ -6,6 +8,7 @@ import type { MingleCards, MingleGenes, MingleColor } from '@/mingle';
 import { type Species, type Category, modificators, interaction, categories } from '@/species';
 
 import type { AllyBasicOptions, AllyOptions, Coordinates } from './interface';
+
 
 export default class Ally<S extends Species> implements AllyOptions {
     public id: string;
@@ -48,6 +51,7 @@ export default class Ally<S extends Species> implements AllyOptions {
 
     public calculateDamage(card: Card<Species, ActiveParts>, target: Ally<Species>) {
         let damage = card.attack;
+        let critical = false;
 
         // BUFF
         const multiplicator = this.buffs.filter(buff => buff === 'damage');
@@ -68,7 +72,16 @@ export default class Ally<S extends Species> implements AllyOptions {
         if (interaction[cardCategory].advantage === target.category) { damage += card.attack * .15; }
         if (interaction[cardCategory].disadvantage === target.category) { damage -= card.attack * .15; }
 
-        return Math.ceil(damage);
+        // CRITICAL
+        if (probably(this.stats.fury / 1000)) {
+            damage += card.attack * .5;
+            critical = true;
+        }
+
+        return {
+            damage: Math.ceil(damage),
+            critical
+        };
     }
 
     public takesDamage(damage: number) {

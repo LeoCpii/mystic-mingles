@@ -49,3 +49,7 @@ export function higherThan<T>(arr: T[], path: string): T {
 export function lessThan<T>(arr: T[], path: string): T {
     return greaterOrLessThan(arr, path, 'less');
 }
+
+export function getFilledArray(length: number) {
+    return Array.from(Array(length), (_, index) => index);
+}

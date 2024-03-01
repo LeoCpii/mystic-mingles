@@ -1,6 +1,8 @@
 import React from 'react';
 
-import type { Species, Ally, Mingle } from '@mingles/business';
+import type { Species } from '@mingles/business';
+
+import { joinClass } from '@/utils/joinClass';
 
 import Eyes from './eyes';
 import Body from './body';
@@ -8,13 +10,23 @@ import Tail from './tail';
 import Horn from './horn';
 import Back from './back';
 import Mouth from './mouth';
-import { Direction } from './interface';
+import type { Animation, Direction, Warrior } from './interface';
 
 import './Mingles.scss';
 
-type MinglePartsProps<S extends Species = Species> = { mingle: Mingle<S> | Ally<S>; direction?: Direction; size?: number };
-export default function MingleParts({ mingle, direction, size = 1 }: MinglePartsProps) {
-    const { body, color, genes: { back, eye, horn, mouth, tail } } = mingle;
+type MinglePartsProps<S extends Species = Species> = {
+    size?: number;
+    isStatic?: boolean;
+    mingle: Warrior<S>;
+    direction?: Direction;
+    animation?: Animation
+};
+export default function MingleParts({ mingle, direction, size = 1, isStatic = false, animation }: MinglePartsProps) {
+    const { body, color, genes: { back, eye, horn, mouth, tail }, id } = mingle;
+
+    const clss = () => {
+        return joinClass([isStatic ? '' : 'float-animation', animation]);
+    };
 
     return (
         <svg
@@ -28,12 +40,14 @@ export default function MingleParts({ mingle, direction, size = 1 }: MingleParts
             <g id="Floor">
                 <ellipse className="floor" cx="104.17" cy="221.76" rx="68.94" ry="3.64" />
             </g>
-            <Tail tail={tail.name} />
-            <Body body={body} color={color} />
-            <Horn horn={horn.name} />
-            <Mouth mouth={mouth.name} />
-            <Eyes eyes={eye.name} />
-            <Back back={back.name} />
+            <g className={clss()} id={`${id}-body-${isStatic}`}>
+                <Tail tail={tail.name} />
+                <Body body={body} color={color} />
+                <Horn horn={horn.name} />
+                <Mouth mouth={mouth.name} />
+                <Eyes eyes={eye.name} />
+                <Back back={back.name} />
+            </g>
         </svg >
     );
 }
