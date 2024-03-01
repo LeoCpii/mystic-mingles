@@ -9,11 +9,12 @@ import Effects from '@mingles/ui/effects';
 import MiniCard from '@mingles/ui/mini-card';
 import { joinClass } from '@mingles/ui/utils';
 import type Team from '@mingles/business/team';
-import type Ally from '@mingles/business/ally';
 import type Card from '@mingles/business/card';
 import useSpecies from '@mingles/ui/useSpecies';
+import type Ally from '@mingles/business/ally';
 import type { Species } from '@mingles/business/species';
 import type { ActiveParts } from '@mingles/business/parts';
+import type { Buff, BuffAndDebuff, Debuff } from '@mingles/business/effect';
 import MingleParts, { type Direction } from '@mingles/ui/mingle-parts';
 
 import BaseMap from '@/assets/map/base-map.png';
@@ -21,6 +22,7 @@ import { Canvas } from '@/components/Canvas';
 
 import useBattle from './useBattle';
 import BattleProvider from './BattleProvider';
+
 import './BattleField.scss';
 
 interface BattleFieldProps {
@@ -41,20 +43,26 @@ function Shield() {
 
 interface WarriorProps { ally: Ally<Species>; direction: Direction; }
 function Warrior({ ally, direction }: WarriorProps) {
-    // const { deck } = useBattle();
     const { color, icon } = useSpecies(ally.species);
-    // const { animation } = useMingleAnimations();
+
+    const buffs = Object.keys(ally.buffs).map(key => ({ key, value: ally.buffs[key as Buff] })).filter(({ value }) => value);
+    const debuffs = Object.keys(ally.debuffs).map(key => ({ key, value: ally.debuffs[key as Debuff] }));
 
     return (
         <div id={ally.id} className="warrior">
             <div className="warrior-hud">
                 <div className="effects">
                     {
-                        [...ally.buffs, ...ally.debuffs].map((effect, index) => {
+                        [...buffs, ...debuffs].map((effect, index) => {
                             return (
-                                <div key={index} className="effect">
-                                    <Effects effect={effect} />
-                                </div>
+                                <Zoom key={index} in>
+                                    <div className="effect">
+                                        {
+                                            effect.value && effect.value > 1 && <span>{effect.value}</span>
+                                        }
+                                        <Effects effect={effect.key as BuffAndDebuff} />
+                                    </div>
+                                </Zoom>
                             );
                         })
                     }

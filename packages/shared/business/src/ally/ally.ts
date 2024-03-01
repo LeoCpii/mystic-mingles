@@ -7,8 +7,7 @@ import type { BodyFormats, Stats, ActiveParts } from '@/parts';
 import type { MingleCards, MingleGenes, MingleColor } from '@/mingle';
 import { type Species, type Category, modificators, interaction, categories } from '@/species';
 
-import type { AllyBasicOptions, AllyOptions, Coordinates } from './interface';
-
+import type { AllyBasicOptions, AllyOptions, Coordinates, SetOfEffects } from './interface';
 
 export default class Ally<S extends Species> implements AllyOptions {
     public id: string;
@@ -17,19 +16,17 @@ export default class Ally<S extends Species> implements AllyOptions {
     public shield: number;
     public species: S;
     public stats: Stats;
-    public buffs: Buff[];
-    public debuffs: Debuff[];
     public body: BodyFormats;
     public genes: MingleGenes;
     public cards: MingleCards;
     public category: Category;
     public color: MingleColor<S>;
     public coordinates: Coordinates;
+    public buffs: SetOfEffects<Buff>;
+    public debuffs: SetOfEffects<Debuff>;
 
     constructor({ mingle, coordinates: positions }: AllyBasicOptions<S>) {
-        this.buffs = [];
         this.shield = 0;
-        this.debuffs = [];
         this.id = mingle.id;
         this.name = mingle.name;
         this.body = mingle.body;
@@ -38,27 +35,32 @@ export default class Ally<S extends Species> implements AllyOptions {
         this.genes = mingle.genes;
         this.color = mingle.color;
         this.coordinates = positions;
-        this.category = mingle.category;
         this.species = mingle.species;
+        this.category = mingle.category;
+        this.buffs = {};
+        this.debuffs = {};
         this.life = Math.ceil(mingle.stats.life * modificators[mingle.species]);
     }
 
     get isAlive() { return this.life > 0; }
     get totalLife() { return Math.ceil(this.stats.life * modificators[this.species]); }
 
-    public applyBuff(buff: Buff) { this.buffs.push(buff); }
-    public applyDebuff(debuff: Debuff) { this.debuffs.push(debuff); }
+    public applyBuff(buff: Buff) { this.buffs[buff] = (this.buffs[buff] ?? 0) + 1; }
+    public applyDebuff(debuff: Debuff) {
+        if (debuff === 'poison') { this.debuffs[debuff] = (this.debuffs[debuff] ?? 0) + 1; }
+        else { this.debuffs[debuff] = 1; }
+    }
 
     public calculateDamage(card: Card<Species, ActiveParts>, target: Ally<Species>) {
         let damage = card.attack;
         let critical = false;
 
         // BUFF
-        const multiplicator = this.buffs.filter(buff => buff === 'damage');
+        const multiplicator = this.buffs['damage'];
 
-        if (multiplicator.length) {
-            damage = multiplicator.reduce((acc) => acc = buffs.damage(acc), card.attack);
-            this.buffs = this.buffs.filter(buff => buff !== 'damage');
+        if (multiplicator) {
+            damage = buffs.damage(card.attack) * multiplicator;
+            this.buffs['damage'] = 0;
         }
 
         // SPECIES

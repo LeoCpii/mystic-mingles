@@ -1,4 +1,4 @@
-type Coordinates = { x: number, y: number };
+export type Coordinates = { x: number, y: number };
 type Reaction = 'attack' | 'took-damage';
 
 const FPS = 60;
@@ -77,8 +77,16 @@ export function damageMultipleAnimation(canvas: HTMLCanvasElement, data: { coord
             }
         });
     });
-
 };
+
+export function goTo(el: HTMLElement, x: number, y: number) {
+    return new Promise((resolve) => {
+        el.style.transform = `translate(${x}px, ${y}px)`;
+        el.style.zIndex = '100';
+
+        setTimeout(() => { resolve(''); }, 500);
+    });
+}
 
 export function drawMultipleDamage(canvas: HTMLCanvasElement, data: { coordinates: Coordinates, damage: number }[], opacity = 1) {
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;

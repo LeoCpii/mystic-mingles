@@ -59,7 +59,7 @@ interface Attack {
     fighter: Ally<Species>;
     card: Card<Species, ActiveParts>;
 }
-export function attack({ card, fighter, target, isAlly, teamAlly, teamEnemy }: Attack) {
+export function getAttackData({ card, fighter, target, isAlly, teamAlly, teamEnemy }: Attack) {
     const { target: newEnemy, ally: newAlly, damage, critical } = make({ card, ally: fighter, target, critical: false })
         .applyDamage()
         .applyBuff()
@@ -84,9 +84,9 @@ export function attack({ card, fighter, target, isAlly, teamAlly, teamEnemy }: A
 
 export function poisonDamage(team: Team) {
     const poisoned = team.allies
-        .filter(e => e.debuffs.includes('poison'))
+        .filter(e => e.debuffs.poison && e.isAlive)
         .map(e => {
-            const poisonCount = e.debuffs.filter(d => d === 'poison').length;
+            const poisonCount = e.debuffs.poison as number;
             const damage = poisonCount * 2;
 
             const { rect } = getElem(e.id);

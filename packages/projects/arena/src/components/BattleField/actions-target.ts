@@ -55,10 +55,14 @@ export function getCoordinates(ally: Ally<Species>, enemy: Ally<Species>) {
 }
 
 export function goTo(ally: Ally<Species>, x: number, y: number) {
-    const attacker = getElem(ally.id);
+    return new Promise((resolve) => {
+        const attacker = getElem(ally.id);
 
-    attacker.el.style.transform = `translate(${x}px, ${y}px)`;
-    attacker.el.style.zIndex = '100';
+        attacker.el.style.transform = `translate(${x}px, ${y}px)`;
+        attacker.el.style.zIndex = '100';
+
+        setTimeout(() => { resolve(''); }, 500);
+    });
 }
 
 export function goBack(ally: Ally<Species>) {
