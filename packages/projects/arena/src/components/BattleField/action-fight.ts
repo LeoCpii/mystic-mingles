@@ -26,6 +26,8 @@ export function applyShield(ally: Ally<Species>, cards: Card<Species, ActivePart
 export function make({ card, ally, target, damage = 0, critical }: ActionData) {
     return {
         applyBuff: () => {
+            if (ally.debuffs.stun) { return make({ card, ally, target, damage, critical }); }
+
             const effect = card.effect as Buff;
 
             if (buffEffects.includes(effect)) { ally.applyBuff(effect); }
@@ -91,7 +93,7 @@ export function poisonDamage(team: Team) {
 
             const { rect } = getElem(e.id);
 
-            e.takesDamage(damage);
+            e.takesTrueDamage(damage);
 
             return {
                 damage,

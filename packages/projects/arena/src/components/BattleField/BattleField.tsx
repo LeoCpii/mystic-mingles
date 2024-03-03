@@ -13,6 +13,7 @@ import type Card from '@mingles/business/card';
 import useSpecies from '@mingles/ui/useSpecies';
 import type Ally from '@mingles/business/ally';
 import type { Species } from '@mingles/business/species';
+import type { CardOptions } from '@mingles/business/card';
 import type { ActiveParts } from '@mingles/business/parts';
 import type { Buff, BuffAndDebuff, Debuff } from '@mingles/business/effect';
 import MingleParts, { type Direction } from '@mingles/ui/mingle-parts';
@@ -53,18 +54,20 @@ function Warrior({ ally, direction }: WarriorProps) {
             <div className="warrior-hud">
                 <div className="effects">
                     {
-                        [...buffs, ...debuffs].map((effect, index) => {
-                            return (
-                                <Zoom key={index} in>
-                                    <div className="effect">
-                                        {
-                                            effect.value && effect.value > 1 && <span>{effect.value}</span>
-                                        }
-                                        <Effects effect={effect.key as BuffAndDebuff} />
-                                    </div>
-                                </Zoom>
-                            );
-                        })
+                        [...buffs, ...debuffs]
+                            .filter(effect => effect.value)
+                            .map((effect, index) => {
+                                return (
+                                    <Zoom key={index} in>
+                                        <div className="effect">
+                                            {
+                                                effect.value && effect.value > 1 && <span>{effect.value}</span>
+                                            }
+                                            <Effects effect={effect.key as BuffAndDebuff} />
+                                        </div>
+                                    </Zoom>
+                                );
+                            })
                     }
                     <p style={{ color: '#333' }}>{ally.isAlive ? '' : 'mortin'}</p>
                 </div>
@@ -99,6 +102,17 @@ function Warrior({ ally, direction }: WarriorProps) {
     );
 }
 
+function CardEl({ onClick, ...card }: CardOptions<Species, ActiveParts> & { onClick: () => void }) {
+    return (
+        <div className="card" onClick={onClick}  >
+            <div className="big">
+                <DeckCard {...card} />
+            </div>
+            <DeckCard {...card} />
+        </div>
+    );
+}
+
 interface WarriorsProps { id: string; cards: Card<Species, ActiveParts>[]; order: number; }
 function WarriorsCards({ id, cards, order }: WarriorsProps) {
     const { allies, addCard } = useBattle();
@@ -111,24 +125,19 @@ function WarriorsCards({ id, cards, order }: WarriorsProps) {
                 {
                     cards.map((card, index) => {
                         return (
-                            <div
-                                className="card"
+                            <CardEl
                                 key={`${card.name}_${index}`}
+                                name={card.name}
+                                cost={card.cost}
+                                part={card.part}
+                                type={card.type}
+                                effect={card.effect}
+                                attack={card.attack}
+                                shield={card.shield}
+                                species={card.species}
+                                description={card.description}
                                 onClick={() => addCard(ally, card)}
-                            >
-                                <DeckCard
-                                    key={index}
-                                    type={card.type}
-                                    part={card.part}
-                                    cost={card.cost}
-                                    name={card.name}
-                                    attack={card.attack}
-                                    effect={card.effect}
-                                    shield={card.shield}
-                                    species={card.species}
-                                    description={card.description}
-                                />
-                            </div>
+                            />
                         );
                     })
                 }
@@ -159,7 +168,7 @@ function HUD({ children }: HUDProps) {
 
 interface PositionsProps { ally: Ally<Species>; index: number; }
 function OrdemPriorityItem({ ally, index }: PositionsProps) {
-    const { allies, chosenCards, rollbackCards } = useBattle();
+    const { allies, hud, rollbackCards } = useBattle();
 
     const isAlly = allies.find(a => a.id === ally.id);
 
@@ -177,7 +186,7 @@ function OrdemPriorityItem({ ally, index }: PositionsProps) {
             </div>
             <div className="fighter-cards">
                 {
-                    chosenCards[ally.id]?.map((card, i) => {
+                    hud.chosenCards[ally.id]?.map((card, i) => {
                         return (
                             <Zoom
                                 in={true}
@@ -206,20 +215,35 @@ function OrdemPriorityItem({ ally, index }: PositionsProps) {
 }
 
 function Header() {
-    const { alive, round } = useBattle();
+    const { alive, hud } = useBattle();
 
     return (
         <div className="header">
-            <div>
-                Round {round}
+            <div className="round">
+                Round {hud.round}
             </div>
-            <div className="order-priority">
+            <div className={joinClass(['order-priority', hud.currentCards.length ? '_opacity' : ''])}>
                 {
                     alive.map((ally, index) =>
                         <OrdemPriorityItem key={ally.id} ally={ally} index={index} />)
                 }
             </div>
-            <div>
+            <div className={joinClass(['current-used-cards'])}>
+                {
+                    hud.currentCards.map((card) =>
+                        <Zoom in key={card.name}>
+                            <div style={{ width: 150 }}>
+                                <MiniCard
+                                    name={card.name}
+                                    attack={card.attack}
+                                    species={card.species}
+                                />
+                            </div>
+                        </Zoom>
+                    )
+                }
+            </div>
+            <div className="enemy-deck">
                 enemy deck
             </div>
         </div>
@@ -305,12 +329,6 @@ function Content() {
             .then(() => { setEnd(false); });
     };
 
-    // useEffect(() => {
-    //     end
-    //         ? draw(ref.current as HTMLCanvasElement)
-    //         : stopDrawing();
-    // }, [end]);
-
     return (
         <>
             <Canvas width={1280} height={720} style={{ zIndex: end ? 100 : 1, position: 'relative' }} />
@@ -330,6 +348,7 @@ function Content() {
                         onClick={handleEndTurn}
                         variant="contained"
                         color="secondary"
+                        disabled={end}
                     >
                         Próximo turno
                     </Button>

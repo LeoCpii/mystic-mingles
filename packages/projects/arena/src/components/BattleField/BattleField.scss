@@ -64,6 +64,29 @@ $enemiesColor: #f73434;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
+        font-family: "riffic";
+
+        .round {
+            font-family: "riffic";
+            font-size: 28px;
+            width: 100%;
+        }
+
+        .current-used-cards {
+            top: 20px;
+            width: 100%;
+            padding: 15px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+
+            position: absolute;
+            text-align: center;
+            z-index: 999;
+        }
 
         .order-priority {
             width: 100%;
@@ -71,6 +94,10 @@ $enemiesColor: #f73434;
             justify-content: center;
             align-items: flex-start;
             gap: 20px;
+
+            &._opacity {
+                opacity: 0.2;
+            }
 
             &-item {
                 position: relative;
@@ -147,6 +174,11 @@ $enemiesColor: #f73434;
                 }
             }
         }
+
+        .enemy-deck {
+            width: 100%;
+            text-align: right;
+        }
     }
 
     .footer {
@@ -154,7 +186,6 @@ $enemiesColor: #f73434;
         justify-content: center;
         align-items: center;
         gap: 30px;
-        // margin-top: -30px;
 
         .energy {
             width: 50px;
@@ -163,6 +194,7 @@ $enemiesColor: #f73434;
             border: 2px solid #ecd37e;
             background-color: #ddb635;
             display: flex;
+            font-family: "riffic";
             justify-content: center;
             align-items: center;
             font-size: 18px;
@@ -180,18 +212,35 @@ $enemiesColor: #f73434;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    min-height: 150px;
+                    min-height: 130px;
 
                     .card {
                         width: 75px;
                         transition: all 0.2s ease-in-out;
                         margin-left: -20px;
                         margin-bottom: -30px;
+                        position: relative;
 
                         &:hover {
                             cursor: pointer;
-                            transform: translateY(-35px);
-                            z-index: 2;
+                        }
+
+                        &:hover .big {
+                            opacity: 1;
+                            z-index: 99;
+                            width: 200px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            top: -280px;
+                        }
+
+                        .big {
+                            width: 0;
+                            opacity: 0;
+                            top: 0px;
+                            position: absolute;
+                            transition: all 0.2s ease-in-out;
+                            z-index: -1;
                         }
                     }
                 }
@@ -207,6 +256,7 @@ $enemiesColor: #f73434;
                     justify-content: center;
                     align-items: center;
                     margin: auto;
+                    font-family: "riffic";
 
                     .identificator-order {
                         font-size: 48px;
@@ -288,6 +338,7 @@ $enemiesColor: #f73434;
             width: 170px;
             height: 25px;
             margin-bottom: 10px;
+            font-family: "riffic";
 
             .shield {
                 position: relative;

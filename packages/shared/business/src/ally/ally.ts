@@ -45,6 +45,8 @@ export default class Ally<S extends Species> implements AllyOptions {
     get isAlive() { return this.life > 0; }
     get totalLife() { return Math.ceil(this.stats.life * modificators[this.species]); }
 
+    get isStunned() { return this.debuffs.stun; }
+
     public applyBuff(buff: Buff) { this.buffs[buff] = (this.buffs[buff] ?? 0) + 1; }
     public applyDebuff(debuff: Debuff) {
         if (debuff === 'poison') { this.debuffs[debuff] = (this.debuffs[debuff] ?? 0) + 1; }
@@ -52,15 +54,20 @@ export default class Ally<S extends Species> implements AllyOptions {
     }
 
     public calculateDamage(card: Card<Species, ActiveParts>, target: Ally<Species>) {
+        if (this.isStunned) {
+            this.debuffs.stun = 0;
+            return { damage: 0, critical: false };
+        }
+
         let damage = card.attack;
         let critical = false;
 
         // BUFF
-        const multiplicator = this.buffs['damage'];
+        const multiplicator = this.buffs.damage;
 
         if (multiplicator) {
             damage = buffs.damage(card.attack) * multiplicator;
-            this.buffs['damage'] = 0;
+            this.buffs.damage = 0;
         }
 
         // SPECIES

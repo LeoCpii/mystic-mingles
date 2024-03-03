@@ -7,6 +7,6 @@ export default function Canva(props: CanvaProps) {
     const { ref } = useCanvas();
 
     return (
-        <canvas ref={ref}  {...props} />
+        <canvas id="canvas" ref={ref} style={{ background: 'red' }} {...props} />
     );
 }

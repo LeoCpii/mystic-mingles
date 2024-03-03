@@ -24,20 +24,22 @@ export default class Team implements TeamOptions {
         this.energy = energy ?? this.energy;
     }
 
+    get alives() { return this.allies.filter((ally) => ally.isAlive); }
+
     get priorityOrder() {
         return this.allies.sort((a, b) => {
             return a.stats.speed > b.stats.speed ? -1 : 1;
         });
     }
 
-    get higherLife() { return higherThan(this.allies, 'stats.life'); }
-    get higherSpeed() { return higherThan(this.allies, 'stats.speed'); }
+    get higherLife() { return higherThan(this.alives, 'stats.life'); }
+    get higherSpeed() { return higherThan(this.alives, 'stats.speed'); }
 
-    get lessLife() { return lessThan(this.allies, 'stats.life'); }
-    get lessSpeed() { return lessThan(this.allies, 'stats.speed'); }
+    get lessLife() { return lessThan(this.alives, 'stats.life'); }
+    get lessSpeed() { return lessThan(this.alives, 'stats.speed'); }
 
     private getUniqueCard(newDeck: Deck) {
-        const chosenAlly = getRandom(this.allies);
+        const chosenAlly = getRandom(this.alives);
         const part = getRandom(activeParts);
 
         const reference = [...(this.deck[chosenAlly.id] || []), ...newDeck[chosenAlly.id]];

@@ -40,9 +40,14 @@ const team2 = new Team({
 });
 
 export default function Battle() {
-    team1.allies[0].applyDebuff('stun');
+    team1.allies[0].debuffs.poison = 2;
+    team1.allies[1].debuffs.poison = 3;
+    team1.allies[2].debuffs.poison = 1;
 
-    console.log('aaaaa');
+
+    team2.allies[0].debuffs.poison = 2;
+    team2.allies[1].debuffs.poison = 3;
+    team2.allies[2].debuffs.poison = 1;
 
     const game = new Game({
         id: '',

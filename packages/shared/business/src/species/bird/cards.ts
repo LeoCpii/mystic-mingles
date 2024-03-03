@@ -10,6 +10,7 @@ export const HORN_CARDS: Card<'bird', 'horn'>[] = [
         name: 'Bird Topknot',
         description: 'Bird Feather',
         type: 'ranged',
+        effect: 'faster_backdoor'
     })
 ];
 
@@ -23,6 +24,7 @@ export const TAIL_CARDS: Card<'bird', 'tail'>[] = [
         name: 'Bird Feather',
         description: 'Bird Feather',
         type: 'ranged',
+        effect: 'faster_backdoor'
     })
 ];
 
@@ -36,6 +38,7 @@ export const MOUTH_CARDS: Card<'bird', 'mouth'>[] = [
         name: 'Bird Beak',
         description: 'Bird Beak',
         type: 'ranged',
+        effect: 'faster_backdoor'
     })
 ];
 
@@ -49,5 +52,6 @@ export const BACK_CARDS: Card<'bird', 'back'>[] = [
         name: 'Bird Wing',
         description: 'Bird Wing',
         type: 'ranged',
+        effect: 'faster_backdoor'
     })
 ];

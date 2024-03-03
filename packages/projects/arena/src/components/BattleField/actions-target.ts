@@ -4,11 +4,12 @@ import { getRandom } from '@mingles/services/array';
 import type { Species } from '@mingles/business/species';
 import type { ActiveParts } from '@mingles/business/parts';
 import { backdoorEffects, type Backdoor } from '@mingles/business/effect';
+import { Team } from '@mingles/business';
 
 interface GetTarget {
     card: Card<Species, ActiveParts>;
     ally: Ally<Species>;
-    enemies: Ally<Species>[];
+    teamAttacked: Team;
 }
 
 export const getElem = (id: string) => {
@@ -38,8 +39,12 @@ const getClosestEnemy = (ally: Ally<Species>, enemies: Ally<Species>[]) => {
     return enemies.find(enemy => enemy.id === id) as Ally<Species>;
 };
 
-export function getTarget({ card, enemies, ally }: GetTarget) {
-    if (backdoorEffects.includes(card.effect as Backdoor)) { return getClosestEnemy(ally, enemies); }
+export function getTarget({ card, teamAttacked, ally }: GetTarget) {
+    const enemies = teamAttacked.allies.filter(enemy => enemy.isAlive);
+
+    if (backdoorEffects.includes(card.effect as Backdoor)) {
+        if (card.effect === 'faster_backdoor') { return teamAttacked.higherSpeed; }
+    }
 
     return getClosestEnemy(ally, enemies);
 }
