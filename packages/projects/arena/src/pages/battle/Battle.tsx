@@ -1,4 +1,6 @@
 
+import { useEffect } from 'react';
+
 import Game from '@mingles/business/game';
 import Team from '@mingles/business/team';
 import Ally from '@mingles/business/ally';
@@ -6,6 +8,7 @@ import Player from '@mingles/business/player';
 import Mingle, { generateRandomMingle } from '@mingles/business/mingle';
 
 import BattleField from '@/components/BattleField';
+import { simpleAmbient } from '@/components/BattleField/action-sound';
 
 const team1 = new Team({
     name: 'Team 1',
@@ -40,14 +43,9 @@ const team2 = new Team({
 });
 
 export default function Battle() {
-    team1.allies[0].debuffs.poison = 2;
-    team1.allies[1].debuffs.poison = 3;
-    team1.allies[2].debuffs.poison = 1;
-
-
-    team2.allies[0].debuffs.poison = 2;
-    team2.allies[1].debuffs.poison = 3;
-    team2.allies[2].debuffs.poison = 1;
+    team1.allies[0].debuffs.stun = 1;
+    team1.allies[1].debuffs.stun = 1;
+    team1.allies[2].debuffs.stun = 1;
 
     const game = new Game({
         id: '',
@@ -64,6 +62,12 @@ export default function Battle() {
             })
         ],
     });
+
+    useEffect(() => {
+        setTimeout(() => {
+            simpleAmbient();
+        }, 0);
+    }, []);
 
     return (
         <BattleField

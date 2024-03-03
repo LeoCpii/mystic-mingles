@@ -88,7 +88,7 @@ function Warrior({ ally, direction }: WarriorProps) {
                                 className="life-bar-content"
                                 style={{
                                     width: `${(ally.life / (ally.totalLife)) * 100}%`,
-                                    backgroundColor: ally.life > ally.totalLife / 2 ? '#31c957' : 'red'
+                                    backgroundColor: ally.life > ally.totalLife / 2 ? '#31c957' : '#f73434'
                                 }}
                             />
                         </div>
@@ -230,8 +230,8 @@ function Header() {
             </div>
             <div className={joinClass(['current-used-cards'])}>
                 {
-                    hud.currentCards.map((card) =>
-                        <Zoom in key={card.name}>
+                    hud.currentCards.map((card, index) =>
+                        <Zoom in key={`${card.name}-${index}`}>
                             <div style={{ width: 150 }}>
                                 <MiniCard
                                     name={card.name}

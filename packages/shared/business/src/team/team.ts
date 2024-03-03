@@ -40,6 +40,7 @@ export default class Team implements TeamOptions {
 
     private getUniqueCard(newDeck: Deck) {
         const chosenAlly = getRandom(this.alives);
+        // const chosenAlly = this.alives[0];
         const part = getRandom(activeParts);
 
         const reference = [...(this.deck[chosenAlly.id] || []), ...newDeck[chosenAlly.id]];

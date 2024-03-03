@@ -55,7 +55,6 @@ export default class Ally<S extends Species> implements AllyOptions {
 
     public calculateDamage(card: Card<Species, ActiveParts>, target: Ally<Species>) {
         if (this.isStunned) {
-            this.debuffs.stun = 0;
             return { damage: 0, critical: false };
         }
 

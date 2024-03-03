@@ -26,7 +26,10 @@ export function applyShield(ally: Ally<Species>, cards: Card<Species, ActivePart
 export function make({ card, ally, target, damage = 0, critical }: ActionData) {
     return {
         applyBuff: () => {
-            if (ally.debuffs.stun) { return make({ card, ally, target, damage, critical }); }
+            if (ally.isStunned) {
+                ally.debuffs.stun = 0;
+                return make({ card, ally, target, damage, critical });
+            }
 
             const effect = card.effect as Buff;
 

@@ -8,11 +8,11 @@ const FPS = 60;
 const TIMER = 1000 / FPS;
 
 const PADDING = 16;
-const SLOT_DIMENSIONS = { width: 100, height: 100 };
+const SLOT_DIMENSIONS = { width: 100, height: 70 };
 const CANVAS_DIMENSIONS = { width: 1280, height: 720 };
 const MARGIN_OF_DIFFERENCE = {
     width: (window.innerWidth - (CANVAS_DIMENSIONS.width + (PADDING + SLOT_DIMENSIONS.width))) / 2,
-    height: (window.innerHeight - CANVAS_DIMENSIONS.height) / 2
+    height: (window.innerHeight - (CANVAS_DIMENSIONS.height + (PADDING + SLOT_DIMENSIONS.height))) / 2
 };
 
 const _fontSize = 30;
@@ -23,8 +23,7 @@ function loopDrawer(callback: () => void) {
     return window.setInterval(() => { callback(); }, TIMER);
 }
 
-function drawText(canvas: HTMLCanvasElement, coordinates: Coordinates, text: string, color: Color, opacity = 1) {
-    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+function drawText(ctx: CanvasRenderingContext2D, coordinates: Coordinates, text: string, color: Color, opacity = 1) {
     const measure = ctx.measureText(text);
 
     const { x, y } = coordinates;
@@ -42,17 +41,20 @@ function drawText(canvas: HTMLCanvasElement, coordinates: Coordinates, text: str
 
 export function messageAnimation(canvas: HTMLCanvasElement, coordinates: Coordinates, message: string) {
     return new Promise((resolve) => {
+        const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+        const measure = ctx.measureText(message);
+        const reference = 181 - measure.width;
         let opacity = 1;
 
-        let y = coordinates.y - 100;
-        const x = coordinates.x - MARGIN_OF_DIFFERENCE.width;
+        let y = coordinates.y - (SLOT_DIMENSIONS.height + MARGIN_OF_DIFFERENCE.height);
+        const x = coordinates.x - MARGIN_OF_DIFFERENCE.width + (reference / 2);
 
         const timer = loopDrawer(() => {
             y -= 1;
             const newOpacity = opacity - .02;
             opacity = newOpacity > 0 ? newOpacity : 0;
 
-            drawText(canvas, { x, y }, message, 'emphasis', opacity);
+            drawText(ctx, { x, y }, message, 'emphasis', opacity);
 
             if (!opacity) {
                 clearInterval(timer);
@@ -66,7 +68,7 @@ export function damageAnimation(canvas: HTMLCanvasElement, coordinates: Coordina
     return new Promise((resolve) => {
         let opacity = 1;
 
-        let y = coordinates.y - 100;
+        let y = coordinates.y - (SLOT_DIMENSIONS.height + MARGIN_OF_DIFFERENCE.height);
         const x = coordinates.x - MARGIN_OF_DIFFERENCE.width;
 
         const timer = loopDrawer(() => {
@@ -85,9 +87,10 @@ export function damageAnimation(canvas: HTMLCanvasElement, coordinates: Coordina
 }
 
 export function drawDamage(canvas: HTMLCanvasElement, x: number, y: number, damage: number, critical: boolean, opacity = 1) {
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
     const text = critical ? `critical ${damage}` : String(damage);
 
-    drawText(canvas, { x, y }, text, 'danger', opacity);
+    drawText(ctx, { x, y }, text, 'danger', opacity);
 }
 
 export function damageMultipleAnimation(canvas: HTMLCanvasElement, data: { coordinates: Coordinates, damage: number, critical: boolean }[]) {
@@ -95,7 +98,7 @@ export function damageMultipleAnimation(canvas: HTMLCanvasElement, data: { coord
         let opacity = 1;
 
         const mappedData = data.map((i) => {
-            i.coordinates.y -= 100;
+            i.coordinates.y -= (SLOT_DIMENSIONS.height + MARGIN_OF_DIFFERENCE.height);
             i.coordinates.x -= MARGIN_OF_DIFFERENCE.width;
             return i;
         });
@@ -125,7 +128,7 @@ export function drawMultipleDamage(canvas: HTMLCanvasElement, data: { coordinate
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     data.map(({ coordinates, damage }) => {
-        drawText(canvas, coordinates, String(damage), 'poison', opacity);
+        drawText(ctx, coordinates, String(damage), 'poison', opacity);
     });
 }
 
@@ -144,7 +147,7 @@ function drawThrowing(canvas: HTMLCanvasElement, x: number, y: number, opacity: 
 export function throwingAnimation(canvas: HTMLCanvasElement, initial: Coordinates, final: Coordinates) {
     return new Promise((resolve) => {
         let x = initial.x - MARGIN_OF_DIFFERENCE.width;
-        let y = initial.y;
+        let y = initial.y - MARGIN_OF_DIFFERENCE.height + 50;
 
         const timer = loopDrawer(() => {
             x += (final.x - initial.x) / 30;

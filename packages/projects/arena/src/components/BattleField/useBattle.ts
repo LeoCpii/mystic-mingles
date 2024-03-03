@@ -13,6 +13,7 @@ import { getTarget, getCoordinates, goBack, getElem } from './actions-target';
 import { chooseCards, getCardsToBuy, rollbackChooseCards } from './actions-deck';
 import { damageAnimation, throwingAnimation, impactAnimation, damageMultipleAnimation, goTo, Coordinates, messageAnimation } from './action-animation';
 import { useCanvas } from '../Canvas';
+import { simpleAttack } from './action-sound';
 
 export default function useBattle() {
     const { ref } = useCanvas();
@@ -114,7 +115,7 @@ export default function useBattle() {
 
     const damageByAttack = (fighter: Ally<Species>, target: Ally<Species>, card: Card<Species, ActiveParts>, isMelee: boolean, isAlly: boolean) => {
         return new Promise((resolve) => {
-            const isStunned = fighter.debuffs.stun;
+            const isStunned = fighter.isStunned;
             const hasRiseDamage = fighter.buffs.damage;
             const attackData = getAttackData({ card, target, fighter, teamAlly, teamEnemy, isAlly, });
 
@@ -138,8 +139,10 @@ export default function useBattle() {
                     updateTeamEnemy(newEnemyTeam);
 
                     if (isStunned) {
-                        wait(() => { resolve(''); }, 1000);
+                        messageAnimation(canvas, { x: allyRect.x - 40, y: allyRect.y }, 'Miss')
+                            .then(() => { resolve(''); })
                     } else {
+                        simpleAttack();
                         impactAnimation(target.id, 'took-damage');
                         damageAnimation(canvas, { x: targetRect.x, y: targetRect.y, }, damage, critical)
                             .then(() => { resolve(''); });
@@ -154,9 +157,11 @@ export default function useBattle() {
                         updateTeamEnemy(newEnemyTeam);
 
                         if (isStunned) {
-                            wait(() => { resolve(''); }, 1000);
+                            messageAnimation(canvas, { x: allyRect.x - 40, y: allyRect.y }, 'Miss')
+                                .then(() => { resolve(''); })
                         } else {
                             impactAnimation(target.id, 'took-damage');
+                            simpleAttack();
                             damageAnimation(canvas, { x: targetRect.x, y: targetRect.y }, damage, critical)
                                 .then(() => { resolve(''); });
                         }

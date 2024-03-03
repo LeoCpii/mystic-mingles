@@ -20,6 +20,8 @@ export type CardOptions<S extends Species, P extends ActiveParts> = {
   effect?: Effect;
   name: Genes[S][P][number];
   type: Type;
+  image: string;
+  sound: string;
 };
 
 export interface CardOptionsLock<S extends Species, P extends ActiveParts> extends Omit<CardOptions<S, P>, 'attack' | 'shield'> {
