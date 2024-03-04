@@ -43,10 +43,6 @@ const team2 = new Team({
 });
 
 export default function Battle() {
-    team1.allies[0].debuffs.stun = 1;
-    team1.allies[1].debuffs.stun = 1;
-    team1.allies[2].debuffs.stun = 1;
-
     const game = new Game({
         id: '',
         players: [

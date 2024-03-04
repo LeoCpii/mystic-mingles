@@ -46,10 +46,11 @@ export default function useBattle() {
     };
 
     const addCard = (fighter: Ally<Species>, card: Card<Species, ActiveParts>) => {
+        console.log('addCard', card);
+
         const { newTeam, newChosenCards } = chooseCards({ teamAlly, fighter, fighterCards: hud.chosenCards[fighter.id], card });
 
         updateTeam(newTeam);
-        // setHud({ ...chosenCards, [fighter.id]: newChosenCards });
         setHud({ ...hud, chosenCards: { ...hud.chosenCards, [fighter.id]: newChosenCards } });
     };
 
@@ -75,7 +76,6 @@ export default function useBattle() {
             })
         });
 
-        // setChosenCards({ [teamAlly.allies[0].id]: [], [teamAlly.allies[1].id]: [], [teamAlly.allies[2].id]: [] });
         setHud({ ...hud, chosenCards: { [teamAlly.allies[0].id]: [], [teamAlly.allies[1].id]: [], [teamAlly.allies[2].id]: [] } });
         updateTeam(newTeam);
         nextRount();
@@ -140,7 +140,7 @@ export default function useBattle() {
 
                     if (isStunned) {
                         messageAnimation(canvas, { x: allyRect.x - 40, y: allyRect.y }, 'Miss')
-                            .then(() => { resolve(''); })
+                            .then(() => { resolve(''); });
                     } else {
                         simpleAttack();
                         impactAnimation(target.id, 'took-damage');
@@ -151,14 +151,14 @@ export default function useBattle() {
             } else {
                 impactAnimation(fighter.id, 'attack');
 
-                throwingAnimation(canvas, { x: allyRect.x, y: allyRect.y }, { x: targetRect.x, y: targetRect.y })
+                throwingAnimation(canvas, { x: allyRect.x, y: allyRect.y }, { x: targetRect.x, y: targetRect.y }, card.assets.image.bullet || '')
                     .then(() => {
                         updateTeamAlly(newAllyTeam);
                         updateTeamEnemy(newEnemyTeam);
 
                         if (isStunned) {
                             messageAnimation(canvas, { x: allyRect.x - 40, y: allyRect.y }, 'Miss')
-                                .then(() => { resolve(''); })
+                                .then(() => { resolve(''); });
                         } else {
                             impactAnimation(target.id, 'took-damage');
                             simpleAttack();

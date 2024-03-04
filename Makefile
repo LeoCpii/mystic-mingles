@@ -4,6 +4,7 @@ RUN:=yarn
 UI:=ui
 BUSINESS:=business
 SERVICES:=services
+RESOURCES:=resources
 
 # WEB #
 LAB:=lab
@@ -104,6 +105,9 @@ build-services:
 build-business:
 	$(call run_in_workspace,$(BUSINESS),build)
 
+build-resources:
+	$(call run_in_workspace,$(RESOURCES),build)
+
 build-dependencies: build-services build-business build-ui
 
 # ---------------------- WATCH ----------------------- #
@@ -113,6 +117,9 @@ watch-business:
 
 watch-services:
 	$(call run_in_workspace,$(SERVICES),build:watch)
+
+watch-resources:
+	$(call run_in_workspace,$(RESOURCES),build:watch)
 
 watch-ui:
 	$(call run_in_workspace,$(UI),watch)

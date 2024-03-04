@@ -3272,6 +3272,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@mingles/resources@workspace:packages/shared/resources":
+  version: 0.0.0-use.local
+  resolution: "@mingles/resources@workspace:packages/shared/resources"
+  dependencies:
+    "@types/node": ^18.11.18
+    "@typescript-eslint/eslint-plugin": ^6.0.0
+    "@typescript-eslint/parser": ^6.0.0
+    concurrently: ^8.0.1
+    eslint: ^8.44.0
+    jest-cli: ^28.1.2
+    jest-fetch-mock: ^3.0.3
+    rimraf: ^3.0.2
+    ts-jest: ^29.1.1
+    ts-loader: ^9.2.8
+    ts-node: ^10.7.0
+    tsc: ^2.0.4
+    tsc-alias: ^1.6.5
+    tslib: ^2.4.0
+    typescript: latest
+    typescript-transform-paths: ^3.3.1
+    typings: ^2.1.1
+  languageName: unknown
+  linkType: soft
+
 "@mingles/services@*, @mingles/services@workspace:packages/shared/services":
   version: 0.0.0-use.local
   resolution: "@mingles/services@workspace:packages/shared/services"

@@ -132,19 +132,19 @@ export function drawMultipleDamage(canvas: HTMLCanvasElement, data: { coordinate
     });
 }
 
-function drawThrowing(canvas: HTMLCanvasElement, x: number, y: number, opacity: number) {
+function drawThrowing(canvas: HTMLCanvasElement, x: number, y: number, opacity: number, image: string) {
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const image = new Image();
-    image.src = 'https://freepngimg.com/download/fire/136946-mario-fireball-bros-free-hq-image.png';
+    const img = new Image();
+    img.src = image;
     ctx.globalAlpha = opacity;
 
-    ctx.drawImage(image, x, y, 50, 100);
+    ctx.drawImage(img, x, y, 50, 100);
 }
 
-export function throwingAnimation(canvas: HTMLCanvasElement, initial: Coordinates, final: Coordinates) {
+export function throwingAnimation(canvas: HTMLCanvasElement, initial: Coordinates, final: Coordinates, image: string) {
     return new Promise((resolve) => {
         let x = initial.x - MARGIN_OF_DIFFERENCE.width;
         let y = initial.y - MARGIN_OF_DIFFERENCE.height + 50;
@@ -153,10 +153,10 @@ export function throwingAnimation(canvas: HTMLCanvasElement, initial: Coordinate
             x += (final.x - initial.x) / 30;
             y += (final.y - initial.y) / 30;
 
-            drawThrowing(canvas, x, y - 50, 1);
+            drawThrowing(canvas, x, y - 50, 1, image);
 
             if (Math.ceil(x) >= Math.ceil(final.x - MARGIN_OF_DIFFERENCE.width)) {
-                drawThrowing(canvas, x, y, 0);
+                drawThrowing(canvas, x, y, 0, image);
                 clearInterval(timer);
                 resolve('');
             }

@@ -136,6 +136,7 @@ function WarriorsCards({ id, cards, order }: WarriorsProps) {
                                 shield={card.shield}
                                 species={card.species}
                                 description={card.description}
+                                assets={card.assets}
                                 onClick={() => addCard(ally, card)}
                             />
                         );
@@ -201,6 +202,7 @@ function OrdemPriorityItem({ ally, index }: PositionsProps) {
                                 >
                                     <MiniCard
                                         name={card.name}
+                                        assets={card.assets}
                                         attack={card.attack}
                                         species={card.species}
                                     />
@@ -235,6 +237,7 @@ function Header() {
                             <div style={{ width: 150 }}>
                                 <MiniCard
                                     name={card.name}
+                                    assets={card.assets}
                                     attack={card.attack}
                                     species={card.species}
                                 />
