@@ -14,17 +14,18 @@
     "./*": {
       "import": "./dist/*/index.js",
       "require": "./dist/*/index.js",
-      "types": "./dist/*/index.d.ts"
+      "types": "./dist/*/index.js"
     }
   },
   "scripts": {
-    "build": "rimraf dist && tsc && tsc-alias -p tsconfig.aliases.json",
+    "build": "rimraf dist && tsc && tsc-alias -p tsconfig.aliases.json && npm run assets",
     "build:watch": "concurrently --kill-others \"tsc -w\" \"tsc-alias -w\"",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test:watchAll": "jest --watchAll",
-    "lint": "eslint --ext .ts . --ignore-pattern '/dist'"
+    "lint": "eslint --ext .ts . --ignore-pattern '/dist'",
+    "assets": "mkdirp dist/assets && cp -r assets/* dist/assets"
   },
   "dependencies": {
     "tslib": "^2.4.0"
