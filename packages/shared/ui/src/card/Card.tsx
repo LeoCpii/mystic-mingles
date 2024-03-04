@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import type { CardOptions, Species, ActiveParts } from '@mingles/business';
 
 import background from '@/utils/species-card-colors';
 
 import './Card.scss';
+import { uuid } from '@mingles/services';
 
 function Stun() {
     return (
         <path id="Stun_00000150813945167329546600000008032402291539617956_" className="secondary" d="M126.45,305.74c-4.25,0-7.7,3.45-7.7,7.7
 				c0,4.25,3.45,7.7,7.7,7.7c3.04,0,5.5-2.46,5.5-5.5s-2.46-5.5-5.5-5.5c-1.82,0-3.3,1.48-3.3,3.3c0,1.82,1.48,3.3,3.3,3.3
-				c0.61,0,1.1-0.49,1.1-1.1s-0.49-1.1-1.1-1.1c-0.61,0-1.1-0.49-1.1-1.1c0-0.61,0.49-1.1,1.1-1.1c1.82,0,3.3,1.48,3.3,3.3
+    		    c0.61,0,1.1-0.49,1.1-1.1s-0.49-1.1-1.1-1.1c-0.61,0-1.1-0.49-1.1-1.1c0-0.61,0.49-1.1,1.1-1.1c1.82,0,3.3,1.48,3.3,3.3
 				c0,1.82-1.48,3.3-3.3,3.3c-3.04,0-5.5-2.46-5.5-5.5c0-3.04,2.46-5.5,5.5-5.5c4.25,0,7.7,3.45,7.7,7.7s-3.45,7.7-7.7,7.7
 				c-5.47,0-9.9-4.43-9.9-9.9c0-0.61-0.49-1.1-1.1-1.1c-0.61,0-1.1,0.49-1.1,1.1c0,6.68,5.41,12.09,12.09,12.09
 				c5.47,0,9.9-4.43,9.9-9.9C136.35,310.17,131.92,305.74,126.45,305.74z"/>
@@ -53,13 +54,15 @@ function Effects({ effect }: { effect: CardOptions<Species, ActiveParts>['effect
     );
 }
 
-export default function Card({ name, attack, cost, description, shield, effect, species }: CardOptions<Species, ActiveParts>) {
+export default function Card({ name, attack, cost, description, shield, effect, species, assets }: CardOptions<Species, ActiveParts>) {
+    const [id] = useState(uuid());
+
     return (
         <svg version="1.1" x="0px" y="0px"
             viewBox="0 0 250 350">
             <defs>
-                <pattern id="img1" patternUnits="userSpaceOnUse" width="600" height="450">
-                    <image href="https://www.boogdesign.com/examples/svg/daisy-grass-repeating-background.jpg" x="0" y="0" width="600" height="450" />
+                <pattern id={id} patternUnits="userSpaceOnUse" width="600" height="450">
+                    <image href={assets.image.card} x="0" y="0" width="600" height="450" />
                 </pattern>
             </defs>
             <g id="Card">
@@ -73,7 +76,7 @@ export default function Card({ name, attack, cost, description, shield, effect, 
 			c5.92,0,10.72-4.8,10.72-10.72V18.32C242.5,12.4,237.7,7.6,231.78,7.6z M239.86,331.38c0,4.81-3.9,8.72-8.72,8.72H18.57
 			c-4.81,0-8.72-3.9-8.72-8.72V18.82c0-4.81,3.9-8.72,8.72-8.72h212.56c4.81,0,8.72,3.9,8.72,8.72V331.38z"/>
                 </g>
-                <path id="Shape_image" fill="url(#img1)" d="M223.48,201.25H28.92c-4.83,0-8.75-3.92-8.75-8.75v-127c0-4.83,3.92-8.75,8.75-8.75h194.56
+                <path id="Shape_image" fill={`url(#${id})`} d="M223.48,201.25H28.92c-4.83,0-8.75-3.92-8.75-8.75v-127c0-4.83,3.92-8.75,8.75-8.75h194.56
 		c4.83,0,8.75,3.92,8.75,8.75v127C232.23,197.33,228.31,201.25,223.48,201.25z"/>
                 <g id="Damage">
                     <path id="Shape_00000007391783372314003880000003206562627022469763_" className="shadow" d="M80.72,327.51H44.7

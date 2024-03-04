@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import type { CardOptions, Species, ActiveParts } from '@mingles/business';
 
 import background from '@/utils/species-card-colors';
 
 import './MiniCard.scss';
+import { uuid } from '@mingles/services';
 
-export default function MiniCard({ attack, species }: Pick<CardOptions<Species, ActiveParts>, 'attack' | 'name' | 'species'>) {
-
+export default function MiniCard({ attack, species, assets }: Pick<CardOptions<Species, ActiveParts>, 'attack' | 'name' | 'species' | 'assets'>) {
+    const [id] = useState(uuid());
 
     return (
         <svg x="0px" y="0px" viewBox="0 0 250 209.74">
             <defs>
-                <pattern id="img1" patternUnits="userSpaceOnUse" width="600" height="450">
-                    <image href="https://www.boogdesign.com/examples/svg/daisy-grass-repeating-background.jpg" x="0" y="0" width="600" height="450" />
+                <pattern id={id} patternUnits="userSpaceOnUse" width="600" height="450">
+                    <image href={assets.image.card} x="0" y="0" width="600" height="450" />
                 </pattern>
             </defs>
             <g id="Camada_1">
@@ -24,7 +25,7 @@ export default function MiniCard({ attack, species }: Pick<CardOptions<Species, 
 			c9.08,0,16.44,7.36,16.44,16.44V193.3C250,202.38,242.64,209.74,233.56,209.74z"/>
                 </g>
 
-                <path id="Shape_image" fill="url(#img1)" d="M218.32,164.97H31.68c-8.62,0-15.6-6.99-15.6-15.6V32.13c0-8.62,6.99-15.6,15.6-15.6h186.64
+                <path id="Shape_image" fill={`url(#${id})`} d="M218.32,164.97H31.68c-8.62,0-15.6-6.99-15.6-15.6V32.13c0-8.62,6.99-15.6,15.6-15.6h186.64
 		c8.62,0,15.6,6.99,15.6,15.6v117.23C233.92,157.98,226.94,164.97,218.32,164.97z"/>
                 <path className="st20" d="M232.45,345.06H18.19c-7.11,0-12.87-5.76-12.87-12.87V17.87C5.32,10.76,11.08,5,18.19,5h214.26
 		c7.11,0,12.87,5.76,12.87,12.87v314.32C245.32,339.3,239.56,345.06,232.45,345.06z"/>
