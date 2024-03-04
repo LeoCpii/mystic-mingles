@@ -1,3 +1,6 @@
+import { SimpleAttackAudio } from '@mingles/resources/audio';
+import { BlueLightImage, BlueSkyImage } from '@mingles/resources/images';
+
 import Card from '@/card';
 
 export const HORN_CARDS: Card<'bird', 'horn'>[] = [
@@ -10,7 +13,11 @@ export const HORN_CARDS: Card<'bird', 'horn'>[] = [
         name: 'Bird Topknot',
         description: 'Bird Feather',
         type: 'ranged',
-        effect: 'faster_backdoor'
+        effect: 'faster_backdoor',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: BlueSkyImage, bullet: BlueLightImage }
+        }
     })
 ];
 
@@ -24,7 +31,11 @@ export const TAIL_CARDS: Card<'bird', 'tail'>[] = [
         name: 'Bird Feather',
         description: 'Bird Feather',
         type: 'ranged',
-        effect: 'faster_backdoor'
+        effect: 'faster_backdoor',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: BlueSkyImage, bullet: BlueLightImage }
+        }
     })
 ];
 
@@ -38,7 +49,11 @@ export const MOUTH_CARDS: Card<'bird', 'mouth'>[] = [
         name: 'Bird Beak',
         description: 'Bird Beak',
         type: 'ranged',
-        effect: 'faster_backdoor'
+        effect: 'faster_backdoor',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: BlueSkyImage, bullet: BlueLightImage }
+        }
     })
 ];
 
@@ -52,6 +67,10 @@ export const BACK_CARDS: Card<'bird', 'back'>[] = [
         name: 'Bird Wing',
         description: 'Bird Wing',
         type: 'ranged',
-        effect: 'faster_backdoor'
+        effect: 'faster_backdoor',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: BlueSkyImage, bullet: BlueLightImage }
+        }
     })
 ];

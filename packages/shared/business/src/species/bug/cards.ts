@@ -1,3 +1,6 @@
+import { RedLightImage, LoveBugImage, BeattleImage } from '@mingles/resources/images';
+import { SimpleAttackAudio } from '@mingles/resources/audio';
+
 import Card from '@/card';
 
 export const HORN_CARDS: Card<'bug', 'horn'>[] = [
@@ -10,6 +13,10 @@ export const HORN_CARDS: Card<'bug', 'horn'>[] = [
         name: 'Bug Butterfly',
         description: 'Bug Butterfly',
         type: 'ranged',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: LoveBugImage, bullet: RedLightImage }
+        }
     })
 ];
 
@@ -23,6 +30,10 @@ export const TAIL_CARDS: Card<'bug', 'tail'>[] = [
         name: 'Bug Bee',
         description: 'Bug Bee',
         type: 'ranged',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: LoveBugImage, bullet: RedLightImage }
+        }
     })
 ];
 
@@ -36,6 +47,10 @@ export const MOUTH_CARDS: Card<'bug', 'mouth'>[] = [
         name: 'Bug Termite',
         description: 'Bug Termite',
         type: 'ranged',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: BeattleImage, bullet: RedLightImage }
+        }
     })
 ];
 
@@ -49,5 +64,9 @@ export const BACK_CARDS: Card<'bug', 'back'>[] = [
         name: 'Bug Fly',
         description: 'Bug Fly',
         type: 'ranged',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: LoveBugImage, bullet: RedLightImage }
+        }
     })
 ];

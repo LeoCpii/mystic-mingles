@@ -1,3 +1,6 @@
+import { GrassImage, CloverImage } from '@mingles/resources/images';
+import { SimpleAttackAudio } from '@mingles/resources/audio';
+
 import Card from '@/card';
 
 export const HORN_CARDS: Card<'reptile', 'horn'>[] = [
@@ -10,6 +13,10 @@ export const HORN_CARDS: Card<'reptile', 'horn'>[] = [
         name: 'Reptile Iguana',
         description: 'Reptile Iguana',
         type: 'ranged',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];
 
@@ -23,6 +30,10 @@ export const TAIL_CARDS: Card<'reptile', 'tail'>[] = [
         name: 'Reptile Lizard',
         description: 'Reptile Lizard',
         type: 'ranged',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];
 
@@ -36,6 +47,10 @@ export const MOUTH_CARDS: Card<'reptile', 'mouth'>[] = [
         name: 'Reptile Sad',
         description: 'Reptile Sad',
         type: 'ranged',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];
 
@@ -49,5 +64,9 @@ export const BACK_CARDS: Card<'reptile', 'back'>[] = [
         name: 'Reptile Turtle',
         description: 'Reptile Turtle',
         type: 'ranged',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];

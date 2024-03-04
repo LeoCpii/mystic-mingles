@@ -1,3 +1,6 @@
+import { GrassImage, CloverImage } from '@mingles/resources/images';
+import { SimpleAttackAudio } from '@mingles/resources/audio';
+
 import Card from '@/card';
 
 export const HORN_CARDS: Card<'plant', 'horn'>[] = [
@@ -11,6 +14,10 @@ export const HORN_CARDS: Card<'plant', 'horn'>[] = [
         effect: 'damage',
         description: 'Plant Fall',
         type: 'melee',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];
 
@@ -25,6 +32,10 @@ export const TAIL_CARDS: Card<'plant', 'tail'>[] = [
         effect: 'damage',
         description: 'Plant Leaf',
         type: 'melee',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];
 
@@ -39,6 +50,10 @@ export const MOUTH_CARDS: Card<'plant', 'mouth'>[] = [
         effect: 'damage',
         description: 'Plant Laught',
         type: 'melee',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     }),
     new Card({
         cost: 2,
@@ -50,6 +65,10 @@ export const MOUTH_CARDS: Card<'plant', 'mouth'>[] = [
         effect: 'damage',
         description: 'Plant Snack',
         type: 'melee',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     }),
 ];
 
@@ -64,5 +83,9 @@ export const BACK_CARDS: Card<'plant', 'back'>[] = [
         effect: 'damage',
         description: 'Plant Flower',
         type: 'melee',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];

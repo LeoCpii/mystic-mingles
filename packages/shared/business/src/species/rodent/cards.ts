@@ -1,3 +1,6 @@
+import { GrassImage, CloverImage } from '@mingles/resources/images';
+import { SimpleAttackAudio } from '@mingles/resources/audio';
+
 import Card from '@/card';
 
 export const HORN_CARDS: Card<'rodent', 'horn'>[] = [
@@ -10,6 +13,10 @@ export const HORN_CARDS: Card<'rodent', 'horn'>[] = [
         name: 'Rodent Rat',
         description: 'Rodent Rat',
         type: 'melee',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];
 
@@ -23,6 +30,10 @@ export const TAIL_CARDS: Card<'rodent', 'tail'>[] = [
         name: 'Rodent Beaver',
         description: 'Rodent Beaver',
         type: 'melee',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];
 
@@ -36,6 +47,10 @@ export const MOUTH_CARDS: Card<'rodent', 'mouth'>[] = [
         name: 'Rodent Squirrel',
         description: 'Rodent Squirrel',
         type: 'melee',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];
 
@@ -49,5 +64,9 @@ export const BACK_CARDS: Card<'rodent', 'back'>[] = [
         name: 'Rodent Nut',
         description: 'Rodent Nut',
         type: 'melee',
+        assets: {
+            audio: { finish: SimpleAttackAudio },
+            image: { card: GrassImage, bullet: CloverImage }
+        }
     })
 ];

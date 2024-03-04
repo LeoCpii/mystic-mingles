@@ -1,3 +1,6 @@
+import { FlashLightImage, OceanImage } from '@mingles/resources/images';
+import { SimpleAttackAudio } from '@mingles/resources/audio';
+
 import Card from '@/card';
 
 export const HORN_CARDS: Card<'fish', 'horn'>[] = [
@@ -10,6 +13,10 @@ export const HORN_CARDS: Card<'fish', 'horn'>[] = [
         name: 'Fish Shark',
         description: 'Fish Shark',
         type: 'ranged',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: OceanImage, bullet: FlashLightImage }
+        }
     })
 ];
 
@@ -23,6 +30,10 @@ export const TAIL_CARDS: Card<'fish', 'tail'>[] = [
         name: 'Fish Gold',
         description: 'Fish Gold',
         type: 'ranged',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: OceanImage, bullet: FlashLightImage }
+        }
     })
 ];
 
@@ -36,6 +47,10 @@ export const MOUTH_CARDS: Card<'fish', 'mouth'>[] = [
         name: 'Fish Eat',
         description: 'Fish Eat',
         type: 'ranged',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: OceanImage, bullet: FlashLightImage }
+        }
     })
 ];
 
@@ -49,5 +64,9 @@ export const BACK_CARDS: Card<'fish', 'back'>[] = [
         name: 'Fish Fin',
         description: 'Fish Fin',
         type: 'ranged',
+        assets: {
+            audio: { start: SimpleAttackAudio, finish: SimpleAttackAudio },
+            image: { card: OceanImage, bullet: FlashLightImage }
+        }
     })
 ];

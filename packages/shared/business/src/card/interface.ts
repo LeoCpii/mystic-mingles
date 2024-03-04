@@ -9,6 +9,10 @@ export type Cost = IntRange<0, 3>;
 export type Attack = number;
 export type Shield = number;
 export type Type = 'ranged' | 'melee';
+export type Audio = { start?: HTMLAudioElement; finish: HTMLAudioElement; };
+export type Image = { card: string; bullet?: string; }
+
+export type Assets = { audio: Audio; image: Image; }
 
 export type CardOptions<S extends Species, P extends ActiveParts> = {
   attack: number;
@@ -20,8 +24,7 @@ export type CardOptions<S extends Species, P extends ActiveParts> = {
   effect?: Effect;
   name: Genes[S][P][number];
   type: Type;
-  image: string;
-  sound: string;
+  assets: Assets;
 };
 
 export interface CardOptionsLock<S extends Species, P extends ActiveParts> extends Omit<CardOptions<S, P>, 'attack' | 'shield'> {
