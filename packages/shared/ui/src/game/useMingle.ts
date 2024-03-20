@@ -7,7 +7,10 @@ export default function useMingle(mingle: MingleBasicOptions<Species>) {
     const [_mingle, setMingle] = useState<Mingle<Species>>(new Mingle(mingle));
 
     const update = (data: Partial<Mingle<Species>>) => {
+        data.createAt = new Date();
+
         if (data.species) { data.color = getRandom(colors[data.species] as any); };
+
         setMingle(new Mingle({ ..._mingle, ...data } as any));
     };
 

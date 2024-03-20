@@ -16,7 +16,7 @@
       ]
     },
     {
-      "target": "stg-sso",
+      "target": "arena-stg",
       "public": "dist",
       "ignore": [
         "firebase.json",

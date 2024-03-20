@@ -1,42 +1,397 @@
-.container {
+$alliesColor: #228aec;
+$enemiesColor: #f73434;
+
+// GRID SYSTEM
+@mixin grid($GAP: 0, $grid-columns: 12, $grid-rows: 1) {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: unquote(repeater("1fr ", $grid-columns));
+    grid-gap: $GAP;
+    grid-template-columns: repeat($grid-columns, 1fr);
+    grid-template-rows: $grid-rows;
+    position: relative;
+    width: 100%;
+}
+
+@mixin grid-column-start($cols) {
+    -ms-grid-column: $cols;
+    grid-column-start: $cols;
+}
+
+@mixin grid-column-span($cols: 12) {
+    grid-column-end: span $cols;
+    -ms-grid-column-span: $cols;
+}
+
+@mixin grid-row-start($rows) {
+    -ms-grid-row: $rows;
+    grid-row-start: $rows;
+}
+
+// ANIMATIONS
+
+@keyframes float {
+    0% {
+        transform: translatey(0px);
+    }
+    50% {
+        transform: translatey(-5px);
+    }
+    100% {
+        transform: translatey(0px);
+    }
+}
+
+// CSS
+
+.screen {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 
-    .content {
-        width: 1056px;
-        height: 594px;
+    .screen-content {
+        width: 1280px;
+        height: 720px;
         margin: 0 auto;
         position: relative;
+    }
+}
 
-        .battle-field {
-            top: 0;
-            position: absolute;
-            background-size: cover;
-            image-rendering: pixelated;
-            background-image: url("./../../assets/map/base-map.png");
+.HUD {
+    .header {
+        margin-bottom: 200px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        font-family: "riffic";
+
+        .round {
+            font-family: "riffic";
+            font-size: 28px;
+            width: 100%;
         }
 
-        .teams {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: absolute;
+        .current-used-cards {
+            top: 20px;
             width: 100%;
-            top: 66.5%;
-            transform: translateY(-50%);
+            padding: 15px;
 
-            .ally-team,
-            .enemy-team {
-                width: 100%;
-                height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+
+            position: absolute;
+            text-align: center;
+            z-index: 999;
+        }
+
+        .order-priority {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+
+            &._opacity {
+                opacity: 0.2;
+            }
+
+            &-item {
                 position: relative;
 
-                .warrior {
+                .fighter {
+                    position: relative;
                     width: 100px;
+                    height: 75px;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    z-index: 99;
+
+                    &.ally {
+                        background-color: $alliesColor;
+                        transform: scale(1.1);
+                    }
+
+                    &.enemy {
+                        background-color: $enemiesColor;
+                        transform: scale(0.9);
+                    }
+
+                    .order {
+                        position: relative;
+                        font-size: 48px;
+                        z-index: 2;
+
+                        .ally,
+                        .enemy {
+                            position: absolute;
+                            top: -14px;
+                        }
+
+                        .ally {
+                            right: 2px;
+                        }
+
+                        .enemy {
+                            left: 2px;
+                        }
+                    }
+
+                    &-image {
+                        position: absolute;
+                        top: -25px;
+
+                        &.ally {
+                            width: 150px;
+                            left: -50px;
+                        }
+
+                        &.enemy {
+                            width: 150px;
+                            right: -50px;
+                        }
+                    }
+                }
+
+                .fighter-cards {
+                    margin-top: 10px;
+                    display: flex;
                     position: absolute;
-                    top: 0px;
+                    flex-direction: column-reverse;
+                    z-index: 99;
+
+                    .card {
+                        width: 100px;
+                        margin-top: -60px;
+
+                        &:last-child {
+                            margin-top: 0px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .enemy-deck {
+            width: 100%;
+            text-align: right;
+        }
+    }
+
+    .footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+
+        .energy {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #ecd37e;
+            background-color: #ddb635;
+            display: flex;
+            font-family: "riffic";
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .cards-container {
+            @include grid();
+            justify-content: center;
+
+            .group-cards {
+                @include grid-column-span(4);
+
+                .list-cards {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 130px;
+
+                    .card {
+                        width: 75px;
+                        transition: all 0.2s ease-in-out;
+                        margin-left: -20px;
+                        margin-bottom: -30px;
+                        position: relative;
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+
+                        &:hover .big {
+                            opacity: 1;
+                            z-index: 99;
+                            width: 200px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            top: -280px;
+                        }
+
+                        .big {
+                            width: 0;
+                            opacity: 0;
+                            top: 0px;
+                            position: absolute;
+                            transition: all 0.2s ease-in-out;
+                            z-index: -1;
+                        }
+                    }
+                }
+
+                .identificator {
+                    position: relative;
+                    background-color: $alliesColor;
+                    border-radius: 8px;
+                    width: 120px;
+                    height: 90px;
+                    overflow: hidden;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: auto;
+                    font-family: "riffic";
+
+                    .identificator-order {
+                        font-size: 48px;
+                        position: absolute;
+                        right: 15px;
+                    }
+
+                    .identificator-image {
+                        width: 150px;
+                        position: absolute;
+                        top: -7px;
+                        left: -70px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.arena-container {
+    @include grid(0, 11);
+
+    .arena-slot {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .arena-slot-content {
+            width: 100%;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease-in-out;
+        }
+    }
+}
+
+.warrior {
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+
+    .warrior-hud {
+        z-index: 2;
+        position: relative;
+        margin-bottom: -30px;
+
+        .effects {
+            gap: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: -35px;
+            left: 50%;
+
+            .effect {
+                position: relative;
+
+                span {
+                    font-size: 20px;
+                    font-family: "riffic";
+                    color: #fff;
+                    -webkit-text-stroke-width: 2px;
+                    -webkit-text-stroke-color: #333;
+                    position: absolute;
+                    top: -12px;
+                    right: -1px;
+                }
+            }
+        }
+
+        .life-hud {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            width: 170px;
+            height: 25px;
+            margin-bottom: 10px;
+            font-family: "riffic";
+
+            .shield {
+                position: relative;
+
+                .value {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -63%);
+                    font-weight: 600;
+                }
+            }
+
+            .info-bar {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.3);
+                gap: 5px;
+                padding-right: 5px;
+                border-radius: 50px;
+
+                .warrior-class {
+                    height: 25px;
+                    padding: 2px;
+                    padding: 0px 5px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 50px 0px 0px 50px;
+                }
+
+                .warrior-life {
+                    font-weight: 700;
+                    min-width: 27px;
+                }
+
+                .life-bar-container {
+                    min-width: 90px;
+                    height: 15px;
+                    position: relative;
+                    border-radius: 50px;
+                    background-color: #333;
+
+                    .life-bar-content {
+                        top: 0;
+                        left: 0;
+                        bottom: 0;
+                        position: absolute;
+                        border-radius: 50px;
+                        text-align: center;
+                        transition: all 0.2s;
+                    }
                 }
             }
         }

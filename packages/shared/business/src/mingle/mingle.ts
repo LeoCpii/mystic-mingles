@@ -10,25 +10,28 @@ const species = { bird, bug, fish, plant, reptile, rodent };
 const getSpecieStats = (s: Species) => { return species[s].stats; };
 
 export default class Mingle<S extends Species> implements MingleOptions<S> {
-    public id = uuid();
-
-    public stats: Stats;
-    public cards: MingleCards;
+    public id: string;
 
     public name: string;
+    public createAt = new Date();
+
     public species: S;
+    public stats: Stats;
+    public cards: MingleCards;
     public body: BodyFormats;
     public genes: MingleGenes;
     public category: Category;
     public color: MingleColor<S>;
 
-    constructor({ name, species, genes, body, color }: MingleBasicOptions<S>) {
+    constructor({ id, name, species, genes, body, color, createAt }: MingleBasicOptions<S>) {
+        this.id = id || uuid();
         this.genes = genes;
         this.name = name;
         this.body = body;
         this.color = color;
         this.species = species;
         this.category = categories[species];
+        this.createAt = createAt || new Date();
 
         this.stats = this.setStats({
             species,

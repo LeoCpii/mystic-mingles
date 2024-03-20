@@ -50,9 +50,11 @@ export function chooseCards({ teamAlly, fighter, fighterCards, card }: ChooseCar
 export function rollbackChooseCards(teamAlly: Team, fighter: Ally<Species>, fighterCards: Card<Species, ActiveParts>[]) {
     fighter.shield = 0;
 
+    const energySpent = fighterCards.reduce((acc, c) => acc += c.cost, 0);
+
     return new Team({
         ...teamAlly,
-        energy: teamAlly.energy + fighterCards.length,
+        energy: teamAlly.energy + energySpent,
         allies: [...teamAlly.allies.filter(a => a.id !== fighter.id), fighter],
         deck: { ...teamAlly.deck, [fighter.id]: [...teamAlly.deck[fighter.id], ...fighterCards] },
     });

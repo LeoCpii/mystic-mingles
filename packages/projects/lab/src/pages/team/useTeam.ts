@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Ally from '@mingles/business/ally';
 import Team from '@mingles/business/team';
@@ -8,6 +8,8 @@ import type { Species } from '@mingles/business/species';
 
 export function useTeam(team: Team) {
     const [_team, setTeam] = useState<Team>(team);
+
+    useEffect(() => { setTeam(team); }, [team]);
 
     const updateName = (name: string) => {
         const newTeam = new Team({ allies: _team.allies, name });

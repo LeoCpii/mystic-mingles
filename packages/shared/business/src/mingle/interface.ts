@@ -24,14 +24,17 @@ export type MingleOptions<S extends Species> = {
     cards: MingleCards;
     category: Category;
     color: MingleColor<S>;
+    createAt: Date;
 };
 
 export type MingleBasicOptions<S extends Species> = {
     [A in S]: {
+        id?: string;
         name: string;
         species: A;
         body: BodyFormats;
         genes: MingleGenes;
         color: MingleColor<A>;
+        createAt?: Date;
     };
 }[S];

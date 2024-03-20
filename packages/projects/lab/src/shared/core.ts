@@ -1,8 +1,10 @@
-// import { initializeApp } from 'firebase/app';
-// import { getRemoteConfig } from 'firebase/remote-config';
-// import { getAnalytics, logEvent } from 'firebase/analytics';
-// import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, doc, getDoc, setDoc, addDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
 
+import DB from '@mingles/middleware/db';
+import Auth from '@mingles/middleware/auth';
+import { TeamServices } from '@mingles/business/team';
+import { MingleServices } from '@mingles/business/mingle';
 import { colors } from '@mingles/business/species';
 
 import * as Sentry from '@sentry/react';
@@ -13,7 +15,8 @@ export const isProd = import.meta.env.VITE_ENV === 'production';
 
 export const url = {
     sso: import.meta.env.VITE_SSO_URL,
-    manager: import.meta.env.VITE_MANAGER_URL
+    lab: import.meta.env.VITE_LAB_URL,
+    arena: import.meta.env.VITE_LAB_ARENA,
 };
 
 export const env = import.meta.env.VITE_ENV;
@@ -36,28 +39,21 @@ isProd && Sentry.init({
 });
 
 // FIREBASE
-// const app = initializeApp({
-//     appId: import.meta.env.VITE_ID,
-//     apiKey: import.meta.env.VITE_API_KEY,
-//     projectId: import.meta.env.VITE_PROJECT_ID,
-//     authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-//     storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-//     measurementId: import.meta.env.VITE_MEASUREMENT_ID,
-//     messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-// }, 'lab');
+const app = initializeApp({
+    appId: import.meta.env.VITE_ID,
+    apiKey: import.meta.env.VITE_API_KEY,
+    projectId: import.meta.env.VITE_PROJECT_ID,
+    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+    databaseURL: import.meta.env.VITE_DATABASE_URL,
+    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+    measurementId: import.meta.env.VITE_MEASUREMENT_ID,
+    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+}, 'lab');
 
-// const auth = getAuth(app);
-// const config = getRemoteConfig(app);
-// const analytics = getAnalytics(app);
+const firestore = getFirestore(app);
 
-// setUserId(analytics, '');
-
-// MODULES
-
-// export const featureToggle = new FeatureToggle(config, REMOTE_CONFIG, isProd);
-// export const tracking = new Tracking((event, params) => { logEvent(analytics, event, params); }, isProd);
-
-// MINGLE COLORS
+export const db = new DB({ db: firestore, collection, doc, getDoc, setDoc, addDoc, query, where, getDocs, updateDoc });
+export const auth = new Auth({});
 
 export const classColors = {
     bug: colors.bug.map(r => r).sort((a, b) => a > b ? 1 : -1),
@@ -67,3 +63,7 @@ export const classColors = {
     rodent: colors.rodent.map(r => r).sort((a, b) => a > b ? 1 : -1),
     reptile: colors.reptile.map(r => r).sort((a, b) => a > b ? 1 : -1),
 };
+
+// SERVICES
+export const teamServices = new TeamServices(db);
+export const mingleServices = new MingleServices(db);

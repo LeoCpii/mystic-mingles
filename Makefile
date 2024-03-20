@@ -5,9 +5,11 @@ UI:=ui
 BUSINESS:=business
 SERVICES:=services
 RESOURCES:=resources
+MIDDLEWARE:=middleware
 
 # WEB #
 LAB:=lab
+SSO:=sso
 ARENA:=arena
 
 # E2E #
@@ -67,7 +69,7 @@ build-lab-stg:
 build-lab-mock:
 	$(call run_in_workspace,$(LAB),build:mock)
 
-## LAB
+## ARENA
 arena-prod:
 	$(call run_in_workspace,$(ARENA),start:prod)
 
@@ -89,6 +91,28 @@ build-arena-stg:
 build-arena-mock:
 	$(call run_in_workspace,$(ARENA),build:mock)
 
+## SSO
+sso-prod:
+	$(call run_in_workspace,$(SSO),start:prod)
+
+sso-stg:
+	$(call run_in_workspace,$(SSO),start:stg)
+
+sso-local:
+	$(call run_in_workspace,$(SSO),start:local)
+
+sso-test:
+	$(call run_in_workspace,$(SSO),start:test)
+
+build-sso-prod:
+	$(call run_in_workspace,$(SSO),build:prod)
+
+build-sso-stg:
+	$(call run_in_workspace,$(SSO),build:stg)
+
+build-sso-mock:
+	$(call run_in_workspace,$(SSO),build:mock)
+
 ## SERVICES
 
 dev-ui:
@@ -108,6 +132,9 @@ build-business:
 build-resources:
 	$(call run_in_workspace,$(RESOURCES),build)
 
+build-middleware:
+	$(call run_in_workspace,$(MIDDLEWARE),build)
+
 build-dependencies: build-services build-business build-ui
 
 # ---------------------- WATCH ----------------------- #
@@ -120,6 +147,9 @@ watch-services:
 
 watch-resources:
 	$(call run_in_workspace,$(RESOURCES),build:watch)
+
+watch-middleware:
+	$(call run_in_workspace,$(MIDDLEWARE),build:watch)
 
 watch-ui:
 	$(call run_in_workspace,$(UI),watch)

@@ -1,7 +1,7 @@
 {
   "hosting": [
     {
-      "target": "prd-sso",
+      "target": "prd-lab",
       "public": "dist",
       "ignore": [
         "firebase.json",
@@ -16,7 +16,7 @@
       ]
     },
     {
-      "target": "stg-sso",
+      "target": "stg-lab",
       "public": "dist",
       "ignore": [
         "firebase.json",

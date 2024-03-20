@@ -6,18 +6,18 @@
   "targets": {
     "stg-mingles": {
       "hosting": {
-        "stg-sso": [
-          "stg-sso"
+        "stg-lab": [
+          "stg-lab"
         ],
-        "prd-sso": [
-          "prd-sso-mingles"
+        "prd-lab": [
+          "prd-lab-mingles"
         ]
       }
     },
     "prd-mingles": {
       "hosting": {
         "prd-sso": [
-          "prd-sso-mingles"
+          "prd-lab-mingles"
         ]
       }
     }

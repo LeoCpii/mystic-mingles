@@ -8,7 +8,7 @@ import Player from '@mingles/business/player';
 import Mingle, { generateRandomMingle } from '@mingles/business/mingle';
 
 import BattleField from '@/components/BattleField';
-import { simpleAmbient } from '@/components/BattleField/action-sound';
+import { simpleAmbient } from '@/shared/actions/actions-sound';
 
 const team1 = new Team({
     name: 'Team 1',

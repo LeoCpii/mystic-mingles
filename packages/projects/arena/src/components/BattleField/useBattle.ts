@@ -7,13 +7,14 @@ import type { Species } from '@mingles/business/species';
 import type { ActiveParts } from '@mingles/business/parts';
 import { wait } from '@mingles/services/promise';
 
-import { getAttackData, poisonDamage } from './action-fight';
-import { BattleContext } from './BattleProvider';
-import { getTarget, getCoordinates, goBack, getElem } from './actions-target';
-import { chooseCards, getCardsToBuy, rollbackChooseCards } from './actions-deck';
-import { damageAnimation, throwingAnimation, impactAnimation, damageMultipleAnimation, goTo, Coordinates, messageAnimation } from './action-animation';
+import { simpleAttack } from '@/shared/actions/actions-sound';
+import { getAttackData, poisonDamage } from '@/shared/actions/actions-fight';
+import { getTarget, getCoordinates, goBack, getElem } from '@/shared/actions/actions-target';
+import { chooseCards, getCardsToBuy, rollbackChooseCards } from '@/shared/actions/actions-deck';
+import { damageAnimation, throwingAnimation, impactAnimation, damageMultipleAnimation, goTo, Coordinates, messageAnimation } from '@/shared/actions/actions-animation';
+
 import { useCanvas } from '../Canvas';
-import { simpleAttack } from './action-sound';
+import { BattleContext } from './BattleProvider';
 
 export default function useBattle() {
     const { ref } = useCanvas();
@@ -139,7 +140,7 @@ export default function useBattle() {
                     updateTeamEnemy(newEnemyTeam);
 
                     if (isStunned) {
-                        messageAnimation(canvas, { x: allyRect.x - 40, y: allyRect.y }, 'Miss')
+                        messageAnimation(canvas, { x: allyRect.x - 40, y: allyRect.y }, 'Missed')
                             .then(() => { resolve(''); });
                     } else {
                         simpleAttack();
@@ -188,7 +189,7 @@ export default function useBattle() {
                             setHud({ ...hud, currentCards: cards, chosenCards: { ...hud.chosenCards, [fighter.id]: [] } });
 
                             const promiseCards = cards.reduce((acc, card) => {
-                                const target = getTarget({ card: cards[0], teamAttacked, ally: fighter });
+                                const target = getTarget({ card: cards[0], teamEnemy: teamAttacked, ally: fighter });
                                 const refCoordinate = getCoordinates(fighter, target);
                                 const isMelee = card.type === 'melee';
 

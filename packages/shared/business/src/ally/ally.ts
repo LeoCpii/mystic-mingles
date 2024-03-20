@@ -16,6 +16,7 @@ export default class Ally<S extends Species> implements AllyOptions {
     public shield: number;
     public species: S;
     public stats: Stats;
+    public createAt: Date;
     public body: BodyFormats;
     public genes: MingleGenes;
     public cards: MingleCards;
@@ -37,6 +38,7 @@ export default class Ally<S extends Species> implements AllyOptions {
         this.coordinates = positions;
         this.species = mingle.species;
         this.category = mingle.category;
+        this.createAt = mingle.createAt;
         this.buffs = {};
         this.debuffs = {};
         this.life = Math.ceil(mingle.stats.life * modificators[mingle.species]);
@@ -54,10 +56,6 @@ export default class Ally<S extends Species> implements AllyOptions {
     }
 
     public calculateDamage(card: Card<Species, ActiveParts>, target: Ally<Species>) {
-        if (this.isStunned) {
-            return { damage: 0, critical: false };
-        }
-
         let damage = card.attack;
         let critical = false;
 

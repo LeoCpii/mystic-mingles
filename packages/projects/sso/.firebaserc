@@ -1,0 +1,23 @@
+{
+  "projects": {
+    "staging": "stg-mystical-mingle",
+    "production": "prd-mingles"
+  },
+  "targets": {
+    "stg-mingles": {
+      "hosting": {
+        "stg-sso": [
+          "stg-sso-a060d"
+        ]
+      }
+    },
+    "prd-mingles": {
+      "hosting": {
+        "prd-sso": [
+          "prd-sso-mingles"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

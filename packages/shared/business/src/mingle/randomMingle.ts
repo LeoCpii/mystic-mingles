@@ -5,7 +5,7 @@ import { species, colors, genes, type Species } from '@/species';
 
 import type { MingleGenes, MingleBasicOptions } from './interface';
 
-export function generateRandomMingle(): MingleBasicOptions<Species> {
+export function generateRandomMingle(options: Partial<MingleBasicOptions<Species>> = {}): MingleBasicOptions<Species> {
     const chosenSpecies = getRandom(species);
     const chosenBodyFormat = getRandom(bodyFormats);
     const chosenColor = getRandom(colors[chosenSpecies] as any);
@@ -19,10 +19,10 @@ export function generateRandomMingle(): MingleBasicOptions<Species> {
     }, {}) as MingleGenes;
 
     return {
-        name: 'random',
-        genes: chosenGenes,
-        body: chosenBodyFormat,
-        species: chosenSpecies,
-        color: chosenColor as any,
+        name: options.name || 'random',
+        genes: options.genes || chosenGenes,
+        body: options.body || chosenBodyFormat,
+        species: options.species || chosenSpecies,
+        color: options.color || chosenColor as any,
     };
 }

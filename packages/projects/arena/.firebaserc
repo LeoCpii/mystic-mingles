@@ -7,10 +7,7 @@
     "stg-mingles": {
       "hosting": {
         "stg-sso": [
-          "stg-sso"
-        ],
-        "prd-sso": [
-          "prd-sso-mingles"
+          "arena-stg-b5817"
         ]
       }
     },

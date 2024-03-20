@@ -1,15 +1,15 @@
 import type Card from '@mingles/business/card';
 import type Ally from '@mingles/business/ally';
+import type Team from '@mingles/business/team';
 import { getRandom } from '@mingles/services/array';
 import type { Species } from '@mingles/business/species';
 import type { ActiveParts } from '@mingles/business/parts';
 import { backdoorEffects, type Backdoor } from '@mingles/business/effect';
-import { Team } from '@mingles/business';
 
 interface GetTarget {
-    card: Card<Species, ActiveParts>;
+    teamEnemy: Team;
     ally: Ally<Species>;
-    teamAttacked: Team;
+    card: Card<Species, ActiveParts>;
 }
 
 export const getElem = (id: string) => {
@@ -39,11 +39,11 @@ const getClosestEnemy = (ally: Ally<Species>, enemies: Ally<Species>[]) => {
     return enemies.find(enemy => enemy.id === id) as Ally<Species>;
 };
 
-export function getTarget({ card, teamAttacked, ally }: GetTarget) {
-    const enemies = teamAttacked.allies.filter(enemy => enemy.isAlive);
+export function getTarget({ card, teamEnemy, ally }: GetTarget) {
+    const enemies = teamEnemy.priorityOrder.filter(e => e.isAlive);
 
     if (backdoorEffects.includes(card.effect as Backdoor)) {
-        if (card.effect === 'faster_backdoor') { return teamAttacked.higherSpeed; }
+        if (card.effect === 'faster_backdoor') { return teamEnemy.higherSpeed; }
     }
 
     return getClosestEnemy(ally, enemies);
@@ -57,17 +57,6 @@ export function getCoordinates(ally: Ally<Species>, enemy: Ally<Species>) {
     const y = defender.rect.y - attacker.rect.y;
 
     return { x, y };
-}
-
-export function goTo(ally: Ally<Species>, x: number, y: number) {
-    return new Promise((resolve) => {
-        const attacker = getElem(ally.id);
-
-        attacker.el.style.transform = `translate(${x}px, ${y}px)`;
-        attacker.el.style.zIndex = '100';
-
-        setTimeout(() => { resolve(''); }, 500);
-    });
 }
 
 export function goBack(ally: Ally<Species>) {

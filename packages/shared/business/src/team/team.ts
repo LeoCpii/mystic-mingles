@@ -12,8 +12,8 @@ export default class Team implements TeamOptions {
     public id: string;
     public energy = 3;
 
-    public readonly name: string;
-    public readonly allies: Ally<Species>[] = [];
+    public name: string;
+    public allies: Ally<Species>[] = [];
 
     constructor({ allies, name, deck, energy, id }: TeamOptions) {
         this.name = name || this.name;
@@ -29,7 +29,7 @@ export default class Team implements TeamOptions {
     get priorityOrder() {
         return this.allies.sort((a, b) => {
             return a.stats.speed > b.stats.speed ? -1 : 1;
-        });
+        }).filter((ally) => ally.isAlive);
     }
 
     get higherLife() { return higherThan(this.alives, 'stats.life'); }
@@ -62,15 +62,17 @@ export default class Team implements TeamOptions {
     }
 
     public getCards(count: number): Deck {
-        const arr = Array.from(Array(count), () => '');
+        if (this.allies.length === 3) {
+            const arr = Array.from(Array(count), () => '');
 
-        return arr.reduce((acc) => {
-            const { chosenCard, chosenAlly } = this.getUniqueCard(acc);
+            return arr.reduce((acc) => {
+                const { chosenCard, chosenAlly } = this.getUniqueCard(acc);
 
-            acc[chosenAlly.id] = [...acc[chosenAlly.id], chosenCard];
+                acc[chosenAlly.id] = [...acc[chosenAlly.id], chosenCard];
 
-            return acc;
-        }, { [this.allies[0].id]: [], [this.allies[1].id]: [], [this.allies[2].id]: [] });
+                return acc;
+            }, { [this.allies[0].id]: [], [this.allies[1].id]: [], [this.allies[2].id]: [] });
+        }
     }
 
     public buyCard(count: number) {

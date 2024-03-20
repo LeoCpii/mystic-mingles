@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -6,29 +8,33 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
 import EditIcon from '@mui/icons-material/Edit';
 import Container from '@mui/material/Container';
+import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
 import CardContent from '@mui/material/CardContent';
 import CasinoIcon from '@mui/icons-material/Casino';
+import Button from '@mui/material/Button';
 
 import DeckCard from '@mingles/ui/card';
 import { useMingle } from '@mingles/ui/game';
 import MingleParts from '@mingles/ui/mingle-parts';
-import { type Species, rodent, plant, bird, fish } from '@mingles/business/species';
-import type { GeneParts, BodyFormats, ActiveParts } from '@mingles/business/parts';
+import Form, { useForm, Control, FormControl } from '@mingles/ui/form';
 import Mingle, { generateRandomMingle } from '@mingles/business/mingle';
+import type { GeneParts, BodyFormats, ActiveParts } from '@mingles/business/parts';
+import { type Species, rodent, plant, bird, fish } from '@mingles/business/species';
 
-import { classColors } from '@/shared/core';
+import { classColors, mingleServices, auth } from '@/shared/core';
 
 import GENES_CONFIG from './genes-config';
 import BODIES_CONFIG from './bodies-configs';
 import SPECIES_CONFIG from './species-config';
 import FeatureSelector from './FeatureSelector';
+import useBase from '../useBase';
 
 interface OptionsProps<T> { mingle: Mingle<Species>; change: (data: T) => void; }
 
@@ -205,7 +211,7 @@ function MingleClass({ mingle, change }: OptionsProps<Species>) {
                                 icon={config.icon}
                                 onClick={() => change(species as Species)}
                                 sx={{
-                                    background: mingle.species === species ? config.color : 'transparent',
+                                    background: mingle.species === species ? classColors[species][1] : 'transparent',
                                     borderColor: config.color
                                 }}
                             />
@@ -295,27 +301,35 @@ function Cards({ mingle }: CardsProps) {
     return (
         <Card>
             <CardContent>
-                <Grid container spacing={2}>
-                    {
-                        Object.keys(mingle.cards).map((key) => {
-                            const k = key as ActiveParts;
-                            return (
-                                <Grid key={key} item sm={4}>
-                                    <DeckCard
-                                        part={k}
-                                        cost={mingle.cards[k].cost}
-                                        name={mingle.cards[k].name}
-                                        attack={mingle.cards[k].attack}
-                                        effect={mingle.cards[k].effect}
-                                        shield={mingle.cards[k].shield}
-                                        species={mingle.cards[k].species}
-                                        description={mingle.cards[k].description}
-                                    />
-                                </Grid>
-                            );
-                        })
-                    }
-                </Grid>
+                <Stack spacing={1}>
+                    <Typography gutterBottom variant="h5" component="div">
+                        Cartas
+                    </Typography>
+
+                    <Grid container spacing={2}>
+                        {
+                            Object.keys(mingle.cards).map((key) => {
+                                const k = key as ActiveParts;
+                                return (
+                                    <Grid key={key} item sm={4}>
+                                        <DeckCard
+                                            part={k}
+                                            type={mingle.cards[k].type}
+                                            cost={mingle.cards[k].cost}
+                                            name={mingle.cards[k].name}
+                                            assets={mingle.cards[k].assets}
+                                            attack={mingle.cards[k].attack}
+                                            effect={mingle.cards[k].effect}
+                                            shield={mingle.cards[k].shield}
+                                            species={mingle.cards[k].species}
+                                            description={mingle.cards[k].description}
+                                        />
+                                    </Grid>
+                                );
+                            })
+                        }
+                    </Grid>
+                </Stack>
             </CardContent>
         </Card >
     );
@@ -347,8 +361,35 @@ function CharacteristicCard({ mingle, onChangeSpecies, onChangeBody, onChangeCol
 }
 
 export default function CreateMingle() {
+    const navigate = useNavigate();
+    const { addMingle } = useBase();
     const [showModalEdit, setShowModalEdit] = useState(false);
+    const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
     const { mingle, update, updateGenes } = useMingle(generateRandomMingle());
+
+    const [form] = useForm<{ name: string }>({
+        form: {
+            name: new FormControl({ value: mingle.name, required: true })
+        },
+        handle: {
+            submit: (form) => {
+                const { name } = form.values;
+
+                setLoadingLogin(true);
+
+                mingle.name = name;
+
+                mingleServices.addMingle(auth.user.user_id, mingle)
+                    .then(() => {
+                        addMingle(mingle);
+                        navigate('/my-teams');
+                        enqueueSnackbar(`"${name}" está pronto para batalhar!`, { variant: 'success' });
+                    })
+                    .catch(console.error)
+                    .finally(() => setTimeout(() => { setLoadingLogin(false); }, 500));
+            }
+        }
+    }, [mingle]);
 
     const handleUpdateBody = (body: BodyFormats) => { update({ body }); };
     const handleUpdateSpecies = (species: Species) => { update({ species }); };
@@ -357,7 +398,9 @@ export default function CreateMingle() {
 
     const toggleModalEdit = () => { setShowModalEdit(!showModalEdit); };
 
-    const shuffle = () => { update(generateRandomMingle()); };
+    const shuffle = () => { update(generateRandomMingle({ name: form.values.name })); };
+
+    const goBack = () => { navigate('/'); };
 
     return (
         <Container sx={{ py: 3 }}>
@@ -379,16 +422,45 @@ export default function CreateMingle() {
                     </Stack>
                 </Grid>
                 <Grid item xs={4}>
-                    <Card>
-                        <CardContent>
-                            <Stack spacing={2}>
-                                <StatsChart stats={mingle.stats} />
-                                <Button variant="contained" fullWidth>
-                                    Criar
-                                </Button>
-                            </Stack>
-                        </CardContent>
-                    </Card>
+                    <Box sx={{ position: 'sticky', top: 24 }}>
+                        <Card>
+                            <CardContent>
+                                <Form formGroup={form}>
+                                    <Stack spacing={2}>
+                                        <Control controlName="name" action="input">
+                                            <TextField
+                                                fullWidth
+                                                label="Nome"
+                                                variant="outlined"
+                                                defaultValue={form.controls.name.value}
+                                                helperText={form.controls.name.isInvalid && 'Escolha um nome para seu Mingle'}
+                                                error={form.controls.name.isInvalid}
+                                            />
+                                        </Control>
+
+                                        <StatsChart stats={mingle.stats} />
+                                        <LoadingButton
+                                            fullWidth
+                                            type="submit"
+                                            variant="contained"
+                                            loading={loadingLogin}
+                                        >
+                                            Criar
+                                        </LoadingButton>
+                                    </Stack>
+                                </Form>
+                            </CardContent>
+                        </Card>
+                        <Button
+                            fullWidth
+                            variant="outlined"
+                            color="inherit"
+                            sx={{ mt: 3 }}
+                            onClick={goBack}
+                        >
+                            Voltar
+                        </Button>
+                    </Box>
                 </Grid>
             </Grid>
             <Drawer

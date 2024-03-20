@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import '@mingles/ui/style';
+import '@mingles/ui/fonts';
 
 function App() {
     return (
@@ -13,7 +14,7 @@ function App() {
                 maxSnack={3}
                 hideIconVariant={false}
                 autoHideDuration={5000}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <CssBaseline />
                 <Outlet />
             </SnackbarProvider>
